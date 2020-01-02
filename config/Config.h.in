@@ -1,0 +1,9 @@
+#pragma once
+
+#include <cstdint>
+#include <string>
+
+const uint8_t VERSION_MAJOR = @VERSION_MAJOR@;
+const uint8_t VERSION_MINOR = @VERSION_MINOR@;
+const uint8_t VERSION_PATCH = @VERSION_PATCH@;
+const std::string VERSION_STRING = "@VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@";
