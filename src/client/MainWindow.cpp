@@ -16,35 +16,16 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "client/MainWindow.h"
 
-#include <cstdint>
+#include "TakeControlConfig.h"
 
-#include "nodesParameters.h"
+#include "plugins/PluginLoader.h"
 
-class QJsonObject;
+using namespace tc;
+using namespace tc::client;
+using namespace tc::plugins;
 
-namespace tc {
-namespace nodes {
-
-	class TC_NODES_API INode {
-	public:
-		INode();
-		INode(uint32_t id);
-		
-		virtual ~INode() {}
-
-		virtual void read(const QJsonObject &json) = 0;
-		virtual void write(QJsonObject & json) const = 0;
-
-		static uint32_t getNextID();
-
-	protected:
-		uint32_t _id;
-
-	private:
-		static uint32_t _ids;
-	};
-
-} /* namespace nodes */
-} /* namespace tc */
+MainWindow::MainWindow() : _pluginLoader(new PluginLoader()) {
+	setWindowTitle(QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING)));
+}

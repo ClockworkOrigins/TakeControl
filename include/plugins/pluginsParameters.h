@@ -18,33 +18,19 @@
 
 #pragma once
 
-#include <cstdint>
+#include <QObject>
 
-#include "nodesParameters.h"
-
-class QJsonObject;
-
-namespace tc {
-namespace nodes {
-
-	class TC_NODES_API INode {
-	public:
-		INode();
-		INode(uint32_t id);
-		
-		virtual ~INode() {}
-
-		virtual void read(const QJsonObject &json) = 0;
-		virtual void write(QJsonObject & json) const = 0;
-
-		static uint32_t getNextID();
-
-	protected:
-		uint32_t _id;
-
-	private:
-		static uint32_t _ids;
-	};
-
-} /* namespace nodes */
-} /* namespace tc */
+// Dynamic library import/export macro
+#ifndef TC_PLUGINS_API
+	#if defined Q_OS_WIN
+		#ifdef TCPlugins_EXPORTS
+			#define TC_PLUGINS_API __declspec(dllexport)
+		#else
+			#define TC_PLUGINS_API __declspec(dllimport)
+		#endif
+	#elif defined Q_OS_UNIX
+		#define TC_PLUGINS_API
+	#else
+		#define TC_PLUGINS_API
+	#endif
+#endif

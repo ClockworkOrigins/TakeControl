@@ -16,35 +16,26 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "MainWindow.h"
 
-#include <cstdint>
+#include <QApplication>
 
-#include "nodesParameters.h"
+using namespace tc;
+using namespace tc::client;
 
-class QJsonObject;
+int main(int argc, char ** argv) {
+	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+	
+	QApplication app(argc, argv);
 
-namespace tc {
-namespace nodes {
+	int ret;
+	{
+		MainWindow wnd;
 
-	class TC_NODES_API INode {
-	public:
-		INode();
-		INode(uint32_t id);
-		
-		virtual ~INode() {}
+		wnd.show();
 
-		virtual void read(const QJsonObject &json) = 0;
-		virtual void write(QJsonObject & json) const = 0;
-
-		static uint32_t getNextID();
-
-	protected:
-		uint32_t _id;
-
-	private:
-		static uint32_t _ids;
-	};
-
-} /* namespace nodes */
-} /* namespace tc */
+		ret = QApplication::exec();
+	}
+	
+	return ret;
+}

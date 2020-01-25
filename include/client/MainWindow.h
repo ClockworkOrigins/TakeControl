@@ -18,33 +18,21 @@
 
 #pragma once
 
-#include <cstdint>
-
-#include "nodesParameters.h"
-
-class QJsonObject;
+#include <QMainWindow>
 
 namespace tc {
-namespace nodes {
+namespace plugins {
+	class PluginLoader;
+}
+namespace client {
 
-	class TC_NODES_API INode {
+	class MainWindow : public QMainWindow {
 	public:
-		INode();
-		INode(uint32_t id);
-		
-		virtual ~INode() {}
-
-		virtual void read(const QJsonObject &json) = 0;
-		virtual void write(QJsonObject & json) const = 0;
-
-		static uint32_t getNextID();
-
-	protected:
-		uint32_t _id;
+		MainWindow();
 
 	private:
-		static uint32_t _ids;
+		plugins::PluginLoader * _pluginLoader;
 	};
 
-} /* namespace nodes */
+} /* namespace client */
 } /* namespace tc */

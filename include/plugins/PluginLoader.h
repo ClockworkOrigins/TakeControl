@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include "pluginsParameters.h"
+
 #include <QList>
 
 namespace tc {
@@ -25,7 +27,7 @@ namespace plugins {
 
 	class IGamePlugin;
 	
-	class PluginLoader {
+	class TC_PLUGINS_API PluginLoader {
 	public:
 		PluginLoader();
 
