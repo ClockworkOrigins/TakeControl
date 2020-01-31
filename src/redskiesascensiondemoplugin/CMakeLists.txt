@@ -13,3 +13,7 @@ ADD_DEFINITIONS(-DQT_SHARED)
 ADD_LIBRARY(RSADemoPlugin SHARED ${RSADemoSrc} ${RSADemoHeader})
 
 target_link_libraries(RSADemoPlugin ${QT_LIBRARIES})
+
+set_target_properties(
+	RSADemoPlugin PROPERTIES FOLDER Plugins
+)

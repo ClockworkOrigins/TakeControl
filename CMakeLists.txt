@@ -13,6 +13,8 @@ SET(VERSION_MAJOR 0)
 SET(VERSION_MINOR 1)
 SET(VERSION_PATCH 0)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 INCLUDE(cmake/variables.cmake)
 
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin)
