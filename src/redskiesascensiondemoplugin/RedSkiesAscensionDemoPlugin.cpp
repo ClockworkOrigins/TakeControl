@@ -16,7 +16,7 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "redskiesascensiondemoplugin//RedSkiesAscensionDemoPlugin.h"
+#include "redskiesascensiondemoplugin/RedSkiesAscensionDemoPlugin.h"
 
 using namespace tc;
 using namespace tc::plugins;
