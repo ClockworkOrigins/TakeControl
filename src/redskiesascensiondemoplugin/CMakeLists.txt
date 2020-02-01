@@ -17,3 +17,9 @@ target_link_libraries(RSADemoPlugin ${QT_LIBRARIES})
 set_target_properties(
 	RSADemoPlugin PROPERTIES FOLDER Plugins
 )
+
+set_target_properties(
+	RSADemoPlugin PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/Debug/plugins/game
+	RSADemoPlugin PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/Debug/plugins/game
+	RSADemoPlugin PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/Debug/plugins/game
+)
