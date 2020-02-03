@@ -18,26 +18,29 @@
 
 #pragma once
 
-#include "pluginsParameters.h"
-
-#include <QList>
+#include <QSharedPointer>
+#include <QString>
 
 namespace tc {
-namespace plugins {
+namespace projects {
 
-	class IGamePlugin;
-	
-	class TC_PLUGINS_API PluginLoader {
+	class Project {
 	public:
-		PluginLoader();
+		Project(const QString & path, const QString & name, const QString & type);
 
-		QList<IGamePlugin *> getGamePlugins() const;
+		static bool supports(const QString & path);
+		
+		void save();
+		void load();
+
+		QString getName() const;
 
 	private:
-		QList<IGamePlugin *> _gamePlugins;
-		
-		void loadGamePlugins();
+		QString _path;
+		QString _name;
+		QString _type;
 	};
+	typedef QSharedPointer<Project> ProjectPtr;
 
-} /* namespace plugins */
+} /* namespace projects */
 } /* namespace tc */

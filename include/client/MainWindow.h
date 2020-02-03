@@ -27,11 +27,18 @@ namespace plugins {
 namespace client {
 
 	class MainWindow : public QMainWindow {
+		Q_OBJECT
+		
 	public:
 		MainWindow();
 
+	private slots:
+		void createNewProject();
+
 	private:
 		plugins::PluginLoader * _pluginLoader;
+
+		void createFileMenu();
 	};
 
 } /* namespace client */

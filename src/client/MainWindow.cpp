@@ -16,16 +16,49 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "client/MainWindow.h"
+#include "MainWindow.h"
 
 #include "TakeControlConfig.h"
 
+#include "plugins/IGamePlugin.h"
 #include "plugins/PluginLoader.h"
 
-using namespace tc;
+#include "projects/NewProjectDialog.h"
+
+#include <QApplication>
+#include <QMenuBar>
+
 using namespace tc::client;
 using namespace tc::plugins;
+using namespace tc::projects;
 
 MainWindow::MainWindow() : _pluginLoader(new PluginLoader()) {
 	setWindowTitle(QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING)));
+
+	createFileMenu();
+}
+
+void MainWindow::createNewProject() {
+	const auto pluginList = _pluginLoader->getGamePlugins();
+
+	QStringList gameList;
+
+	for (const auto plugin : pluginList) {
+		gameList.append(plugin->getName());
+	}
+	
+	NewProjectDialog dlg(gameList, this);
+
+	auto project = dlg.createNewProject();
+
+	// TODO: store project to work on
+}
+
+void MainWindow::createFileMenu() {
+	QMenu * fileMenu = new QMenu(QApplication::tr("File"), this);
+
+	QAction * newProject = fileMenu->addAction(QApplication::tr("NewProject"));
+	connect(newProject, &QAction::triggered, this, &MainWindow::createNewProject);
+
+	menuBar()->addMenu(fileMenu);
 }

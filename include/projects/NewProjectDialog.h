@@ -18,26 +18,38 @@
 
 #pragma once
 
-#include "pluginsParameters.h"
+#include <QDialog>
+#include <QSharedPointer>
+#include <QString>
 
-#include <QList>
+class QComboBox;
+class QDialogButtonBox;
+class QLineEdit;
 
 namespace tc {
-namespace plugins {
+namespace projects {
 
-	class IGamePlugin;
-	
-	class TC_PLUGINS_API PluginLoader {
+	class Project;
+	typedef QSharedPointer<Project> ProjectPtr;
+
+	class NewProjectDialog : public QDialog {
+		Q_OBJECT
+		
 	public:
-		PluginLoader();
+		NewProjectDialog(QStringList games, QWidget * par);
 
-		QList<IGamePlugin *> getGamePlugins() const;
+		ProjectPtr createNewProject();
+
+	private slots:
+		void onSelectPathClicked();
+		void validateSelection();
 
 	private:
-		QList<IGamePlugin *> _gamePlugins;
-		
-		void loadGamePlugins();
+		QComboBox * _gamesCombobox;
+		QLineEdit * _projectNameEdit;
+		QLineEdit * _pathEdit;
+		QDialogButtonBox * _dialogButtonBox;
 	};
 
-} /* namespace plugins */
+} /* namespace projects */
 } /* namespace tc */

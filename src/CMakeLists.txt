@@ -1,4 +1,5 @@
 ADD_SUBDIRECTORY(client)
 ADD_SUBDIRECTORY(nodes)
 ADD_SUBDIRECTORY(plugins)
+ADD_SUBDIRECTORY(projects)
 ADD_SUBDIRECTORY(redskiesascensiondemoplugin)

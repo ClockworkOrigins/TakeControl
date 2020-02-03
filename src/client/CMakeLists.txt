@@ -8,4 +8,4 @@ FILE(GLOB_RECURSE ClientHeader ${includedir}/*.h)
 
 ADD_EXECUTABLE(TakeControl ${ClientSrc} ${ClientHeader})
 
-target_link_libraries(TakeControl TCPlugins ${QT_LIBRARIES})
+target_link_libraries(TakeControl TCPlugins TCProjects ${QT_LIBRARIES})

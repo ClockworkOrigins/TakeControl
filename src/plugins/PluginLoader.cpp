@@ -24,11 +24,14 @@
 #include <QDir>
 #include <QPluginLoader>
 
-using namespace tc;
 using namespace tc::plugins;
 
 PluginLoader::PluginLoader() {
 	loadGamePlugins();
+}
+
+QList<IGamePlugin *> PluginLoader::getGamePlugins() const {
+	return _gamePlugins;
 }
 
 void PluginLoader::loadGamePlugins() {

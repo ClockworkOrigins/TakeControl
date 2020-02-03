@@ -16,28 +16,26 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "projects/Project.h"
 
-#include "pluginsParameters.h"
+using namespace tc::projects;
 
-#include <QList>
+Project::Project(const QString & path, const QString & name, const QString & type) : _path(path), _name(name), _type(type) {
+}
 
-namespace tc {
-namespace plugins {
+bool Project::supports(const QString & path) {
+	// TODO: open file and check if it can be parsed and is a project file
+	return false;
+}
 
-	class IGamePlugin;
-	
-	class TC_PLUGINS_API PluginLoader {
-	public:
-		PluginLoader();
+void Project::save() {
+	// TODO
+}
 
-		QList<IGamePlugin *> getGamePlugins() const;
+void Project::load() {
+	// TODO
+}
 
-	private:
-		QList<IGamePlugin *> _gamePlugins;
-		
-		void loadGamePlugins();
-	};
-
-} /* namespace plugins */
-} /* namespace tc */
+QString Project::getName() const {
+	return _name;
+}
