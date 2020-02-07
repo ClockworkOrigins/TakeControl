@@ -16,30 +16,34 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "MainWindow.h"
-
-#include "utils/Config.h"
+#include "Config.h"
 
 #include <QApplication>
+#include <QLocale>
+#include <QTranslator>
 
-using namespace tc::client;
 using namespace tc::utils;
 
-int main(int argc, char ** argv) {
-	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-	
-	QApplication app(argc, argv);
-
-	Config::init();
-
-	int ret;
-	{
-		MainWindow wnd;
-
-		wnd.show();
-
-		ret = QApplication::exec();
+void Config::init() {
+	const QLocale locale = QLocale::system();
+	QString language;
+	if (locale.language() == QLocale::Language::German) {
+		language = "Deutsch";
+	} else {
+		language = "English";
 	}
-	
-	return ret;
+
+	updateLanguage(language);
+}
+
+void Config::updateLanguage(const QString & language) {
+	QTranslator * translator = new QTranslator(qApp);
+	if (language == "Deutsch") {
+		QLocale::setDefault(QLocale("de_DE"));
+		translator->load(qApp->applicationDirPath() + "/de_DE");
+	} else {
+		QLocale::setDefault(QLocale("en_US"));
+		translator->load(qApp->applicationDirPath() + "/en_US");
+	}
+	qApp->installTranslator(translator);
 }

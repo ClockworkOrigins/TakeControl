@@ -16,30 +16,19 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "MainWindow.h"
+#pragma once
 
-#include "utils/Config.h"
+class QString;
 
-#include <QApplication>
+namespace tc {
+namespace utils {
 
-using namespace tc::client;
-using namespace tc::utils;
+	class Config {
+	public:
+		static void init();
 
-int main(int argc, char ** argv) {
-	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-	
-	QApplication app(argc, argv);
+		static void updateLanguage(const QString & language);
+	};
 
-	Config::init();
-
-	int ret;
-	{
-		MainWindow wnd;
-
-		wnd.show();
-
-		ret = QApplication::exec();
-	}
-	
-	return ret;
-}
+} /* namespace utils */
+} /* namespace tc */
