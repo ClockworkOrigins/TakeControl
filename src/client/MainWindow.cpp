@@ -18,6 +18,7 @@
 
 #include "MainWindow.h"
 
+#include "CharacterTab.h"
 #include "TakeControlConfig.h"
 
 #include "plugins/IGamePlugin.h"
@@ -36,6 +37,8 @@ MainWindow::MainWindow() : _pluginLoader(new PluginLoader()) {
 	setWindowTitle(QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING)));
 
 	createFileMenu();
+
+	createTabs();
 }
 
 void MainWindow::createNewProject() {
@@ -61,4 +64,11 @@ void MainWindow::createFileMenu() {
 	connect(newProject, &QAction::triggered, this, &MainWindow::createNewProject);
 
 	menuBar()->addMenu(fileMenu);
+}
+
+void MainWindow::createTabs() {
+	QTabWidget * tabWidget = new QTabWidget(this);
+	tabWidget->addTab(new CharacterTab(this), QApplication::tr("Characters"));
+
+	setCentralWidget(tabWidget);
 }

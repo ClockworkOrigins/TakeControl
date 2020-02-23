@@ -16,31 +16,28 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "CharacterTab.h"
 
-#include <QMainWindow>
+#include <QHBoxLayout>
+#include <QListView>
+#include <QStandardItemModel>
+#include <QSortFilterProxyModel>
 
-namespace tc {
-namespace plugins {
-	class PluginLoader;
+using namespace tc::client;
+
+CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr), _characterModel(nullptr) {
+	QHBoxLayout * hl = new QHBoxLayout();
+
+	_characterList = new QListView(this);
+
+	_characterModel = new QStandardItemModel(this);
+
+	auto sortModel = new QSortFilterProxyModel(this);
+	sortModel->setSourceModel(_characterModel);
+	
+	_characterList->setModel(sortModel);
+
+	hl->addWidget(_characterList);
+
+	setLayout(hl);
 }
-namespace client {
-
-	class MainWindow : public QMainWindow {
-		Q_OBJECT
-		
-	public:
-		MainWindow();
-
-	private slots:
-		void createNewProject();
-
-	private:
-		plugins::PluginLoader * _pluginLoader;
-
-		void createFileMenu();
-		void createTabs();
-	};
-
-} /* namespace client */
-} /* namespace tc */

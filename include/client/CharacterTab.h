@@ -18,28 +18,23 @@
 
 #pragma once
 
-#include <QMainWindow>
+#include <QWidget>
+
+class QListView;
+class QStandardItemModel;
 
 namespace tc {
-namespace plugins {
-	class PluginLoader;
-}
 namespace client {
 
-	class MainWindow : public QMainWindow {
+	class CharacterTab : public QWidget {
 		Q_OBJECT
 		
 	public:
-		MainWindow();
-
-	private slots:
-		void createNewProject();
+		CharacterTab(QWidget * par);
 
 	private:
-		plugins::PluginLoader * _pluginLoader;
-
-		void createFileMenu();
-		void createTabs();
+		QListView * _characterList;
+		QStandardItemModel * _characterModel;
 	};
 
 } /* namespace client */

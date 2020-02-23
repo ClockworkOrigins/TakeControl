@@ -18,29 +18,15 @@
 
 #pragma once
 
-#include <QMainWindow>
+class QString;
 
 namespace tc {
-namespace plugins {
-	class PluginLoader;
-}
-namespace client {
+namespace utils {
 
-	class MainWindow : public QMainWindow {
-		Q_OBJECT
-		
+	class Character {
 	public:
-		MainWindow();
-
-	private slots:
-		void createNewProject();
-
-	private:
-		plugins::PluginLoader * _pluginLoader;
-
-		void createFileMenu();
-		void createTabs();
+		Character();
 	};
 
-} /* namespace client */
+} /* namespace utils */
 } /* namespace tc */

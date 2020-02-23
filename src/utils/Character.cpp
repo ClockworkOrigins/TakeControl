@@ -16,31 +16,10 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "Character.h"
 
-#include <QMainWindow>
+using namespace tc::utils;
 
-namespace tc {
-namespace plugins {
-	class PluginLoader;
+Character::Character() {
+	// TODO
 }
-namespace client {
-
-	class MainWindow : public QMainWindow {
-		Q_OBJECT
-		
-	public:
-		MainWindow();
-
-	private slots:
-		void createNewProject();
-
-	private:
-		plugins::PluginLoader * _pluginLoader;
-
-		void createFileMenu();
-		void createTabs();
-	};
-
-} /* namespace client */
-} /* namespace tc */

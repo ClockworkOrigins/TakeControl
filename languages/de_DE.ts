@@ -23,5 +23,9 @@
         <source>Game</source>
         <translation>Spiel</translation>
     </message>
+    <message>
+        <source>Characters</source>
+        <translation>Charaktere</translation>
+    </message>
 </context>
 </TS>
