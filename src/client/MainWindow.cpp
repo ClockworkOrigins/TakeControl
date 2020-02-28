@@ -26,17 +26,21 @@
 
 #include "projects/NewProjectDialog.h"
 
+#include "utils/UndoStack.h"
+
 #include <QApplication>
 #include <QMenuBar>
 
 using namespace tc::client;
 using namespace tc::plugins;
 using namespace tc::projects;
+using namespace tc::utils;
 
 MainWindow::MainWindow() : _pluginLoader(new PluginLoader()) {
 	setWindowTitle(QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING)));
 
 	createFileMenu();
+	createEditMenu();
 
 	createTabs();
 }
@@ -64,6 +68,22 @@ void MainWindow::createFileMenu() {
 	connect(newProject, &QAction::triggered, this, &MainWindow::createNewProject);
 
 	menuBar()->addMenu(fileMenu);
+}
+
+void MainWindow::createEditMenu() {
+	QMenu * editMenu = new QMenu(QApplication::tr("Edit"), this);
+
+	QAction * redoAction = UndoStack::instance()->createRedoAction(editMenu, QApplication::tr("Redo"));
+	redoAction->setShortcut(QKeySequence::Redo);
+
+	editMenu->addAction(redoAction);
+
+	QAction * undoAction = UndoStack::instance()->createUndoAction(editMenu, QApplication::tr("Undo"));
+	undoAction->setShortcut(QKeySequence::Undo);
+
+	editMenu->addAction(undoAction);
+
+	menuBar()->addMenu(editMenu);
 }
 
 void MainWindow::createTabs() {

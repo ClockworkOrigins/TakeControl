@@ -16,32 +16,10 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "UndoStack.h"
 
-#include <QMainWindow>
+using namespace tc::utils;
 
-namespace tc {
-namespace plugins {
-	class PluginLoader;
+UndoStack::UndoStack() {
+	// TODO
 }
-namespace client {
-
-	class MainWindow : public QMainWindow {
-		Q_OBJECT
-		
-	public:
-		MainWindow();
-
-	private slots:
-		void createNewProject();
-
-	private:
-		plugins::PluginLoader * _pluginLoader;
-
-		void createFileMenu();
-		void createEditMenu();
-		void createTabs();
-	};
-
-} /* namespace client */
-} /* namespace tc */

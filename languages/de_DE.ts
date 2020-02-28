@@ -27,5 +27,17 @@
         <source>Characters</source>
         <translation>Charaktere</translation>
     </message>
+    <message>
+        <source>Edit</source>
+        <translation>Bearbeiten</translation>
+    </message>
+    <message>
+        <source>Redo</source>
+        <translation>%1 wiederholen</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation>%1 rückgängig machen</translation>
+    </message>
 </context>
 </TS>

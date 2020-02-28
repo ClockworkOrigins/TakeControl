@@ -18,30 +18,19 @@
 
 #pragma once
 
-#include <QMainWindow>
+#include "Singleton.h"
+
+#include <QUndoStack>
 
 namespace tc {
-namespace plugins {
-	class PluginLoader;
-}
-namespace client {
+namespace utils {
 
-	class MainWindow : public QMainWindow {
-		Q_OBJECT
+	class UndoStack : public Singleton<UndoStack>, public QUndoStack {
+		friend class Singleton<UndoStack>;
 		
-	public:
-		MainWindow();
-
-	private slots:
-		void createNewProject();
-
 	private:
-		plugins::PluginLoader * _pluginLoader;
-
-		void createFileMenu();
-		void createEditMenu();
-		void createTabs();
+		UndoStack();
 	};
 
-} /* namespace client */
+} /* namespace utils */
 } /* namespace tc */
