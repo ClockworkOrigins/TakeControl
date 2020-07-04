@@ -16,8 +16,10 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "CharacterTab.h"
+#include "DialogTab.h"
 
+#include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QHBoxLayout>
 #include <QListView>
 #include <QStandardItemModel>
@@ -25,19 +27,25 @@
 
 using namespace tc::client;
 
-CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr), _characterModel(nullptr) {
+DialogTab::DialogTab(QWidget * par) : QWidget(par), _dialogList(nullptr), _dialogModel(nullptr) {
 	QHBoxLayout * hl = new QHBoxLayout();
 
-	_characterList = new QListView(this);
+	_dialogList = new QListView(this);
 
-	_characterModel = new QStandardItemModel(this);
+	_dialogModel = new QStandardItemModel(this);
 
 	auto * sortModel = new QSortFilterProxyModel(this);
-	sortModel->setSourceModel(_characterModel);
+	sortModel->setSourceModel(_dialogModel);
 	
-	_characterList->setModel(sortModel);
+	_dialogList->setModel(sortModel);
 
-	hl->addWidget(_characterList);
+	hl->addWidget(_dialogList);
+
+	_graphicScene = new QGraphicsScene(this);
+	
+	_graphicView = new QGraphicsView(_graphicScene);
+
+	hl->addWidget(_graphicView, 1);
 
 	setLayout(hl);
 }

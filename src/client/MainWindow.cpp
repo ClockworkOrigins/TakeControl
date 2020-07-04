@@ -19,6 +19,7 @@
 #include "MainWindow.h"
 
 #include "CharacterTab.h"
+#include "DialogTab.h"
 #include "TakeControlConfig.h"
 
 #include "plugins/IGamePlugin.h"
@@ -50,7 +51,7 @@ void MainWindow::createNewProject() {
 
 	QStringList gameList;
 
-	for (const auto plugin : pluginList) {
+	for (const auto * plugin : pluginList) {
 		gameList.append(plugin->getName());
 	}
 	
@@ -89,6 +90,7 @@ void MainWindow::createEditMenu() {
 void MainWindow::createTabs() {
 	QTabWidget * tabWidget = new QTabWidget(this);
 	tabWidget->addTab(new CharacterTab(this), QApplication::tr("Characters"));
+	tabWidget->addTab(new DialogTab(this), QApplication::tr("Dialogs"));
 
 	setCentralWidget(tabWidget);
 }

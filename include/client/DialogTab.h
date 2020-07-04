@@ -16,28 +16,31 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "CharacterTab.h"
+#pragma once
 
-#include <QHBoxLayout>
-#include <QListView>
-#include <QStandardItemModel>
-#include <QSortFilterProxyModel>
+#include <QWidget>
 
-using namespace tc::client;
+class QGraphicsScene;
+class QGraphicsView;
+class QListView;
+class QStandardItemModel;
 
-CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr), _characterModel(nullptr) {
-	QHBoxLayout * hl = new QHBoxLayout();
+namespace tc {
+namespace client {
 
-	_characterList = new QListView(this);
+	class DialogTab : public QWidget {
+		Q_OBJECT
+		
+	public:
+		DialogTab(QWidget * par);
 
-	_characterModel = new QStandardItemModel(this);
+	private:
+		QListView * _dialogList;
+		QStandardItemModel * _dialogModel;
 
-	auto * sortModel = new QSortFilterProxyModel(this);
-	sortModel->setSourceModel(_characterModel);
-	
-	_characterList->setModel(sortModel);
+		QGraphicsScene * _graphicScene;
+		QGraphicsView * _graphicView;
+	};
 
-	hl->addWidget(_characterList);
-
-	setLayout(hl);
-}
+} /* namespace client */
+} /* namespace tc */

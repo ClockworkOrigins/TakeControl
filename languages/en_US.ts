@@ -39,5 +39,9 @@
         <source>Undo</source>
         <translation>Undo %1</translation>
     </message>
+    <message>
+        <source>Dialogs</source>
+        <translation>Dialogs</translation>
+    </message>
 </context>
 </TS>

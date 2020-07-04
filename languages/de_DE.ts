@@ -39,5 +39,9 @@
         <source>Undo</source>
         <translation>%1 rückgängig machen</translation>
     </message>
+    <message>
+        <source>Dialogs</source>
+        <translation>Dialoge</translation>
+    </message>
 </context>
 </TS>
