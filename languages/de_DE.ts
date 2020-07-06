@@ -33,15 +33,19 @@
     </message>
     <message>
         <source>Redo</source>
-        <translation>%1 wiederholen</translation>
+        <translation>Wiederholen:</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation>%1 rückgängig machen</translation>
+        <translation>Rückgängig machen:</translation>
     </message>
     <message>
         <source>Dialogs</source>
         <translation>Dialoge</translation>
+    </message>
+    <message>
+        <source>AddCharacter</source>
+        <translation>Charakter hinzufügen</translation>
     </message>
 </context>
 </TS>

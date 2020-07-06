@@ -18,14 +18,19 @@
 
 #pragma once
 
-class QString;
+#include <QString>
 
 namespace tc {
 namespace utils {
 
 	class Character {
 	public:
-		Character();
+		explicit Character(const QString & name);
+
+		QString getName() const;
+
+	private:
+		QString _name;
 	};
 
 } /* namespace utils */

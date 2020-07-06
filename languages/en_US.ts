@@ -33,15 +33,19 @@
     </message>
     <message>
         <source>Redo</source>
-        <translation>Redo %1</translation>
+        <translation>Redo:</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation>Undo %1</translation>
+        <translation>Undo:</translation>
     </message>
     <message>
         <source>Dialogs</source>
         <translation>Dialogs</translation>
+    </message>
+    <message>
+        <source>AddCharacter</source>
+        <translation>Add Character</translation>
     </message>
 </context>
 </TS>

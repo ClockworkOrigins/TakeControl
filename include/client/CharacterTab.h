@@ -18,23 +18,37 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QWidget>
 
 class QListView;
 class QStandardItemModel;
 
 namespace tc {
+namespace utils {
+	class Character;
+} /* namespace utils */
 namespace client {
+namespace commands {
+	class AddCharacterCommand;
+} /* namespace commands */
 
 	class CharacterTab : public QWidget {
 		Q_OBJECT
+
+		friend class commands::AddCharacterCommand;
 		
 	public:
 		CharacterTab(QWidget * par);
 
+	private slots:
+		void addCharacter();
+
 	private:
 		QListView * _characterList;
 		QStandardItemModel * _characterModel;
+		QList<std::shared_ptr<utils::Character>> _characters;
 	};
 
 } /* namespace client */

@@ -16,12 +16,32 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "Character.h"
+#pragma once
 
-using namespace tc::utils;
+#include <memory>
 
-Character::Character(const QString & name) : _name(name) {}
+#include <QUndoCommand>
 
-QString Character::getName() const {
-	return _name;
-}
+namespace tc {
+namespace utils {
+	class Character;
+} /* namespace utils */
+namespace client {
+	class CharacterTab;
+namespace commands {
+
+	class AddCharacterCommand : public QUndoCommand {
+	public:
+		AddCharacterCommand(CharacterTab * characterTab);
+
+	private:
+		CharacterTab * _characterTab;
+		std::shared_ptr<utils::Character> _character;
+
+		void undo() override;
+		void redo() override;
+	};
+
+} /* namespace commands */
+} /* namespace client */
+} /* namespace tc */

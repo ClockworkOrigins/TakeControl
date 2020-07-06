@@ -18,26 +18,51 @@
 
 #include "CharacterTab.h"
 
+#include "commands/AddCharacterCommand.h"
+
+#include "utils/Character.h"
+#include "utils/UndoStack.h"
+
+#include <QApplication>
 #include <QHBoxLayout>
 #include <QListView>
+#include <QPushButton>
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
 
 using namespace tc::client;
+using namespace tc::client::commands;
+using namespace tc::utils;
 
 CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr), _characterModel(nullptr) {
 	QHBoxLayout * hl = new QHBoxLayout();
 
-	_characterList = new QListView(this);
+	{
+		QVBoxLayout * vl = new QVBoxLayout();
+		
+		_characterList = new QListView(this);
 
-	_characterModel = new QStandardItemModel(this);
+		_characterModel = new QStandardItemModel(this);
 
-	auto * sortModel = new QSortFilterProxyModel(this);
-	sortModel->setSourceModel(_characterModel);
-	
-	_characterList->setModel(sortModel);
+		auto * sortModel = new QSortFilterProxyModel(this);
+		sortModel->setSourceModel(_characterModel);
+		
+		_characterList->setModel(sortModel);
 
-	hl->addWidget(_characterList);
+		vl->addWidget(_characterList);
+
+		QPushButton * pb = new QPushButton(QApplication::tr("AddCharacter"), this);
+		vl->addWidget(pb);
+
+		connect(pb, &QPushButton::released, this, &CharacterTab::addCharacter);
+
+		hl->addLayout(vl);
+	}
 
 	setLayout(hl);
+}
+
+void CharacterTab::addCharacter() {
+	auto * cmd = new AddCharacterCommand(this);	
+	UndoStack::instance()->push(cmd);
 }
