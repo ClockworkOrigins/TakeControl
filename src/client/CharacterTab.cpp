@@ -62,6 +62,10 @@ CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr
 	setLayout(hl);
 }
 
+QList<std::shared_ptr<Character>> CharacterTab::getCharacters() const {
+	return _characters;
+}
+
 void CharacterTab::addCharacter() {
 	auto * cmd = new AddCharacterCommand(this);	
 	UndoStack::instance()->push(cmd);

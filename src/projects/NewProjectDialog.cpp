@@ -88,7 +88,7 @@ NewProjectDialog::NewProjectDialog(QStringList games, QWidget * par) : QDialog(p
 ProjectPtr NewProjectDialog::createNewProject() {
 	if (!exec()) return ProjectPtr();
 
-	return ProjectPtr(new Project(_pathEdit->text(), _projectNameEdit->text(), _gamesCombobox->currentText()));
+	return std::make_shared<Project>(_pathEdit->text(), _projectNameEdit->text(), _gamesCombobox->currentText());
 }
 
 void NewProjectDialog::onSelectPathClicked() {
@@ -96,6 +96,7 @@ void NewProjectDialog::onSelectPathClicked() {
 	dialog.setFileMode(QFileDialog::DirectoryOnly);
 	if (dialog.exec()) {
 		_pathEdit->setText(dialog.selectedFiles()[0]);
+		validateSelection();
 	}
 }
 
@@ -105,7 +106,7 @@ void NewProjectDialog::validateSelection() {
 	valid &= !_projectNameEdit->text().isEmpty();
 	valid &= !_gamesCombobox->currentText().isEmpty();
 	valid &= QDir(_pathEdit->text()).exists();
-	
-	auto btn = _dialogButtonBox->button(QDialogButtonBox::Ok);
+
+	auto * btn = _dialogButtonBox->button(QDialogButtonBox::Ok);
 	btn->setEnabled(valid);
 }

@@ -42,6 +42,8 @@ namespace commands {
 	public:
 		CharacterTab(QWidget * par);
 
+		QList<std::shared_ptr<utils::Character>> getCharacters() const;
+
 	private slots:
 		void addCharacter();
 

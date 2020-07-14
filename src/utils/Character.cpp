@@ -25,3 +25,10 @@ Character::Character(const QString & name) : _name(name) {}
 QString Character::getName() const {
 	return _name;
 }
+
+QJsonObject Character::save() const {
+	QJsonObject json;
+	json["Name"] = _name;
+
+	return json;
+}

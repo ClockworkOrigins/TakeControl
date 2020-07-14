@@ -18,13 +18,21 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QMainWindow>
 
 namespace tc {
 namespace plugins {
 	class PluginLoader;
 }
+namespace projects {
+	class Project;
+	typedef std::shared_ptr<Project> ProjectPtr;
+}
 namespace client {
+
+	class CharacterTab;
 
 	class MainWindow : public QMainWindow {
 		Q_OBJECT
@@ -32,11 +40,18 @@ namespace client {
 	public:
 		MainWindow();
 
+	signals:
+		void projectLoaded();
+
 	private slots:
 		void createNewProject();
+		void saveProject();
 
 	private:
 		plugins::PluginLoader * _pluginLoader;
+		projects::ProjectPtr _project;
+
+		CharacterTab * _characterTab;
 
 		void createFileMenu();
 		void createEditMenu();

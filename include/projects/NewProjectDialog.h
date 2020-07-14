@@ -18,8 +18,9 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QDialog>
-#include <QSharedPointer>
 #include <QString>
 
 class QComboBox;
@@ -30,7 +31,7 @@ namespace tc {
 namespace projects {
 
 	class Project;
-	typedef QSharedPointer<Project> ProjectPtr;
+	typedef std::shared_ptr<Project> ProjectPtr;
 
 	class NewProjectDialog : public QDialog {
 		Q_OBJECT

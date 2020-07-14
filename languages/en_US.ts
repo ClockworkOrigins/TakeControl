@@ -47,5 +47,9 @@
         <source>AddCharacter</source>
         <translation>Add Character</translation>
     </message>
+    <message>
+        <source>SaveProject</source>
+        <translation>Save project</translation>
+    </message>
 </context>
 </TS>

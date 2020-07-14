@@ -18,10 +18,14 @@
 
 #pragma once
 
-#include <QSharedPointer>
+#include <memory>
+
 #include <QString>
 
 namespace tc {
+namespace utils {
+	class Character;
+}
 namespace projects {
 
 	class Project {
@@ -30,7 +34,7 @@ namespace projects {
 
 		static bool supports(const QString & path);
 		
-		void save();
+		void save(const QList<std::shared_ptr<utils::Character>> & characters);
 		void load();
 
 		QString getName() const;
@@ -40,7 +44,7 @@ namespace projects {
 		QString _name;
 		QString _type;
 	};
-	typedef QSharedPointer<Project> ProjectPtr;
+	typedef std::shared_ptr<Project> ProjectPtr;
 
 } /* namespace projects */
 } /* namespace tc */

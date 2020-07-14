@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include <QJsonObject>
 #include <QString>
 
 namespace tc {
@@ -28,6 +29,8 @@ namespace utils {
 		explicit Character(const QString & name);
 
 		QString getName() const;
+
+		QJsonObject save() const;
 
 	private:
 		QString _name;

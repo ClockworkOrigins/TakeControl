@@ -26,6 +26,7 @@
 #include "plugins/PluginLoader.h"
 
 #include "projects/NewProjectDialog.h"
+#include "projects/Project.h"
 
 #include "utils/UndoStack.h"
 
@@ -57,16 +58,33 @@ void MainWindow::createNewProject() {
 	
 	NewProjectDialog dlg(gameList, this);
 
-	auto project = dlg.createNewProject();
+	_project = dlg.createNewProject();
 
-	// TODO: store project to work on
+	emit projectLoaded();
+}
+
+void MainWindow::saveProject() {
+	if (!_project) return;
+
+	const auto characterList = _characterTab->getCharacters();
+	
+	_project->save(characterList);
 }
 
 void MainWindow::createFileMenu() {
 	QMenu * fileMenu = new QMenu(QApplication::tr("File"), this);
 
 	QAction * newProject = fileMenu->addAction(QApplication::tr("NewProject"));
+	newProject->setShortcut(QKeySequence::StandardKey::New);
 	connect(newProject, &QAction::triggered, this, &MainWindow::createNewProject);
+
+	QAction * saveProject = fileMenu->addAction(QApplication::tr("SaveProject"));
+	saveProject->setShortcut(QKeySequence::StandardKey::Save);
+	connect(saveProject, &QAction::triggered, this, &MainWindow::saveProject);
+	connect(this, &MainWindow::projectLoaded, [saveProject]() {
+		saveProject->setEnabled(true);
+	});
+	saveProject->setEnabled(false);
 
 	menuBar()->addMenu(fileMenu);
 }
@@ -88,8 +106,10 @@ void MainWindow::createEditMenu() {
 }
 
 void MainWindow::createTabs() {
+	_characterTab = new CharacterTab(this);
+	
 	QTabWidget * tabWidget = new QTabWidget(this);
-	tabWidget->addTab(new CharacterTab(this), QApplication::tr("Characters"));
+	tabWidget->addTab(_characterTab, QApplication::tr("Characters"));
 	tabWidget->addTab(new DialogTab(this), QApplication::tr("Dialogs"));
 
 	setCentralWidget(tabWidget);
