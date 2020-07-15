@@ -46,6 +46,7 @@ namespace client {
 	private slots:
 		void createNewProject();
 		void saveProject();
+		void loadProject();
 
 	private:
 		plugins::PluginLoader * _pluginLoader;
@@ -56,6 +57,8 @@ namespace client {
 		void createFileMenu();
 		void createEditMenu();
 		void createTabs();
+
+		void loadProject(const QString & path);
 	};
 
 } /* namespace client */

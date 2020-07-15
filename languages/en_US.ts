@@ -51,5 +51,9 @@
         <source>SaveProject</source>
         <translation>Save project</translation>
     </message>
+    <message>
+        <source>OpenProject</source>
+        <translation>Open project</translation>
+    </message>
 </context>
 </TS>

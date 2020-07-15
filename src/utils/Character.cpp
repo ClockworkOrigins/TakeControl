@@ -32,3 +32,13 @@ QJsonObject Character::save() const {
 
 	return json;
 }
+
+std::shared_ptr<Character> Character::load(const QJsonObject & json) {
+	if (!json.contains("Name")) return nullptr;
+	
+	QString name = json["Name"].toString();
+	
+	auto c = std::make_shared<Character>(name);
+
+	return c;
+}

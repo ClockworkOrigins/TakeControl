@@ -51,5 +51,9 @@
         <source>SaveProject</source>
         <translation>Projekt speichern</translation>
     </message>
+    <message>
+        <source>OpenProject</source>
+        <translation>Projekt öffnen</translation>
+    </message>
 </context>
 </TS>

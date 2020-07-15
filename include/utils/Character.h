@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QJsonObject>
 #include <QString>
 
@@ -31,6 +33,8 @@ namespace utils {
 		QString getName() const;
 
 		QJsonObject save() const;
+
+		static std::shared_ptr<Character> load(const QJsonObject & json);
 
 	private:
 		QString _name;

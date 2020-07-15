@@ -30,12 +30,13 @@ namespace projects {
 
 	class Project {
 	public:
+		Project();
 		Project(const QString & path, const QString & name, const QString & type);
 
 		static bool supports(const QString & path);
 		
-		void save(const QList<std::shared_ptr<utils::Character>> & characters);
-		void load();
+		void save(const QList<std::shared_ptr<utils::Character>> & characters) const;
+		void load(const QString & path, QList<std::shared_ptr<utils::Character>> & characters);
 
 		QString getName() const;
 

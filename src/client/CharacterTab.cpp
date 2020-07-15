@@ -66,6 +66,15 @@ QList<std::shared_ptr<Character>> CharacterTab::getCharacters() const {
 	return _characters;
 }
 
+void CharacterTab::setCharacters(const QList<std::shared_ptr<Character>> & characters) {
+	_characters = characters;
+	_characterModel->clear();
+	
+	for (const auto & c : characters) {
+		_characterModel->appendRow(new QStandardItem(c->getName()));
+	}
+}
+
 void CharacterTab::addCharacter() {
 	auto * cmd = new AddCharacterCommand(this);	
 	UndoStack::instance()->push(cmd);

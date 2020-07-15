@@ -28,6 +28,9 @@
 using namespace tc::projects;
 using namespace tc::utils;
 
+Project::Project() {
+}
+
 Project::Project(const QString & path, const QString & name, const QString & type) : _path(path), _name(name), _type(type) {
 }
 
@@ -49,7 +52,7 @@ bool Project::supports(const QString & path) {
 	return json.contains("Type") && json.contains("Name");
 }
 
-void Project::save(const QList<std::shared_ptr<Character>> & characters) {
+void Project::save(const QList<std::shared_ptr<Character>> & characters) const {
 	QFile f(QString("%1/%2.json").arg(_path).arg(_name));
 
 	if (!f.open(QIODevice::WriteOnly)) return;
@@ -73,8 +76,33 @@ void Project::save(const QList<std::shared_ptr<Character>> & characters) {
 	f.write(data);
 }
 
-void Project::load() {
-	// TODO
+void Project::load(const QString & path, QList<std::shared_ptr<Character>> & characters) {
+	const QFileInfo fi(path);
+
+	_path = fi.absolutePath();
+
+	QFile f(path);
+
+	if (!f.open(QIODevice::ReadOnly)) return;
+
+	const auto data = f.readAll();
+	
+	const QJsonDocument doc = QJsonDocument::fromJson(data);
+
+	const auto json = doc.object();
+
+	_name = json["Name"].toString();
+	_type = json["Type"].toString();
+
+	QJsonArray characterArray = json["Characters"].toArray();
+
+	for (const auto & characterJson : characterArray) {
+		auto c = Character::load(characterJson.toObject());
+
+		if (!c) continue;
+
+		characters.append(c);
+	}
 }
 
 QString Project::getName() const {

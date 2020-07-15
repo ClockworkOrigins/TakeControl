@@ -31,6 +31,7 @@
 #include "utils/UndoStack.h"
 
 #include <QApplication>
+#include <QFileDialog>
 #include <QMenuBar>
 
 using namespace tc::client;
@@ -38,7 +39,7 @@ using namespace tc::plugins;
 using namespace tc::projects;
 using namespace tc::utils;
 
-MainWindow::MainWindow() : _pluginLoader(new PluginLoader()) {
+MainWindow::MainWindow() : _pluginLoader(new PluginLoader()), _characterTab(nullptr) {
 	setWindowTitle(QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING)));
 
 	createFileMenu();
@@ -60,6 +61,10 @@ void MainWindow::createNewProject() {
 
 	_project = dlg.createNewProject();
 
+	if (!_project) return;
+
+	_characterTab->setCharacters({});
+	
 	emit projectLoaded();
 }
 
@@ -71,12 +76,27 @@ void MainWindow::saveProject() {
 	_project->save(characterList);
 }
 
+void MainWindow::loadProject() {
+	QFileDialog dialog(this);
+	dialog.setFilter(QDir::Filter::Files);
+	dialog.setFileMode(QFileDialog::ExistingFile);
+	dialog.setNameFilter("*.json");
+	
+	if (!dialog.exec()) return;
+
+	loadProject(dialog.selectedFiles()[0]);
+}
+
 void MainWindow::createFileMenu() {
 	QMenu * fileMenu = new QMenu(QApplication::tr("File"), this);
 
 	QAction * newProject = fileMenu->addAction(QApplication::tr("NewProject"));
 	newProject->setShortcut(QKeySequence::StandardKey::New);
 	connect(newProject, &QAction::triggered, this, &MainWindow::createNewProject);
+
+	QAction * openProject = fileMenu->addAction(QApplication::tr("OpenProject"));
+	openProject->setShortcut(QKeySequence::StandardKey::Open);
+	connect(openProject, &QAction::triggered, this, static_cast<void(MainWindow::*)()>(&MainWindow::loadProject));
 
 	QAction * saveProject = fileMenu->addAction(QApplication::tr("SaveProject"));
 	saveProject->setShortcut(QKeySequence::StandardKey::Save);
@@ -113,4 +133,18 @@ void MainWindow::createTabs() {
 	tabWidget->addTab(new DialogTab(this), QApplication::tr("Dialogs"));
 
 	setCentralWidget(tabWidget);
+}
+
+void MainWindow::loadProject(const QString & path) {
+	_project = std::make_shared<Project>();
+
+	if (!Project::supports(path)) return;
+
+	QList<std::shared_ptr<Character>> characters;
+	
+	_project->load(path, characters);
+
+	_characterTab->setCharacters(characters);
+
+	emit projectLoaded();
 }
