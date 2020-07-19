@@ -46,6 +46,8 @@ MainWindow::MainWindow() : _pluginLoader(new PluginLoader()), _characterTab(null
 	createEditMenu();
 
 	createTabs();
+
+	initConnections();
 }
 
 void MainWindow::createNewProject() {
@@ -74,6 +76,8 @@ void MainWindow::saveProject() {
 	const auto characterList = _characterTab->getCharacters();
 	
 	_project->save(characterList);
+
+	UndoStack::instance()->setClean();
 }
 
 void MainWindow::loadProject() {
@@ -135,6 +139,14 @@ void MainWindow::createTabs() {
 	setCentralWidget(tabWidget);
 }
 
+void MainWindow::initConnections() {
+	connect(this, &MainWindow::projectLoaded, UndoStack::instance(), &UndoStack::setClean);
+	connect(this, &MainWindow::projectLoaded, UndoStack::instance(), &UndoStack::clear);
+	
+	connect(this, &MainWindow::projectLoaded, this, &MainWindow::adjustTitle);
+	connect(UndoStack::instance(), &UndoStack::cleanChanged, this, &MainWindow::adjustTitle);
+}
+
 void MainWindow::loadProject(const QString & path) {
 	_project = std::make_shared<Project>();
 
@@ -147,4 +159,18 @@ void MainWindow::loadProject(const QString & path) {
 	_characterTab->setCharacters(characters);
 
 	emit projectLoaded();
+}
+
+void MainWindow::adjustTitle() {
+	QString title = QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING));
+	
+	if (_project) {
+		title.prepend(_project->getName() + " - ");
+
+		if (!UndoStack::instance()->isClean()) {
+			title.prepend("* ");
+		}
+	}
+	
+	setWindowTitle(title);
 }

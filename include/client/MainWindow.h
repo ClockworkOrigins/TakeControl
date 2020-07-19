@@ -58,7 +58,11 @@ namespace client {
 		void createEditMenu();
 		void createTabs();
 
+		void initConnections();
+
 		void loadProject(const QString & path);
+
+		void adjustTitle();
 	};
 
 } /* namespace client */
