@@ -19,6 +19,7 @@
 #include "projects/Project.h"
 
 #include "utils/Character.h"
+#include "utils/Dialog.h"
 
 #include <QFileInfo>
 #include <QJsonArray>
@@ -28,11 +29,9 @@
 using namespace tc::projects;
 using namespace tc::utils;
 
-Project::Project() {
-}
+Project::Project() {}
 
-Project::Project(const QString & path, const QString & name, const QString & type) : _path(path), _name(name), _type(type) {
-}
+Project::Project(const QString & path, const QString & name, const QString & type) : _path(path), _name(name), _type(type) {}
 
 bool Project::supports(const QString & path) {
 	if (!QFileInfo::exists(path)) return false;
@@ -52,7 +51,7 @@ bool Project::supports(const QString & path) {
 	return json.contains("Type") && json.contains("Name");
 }
 
-void Project::save(const QList<std::shared_ptr<Character>> & characters) const {
+void Project::save(const QList<std::shared_ptr<Character>> & characters, const QList<std::shared_ptr<Dialog>> & dialogs) const {
 	QFile f(QString("%1/%2.json").arg(_path).arg(_name));
 
 	if (!f.open(QIODevice::WriteOnly)) return;
@@ -69,6 +68,15 @@ void Project::save(const QList<std::shared_ptr<Character>> & characters) const {
 	}
 
 	json["Characters"] = characterArray;
+	
+	QJsonArray dialogArray;
+
+	for (const auto & d : dialogs) {
+		const auto dialogJson = d->save();
+		dialogArray.append(dialogJson);
+	}
+
+	json["Dialogs"] = dialogArray;
 
 	const QJsonDocument doc(json);
 	const auto data = doc.toJson();
@@ -76,7 +84,7 @@ void Project::save(const QList<std::shared_ptr<Character>> & characters) const {
 	f.write(data);
 }
 
-void Project::load(const QString & path, QList<std::shared_ptr<Character>> & characters) {
+void Project::load(const QString & path, QList<std::shared_ptr<Character>> & characters, QList<std::shared_ptr<Dialog>> & dialogs) {
 	const QFileInfo fi(path);
 
 	_path = fi.absolutePath();
@@ -102,6 +110,16 @@ void Project::load(const QString & path, QList<std::shared_ptr<Character>> & cha
 		if (!c) continue;
 
 		characters.append(c);
+	}
+
+	QJsonArray dialogArray = json["Dialogs"].toArray();
+
+	for (const auto & dialogJson : dialogArray) {
+		auto d = Dialog::load(dialogJson.toObject());
+
+		if (!d) continue;
+
+		dialogs.append(d);
 	}
 }
 

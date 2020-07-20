@@ -33,6 +33,7 @@ namespace projects {
 namespace client {
 
 	class CharacterTab;
+	class DialogTab;
 
 	class MainWindow : public QMainWindow {
 		Q_OBJECT
@@ -53,6 +54,7 @@ namespace client {
 		projects::ProjectPtr _project;
 
 		CharacterTab * _characterTab;
+		DialogTab * _dialogTab;
 
 		void createFileMenu();
 		void createEditMenu();

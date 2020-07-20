@@ -18,28 +18,47 @@
 
 #include "DialogTab.h"
 
-#include <QGraphicsScene>
+#include "commands/AddDialogCommand.h"
+
+#include "utils/Dialog.h"
+#include "utils/UndoStack.h"
+
+#include <QApplication>
 #include <QGraphicsView>
 #include <QHBoxLayout>
 #include <QListView>
+#include <QPushButton>
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
 
 using namespace tc::client;
+using namespace tc::client::commands;
+using namespace tc::utils;
 
 DialogTab::DialogTab(QWidget * par) : QWidget(par), _dialogList(nullptr), _dialogModel(nullptr) {
 	QHBoxLayout * hl = new QHBoxLayout();
 
-	_dialogList = new QListView(this);
+	{
+		QVBoxLayout * vl = new QVBoxLayout();
 
-	_dialogModel = new QStandardItemModel(this);
+		_dialogList = new QListView(this);
 
-	auto * sortModel = new QSortFilterProxyModel(this);
-	sortModel->setSourceModel(_dialogModel);
-	
-	_dialogList->setModel(sortModel);
+		_dialogModel = new QStandardItemModel(this);
 
-	hl->addWidget(_dialogList);
+		auto * sortModel = new QSortFilterProxyModel(this);
+		sortModel->setSourceModel(_dialogModel);
+		
+		_dialogList->setModel(sortModel);
+
+		vl->addWidget(_dialogList);
+
+		QPushButton * pb = new QPushButton(QApplication::tr("AddDialog"), this);
+		vl->addWidget(pb);
+
+		connect(pb, &QPushButton::released, this, &DialogTab::addDialog);
+
+		hl->addLayout(vl);
+	}
 
 	_graphicScene = new QGraphicsScene(this);
 	
@@ -48,4 +67,22 @@ DialogTab::DialogTab(QWidget * par) : QWidget(par), _dialogList(nullptr), _dialo
 	hl->addWidget(_graphicView, 1);
 
 	setLayout(hl);
+}
+
+QList<std::shared_ptr<Dialog>> DialogTab::getDialogs() const {
+	return _dialogs;
+}
+
+void DialogTab::setDialog(const QList<std::shared_ptr<Dialog>> & dialogs) {
+	_dialogs = dialogs;
+	_dialogModel->clear();
+	
+	for (const auto & d : dialogs) {
+		_dialogModel->appendRow(new QStandardItem(d->getName()));
+	}
+}
+
+void DialogTab::addDialog() {
+	auto * cmd = new AddDialogCommand(this);	
+	UndoStack::instance()->push(cmd);
 }

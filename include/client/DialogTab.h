@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QWidget>
 
 class QGraphicsScene;
@@ -26,17 +28,32 @@ class QListView;
 class QStandardItemModel;
 
 namespace tc {
+namespace utils {
+	class Dialog;
+} /* namespace utils */
 namespace client {
+namespace commands {
+	class AddDialogCommand;
+} /* namespace commands */
 
 	class DialogTab : public QWidget {
 		Q_OBJECT
+
+		friend class commands::AddDialogCommand;
 		
 	public:
 		DialogTab(QWidget * par);
 
+		QList<std::shared_ptr<utils::Dialog>> getDialogs() const;
+		void setDialog(const QList<std::shared_ptr<utils::Dialog>> & dialogs);
+
+	private slots:
+		void addDialog();
+
 	private:
 		QListView * _dialogList;
 		QStandardItemModel * _dialogModel;
+		QList<std::shared_ptr<utils::Dialog>> _dialogs;
 
 		QGraphicsScene * _graphicScene;
 		QGraphicsView * _graphicView;

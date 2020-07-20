@@ -20,33 +20,28 @@
 
 #include <memory>
 
-#include <QString>
+#include <QUndoCommand>
 
 namespace tc {
 namespace utils {
-	class Character;
 	class Dialog;
-}
-namespace projects {
+} /* namespace utils */
+namespace client {
+	class DialogTab;
+namespace commands {
 
-	class Project {
+	class AddDialogCommand : public QUndoCommand {
 	public:
-		Project();
-		Project(const QString & path, const QString & name, const QString & type);
-
-		static bool supports(const QString & path);
-		
-		void save(const QList<std::shared_ptr<utils::Character>> & characters, const QList<std::shared_ptr<utils::Dialog>> & dialogs) const;
-		void load(const QString & path, QList<std::shared_ptr<utils::Character>> & characters, QList<std::shared_ptr<utils::Dialog>> & dialogs);
-
-		QString getName() const;
+		AddDialogCommand(DialogTab * dialogTab);
 
 	private:
-		QString _path;
-		QString _name;
-		QString _type;
-	};
-	typedef std::shared_ptr<Project> ProjectPtr;
+		DialogTab * _dialogTab;
+		std::shared_ptr<utils::Dialog> _dialog;
 
-} /* namespace projects */
+		void undo() override;
+		void redo() override;
+	};
+
+} /* namespace commands */
+} /* namespace client */
 } /* namespace tc */

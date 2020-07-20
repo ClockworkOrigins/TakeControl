@@ -55,5 +55,9 @@
         <source>OpenProject</source>
         <translation>Open project</translation>
     </message>
+    <message>
+        <source>AddDialog</source>
+        <translation>Add Dialog</translation>
+    </message>
 </context>
 </TS>

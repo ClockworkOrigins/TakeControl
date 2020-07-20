@@ -39,7 +39,7 @@ using namespace tc::plugins;
 using namespace tc::projects;
 using namespace tc::utils;
 
-MainWindow::MainWindow() : _pluginLoader(new PluginLoader()), _characterTab(nullptr) {
+MainWindow::MainWindow() : _pluginLoader(new PluginLoader()), _characterTab(nullptr), _dialogTab(nullptr) {
 	setWindowTitle(QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING)));
 
 	createFileMenu();
@@ -74,8 +74,9 @@ void MainWindow::saveProject() {
 	if (!_project) return;
 
 	const auto characterList = _characterTab->getCharacters();
+	const auto dialogList = _dialogTab->getDialogs();
 	
-	_project->save(characterList);
+	_project->save(characterList, dialogList);
 
 	UndoStack::instance()->setClean();
 }
@@ -131,10 +132,11 @@ void MainWindow::createEditMenu() {
 
 void MainWindow::createTabs() {
 	_characterTab = new CharacterTab(this);
+	_dialogTab = new DialogTab(this);
 	
 	QTabWidget * tabWidget = new QTabWidget(this);
 	tabWidget->addTab(_characterTab, QApplication::tr("Characters"));
-	tabWidget->addTab(new DialogTab(this), QApplication::tr("Dialogs"));
+	tabWidget->addTab(_dialogTab, QApplication::tr("Dialogs"));
 
 	setCentralWidget(tabWidget);
 }
@@ -153,8 +155,9 @@ void MainWindow::loadProject(const QString & path) {
 	if (!Project::supports(path)) return;
 
 	QList<std::shared_ptr<Character>> characters;
+	QList<std::shared_ptr<Dialog>> dialogs;
 	
-	_project->load(path, characters);
+	_project->load(path, characters, dialogs);
 
 	_characterTab->setCharacters(characters);
 

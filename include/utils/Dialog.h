@@ -20,33 +20,25 @@
 
 #include <memory>
 
+#include <QJsonObject>
 #include <QString>
 
 namespace tc {
 namespace utils {
-	class Character;
-	class Dialog;
-}
-namespace projects {
 
-	class Project {
+	class Dialog {
 	public:
-		Project();
-		Project(const QString & path, const QString & name, const QString & type);
-
-		static bool supports(const QString & path);
-		
-		void save(const QList<std::shared_ptr<utils::Character>> & characters, const QList<std::shared_ptr<utils::Dialog>> & dialogs) const;
-		void load(const QString & path, QList<std::shared_ptr<utils::Character>> & characters, QList<std::shared_ptr<utils::Dialog>> & dialogs);
+		explicit Dialog(const QString & name);
 
 		QString getName() const;
 
-	private:
-		QString _path;
-		QString _name;
-		QString _type;
-	};
-	typedef std::shared_ptr<Project> ProjectPtr;
+		QJsonObject save() const;
 
-} /* namespace projects */
+		static std::shared_ptr<Dialog> load(const QJsonObject & json);
+
+	private:
+		QString _name;
+	};
+
+} /* namespace utils */
 } /* namespace tc */
