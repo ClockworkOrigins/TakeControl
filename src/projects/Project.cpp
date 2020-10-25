@@ -29,8 +29,6 @@
 using namespace tc::projects;
 using namespace tc::utils;
 
-Project::Project() {}
-
 Project::Project(const QString & path, const QString & name, const QString & type) : _path(path), _name(name), _type(type) {}
 
 bool Project::supports(const QString & path) {
@@ -104,7 +102,7 @@ void Project::load(const QString & path, QList<std::shared_ptr<Character>> & cha
 
 	QJsonArray characterArray = json["Characters"].toArray();
 
-	for (const auto & characterJson : characterArray) {
+	for (const auto characterJson : characterArray) {
 		auto c = Character::load(characterJson.toObject());
 
 		if (!c) continue;
@@ -114,7 +112,7 @@ void Project::load(const QString & path, QList<std::shared_ptr<Character>> & cha
 
 	QJsonArray dialogArray = json["Dialogs"].toArray();
 
-	for (const auto & dialogJson : dialogArray) {
+	for (const auto dialogJson : dialogArray) {
 		auto d = Dialog::load(dialogJson.toObject());
 
 		if (!d) continue;

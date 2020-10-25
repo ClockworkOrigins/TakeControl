@@ -31,7 +31,7 @@ namespace projects {
 
 	class Project {
 	public:
-		Project();
+		Project() = default;
 		Project(const QString & path, const QString & name, const QString & type);
 
 		static bool supports(const QString & path);
