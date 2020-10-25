@@ -16,26 +16,21 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "nodes/implementations/AndNode.h"
 
-#include "plugins/IGamePlugin.h"
+using namespace tc;
+using namespace tc::nodes;
 
-namespace tc {
-namespace plugins {
-namespace redskiesascensiondemo {
+AndNode::AndNode() : ConditionNode() {}
 
-	class RedSkiesAscensionDemoPlugin : public QObject, public IGamePlugin {
-		Q_OBJECT
-		Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")
-		Q_INTERFACES(tc::plugins::IGamePlugin)
+void AndNode::read(const QJsonObject & json) {
+	ConditionNode::read(json);
+}
 
-	private:
-		QString getName() const override;
-		QStringList getSupportedNodes() const override;
-		nodes::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const override;
-		nodes::INodePtr createNode(const QString & nodeType, const QJsonObject & json) const override;
-	};
+void AndNode::write(QJsonObject & json) const {
+	ConditionNode::write(json);
+}
 
-} /* namespace redskiesascensiondemo */
-} /* namespace plugins */
-} /* namespace tc */
+QString AndNode::getType() const {
+	return "And";
+}

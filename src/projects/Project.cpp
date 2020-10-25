@@ -124,3 +124,7 @@ void Project::load(const QString & path, QList<std::shared_ptr<Character>> & cha
 QString Project::getName() const {
 	return _name;
 }
+
+QString Project::getType() const {
+	return _type;
+}

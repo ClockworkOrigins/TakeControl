@@ -21,29 +21,22 @@
 #include <cstdint>
 
 #include "nodesParameters.h"
+#include "implementations/ConditionNode.h"
 
 class QJsonObject;
 
 namespace tc {
 namespace nodes {
 
-	class TC_NODES_API INode {
+	class TC_NODES_API OrNode : public ConditionNode {
 	public:
-		INode();
-		INode(uint32_t id);
-		
-		virtual ~INode() {}
-
-		virtual void read(const QJsonObject &json) = 0;
-		virtual void write(QJsonObject & json) const = 0;
-
-		static uint32_t getNextID();
-
-	protected:
-		uint32_t _id;
+		OrNode();
 
 	private:
-		static uint32_t _ids;
+		void read(const QJsonObject &json) override;
+		void write(QJsonObject & json) const override;
+
+		QString getType() const override;
 	};
 
 } /* namespace nodes */

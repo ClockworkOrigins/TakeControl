@@ -18,24 +18,27 @@
 
 #pragma once
 
-#include "plugins/IGamePlugin.h"
+#include <memory>
+
+#include "nodesParameters.h"
+
+class QJsonObject;
 
 namespace tc {
-namespace plugins {
-namespace redskiesascensiondemo {
+namespace nodes {
 
-	class RedSkiesAscensionDemoPlugin : public QObject, public IGamePlugin {
-		Q_OBJECT
-		Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")
-		Q_INTERFACES(tc::plugins::IGamePlugin)
+	class TC_NODES_API ICondition {
+	public:
+		ICondition();
+		
+		virtual ~ICondition() {}
 
-	private:
-		QString getName() const override;
-		QStringList getSupportedNodes() const override;
-		nodes::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const override;
-		nodes::INodePtr createNode(const QString & nodeType, const QJsonObject & json) const override;
+		virtual void read(const QJsonObject &json) = 0;
+		virtual void write(QJsonObject & json) const = 0;
+
+		virtual QString getType() const = 0;
 	};
+	typedef std::shared_ptr<ICondition> IConditionPtr;
 
-} /* namespace redskiesascensiondemo */
-} /* namespace plugins */
+} /* namespace nodes */
 } /* namespace tc */

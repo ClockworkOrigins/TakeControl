@@ -18,24 +18,30 @@
 
 #pragma once
 
-#include "plugins/IGamePlugin.h"
+#include "nodesParameters.h"
+#include "interfaces/INode.h"
+
+#include "utils/Singleton.h"
+
+class QJsonObject;
 
 namespace tc {
 namespace plugins {
-namespace redskiesascensiondemo {
+	class IGamePlugin;
+} /* namespace plugins */
+namespace nodes {
 
-	class RedSkiesAscensionDemoPlugin : public QObject, public IGamePlugin {
-		Q_OBJECT
-		Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")
-		Q_INTERFACES(tc::plugins::IGamePlugin)
+	class TC_NODES_API NodeFactory : public utils::Singleton<NodeFactory> {
+	friend class utils::Singleton<NodeFactory>;
+		
+	public:
+		INodePtr create(const QJsonObject & json) const;
+
+		void setActivePlugin(const plugins::IGamePlugin * plugin);
 
 	private:
-		QString getName() const override;
-		QStringList getSupportedNodes() const override;
-		nodes::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const override;
-		nodes::INodePtr createNode(const QString & nodeType, const QJsonObject & json) const override;
+		const plugins::IGamePlugin * _activePlugin = nullptr;
 	};
 
-} /* namespace redskiesascensiondemo */
-} /* namespace plugins */
+} /* namespace nodes */
 } /* namespace tc */

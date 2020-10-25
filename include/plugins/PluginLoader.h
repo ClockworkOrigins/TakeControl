@@ -33,6 +33,8 @@ namespace plugins {
 
 		QList<IGamePlugin *> getGamePlugins() const;
 
+		const IGamePlugin * getGamePlugin(const QString & type) const;
+
 	private:
 		QList<IGamePlugin *> _gamePlugins;
 		

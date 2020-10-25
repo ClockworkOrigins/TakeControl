@@ -30,4 +30,12 @@ QStringList RedSkiesAscensionDemoPlugin::getSupportedNodes() const {
 	return {};
 }
 
+nodes::IConditionPtr RedSkiesAscensionDemoPlugin::createCondition(const QString &, const QJsonObject &) const {
+	return nullptr;
+}
+
+nodes::INodePtr RedSkiesAscensionDemoPlugin::createNode(const QString &, const QJsonObject &) const {
+	return nullptr;
+}
+
 Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")

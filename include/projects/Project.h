@@ -40,6 +40,7 @@ namespace projects {
 		void load(const QString & path, QList<std::shared_ptr<utils::Character>> & characters, QList<std::shared_ptr<utils::Dialog>> & dialogs);
 
 		QString getName() const;
+		QString getType() const;
 
 	private:
 		QString _path;

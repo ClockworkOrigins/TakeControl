@@ -18,9 +18,17 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QtPlugin>
 
 namespace tc {
+namespace nodes {
+	class ICondition;
+	class INode;
+	typedef std::shared_ptr<ICondition> IConditionPtr;
+	typedef std::shared_ptr<INode> INodePtr;
+} /* namespace nodes */
 namespace plugins {
 
 	class IGamePlugin {
@@ -37,6 +45,16 @@ namespace plugins {
 		 * \brief returns the list of node types this game supports
 		 */
 		virtual QStringList getSupportedNodes() const = 0;
+
+		/**
+		 * \ brief tries to create a condition from the given condition type and json string
+		 */
+		virtual nodes::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const = 0;
+
+		/**
+		 * \ brief tries to create a node from the given node type and json string
+		 */
+		virtual nodes::INodePtr createNode(const QString & nodeType, const QJsonObject & json) const = 0;
 	};
 
 } /* namespace plugins */

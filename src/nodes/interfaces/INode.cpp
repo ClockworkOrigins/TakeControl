@@ -16,26 +16,26 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "nodes/interfaces/INode.h"
 
-#include "plugins/IGamePlugin.h"
+#include <QJsonObject>
+#include <QVariant>
 
-namespace tc {
-namespace plugins {
-namespace redskiesascensiondemo {
+using namespace tc;
+using namespace tc::nodes;
 
-	class RedSkiesAscensionDemoPlugin : public QObject, public IGamePlugin {
-		Q_OBJECT
-		Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")
-		Q_INTERFACES(tc::plugins::IGamePlugin)
+void INode::write(QJsonObject & json) const {
+	json["type"] = getType();
+}
 
-	private:
-		QString getName() const override;
-		QStringList getSupportedNodes() const override;
-		nodes::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const override;
-		nodes::INodePtr createNode(const QString & nodeType, const QJsonObject & json) const override;
-	};
+qint32 INode::getInputCount() const {
+	return -1;
+}
 
-} /* namespace redskiesascensiondemo */
-} /* namespace plugins */
-} /* namespace tc */
+qint32 INode::getOutputCount() const {
+	return 1;
+}
+
+QString INode::getOutputLabel(qint32) const {
+	return QString();
+}

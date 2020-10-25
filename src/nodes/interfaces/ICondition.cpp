@@ -16,26 +16,13 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "nodes/interfaces/ICondition.h"
 
-#include "plugins/IGamePlugin.h"
+#include <QJsonObject>
 
-namespace tc {
-namespace plugins {
-namespace redskiesascensiondemo {
+using namespace tc;
+using namespace tc::nodes;
 
-	class RedSkiesAscensionDemoPlugin : public QObject, public IGamePlugin {
-		Q_OBJECT
-		Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")
-		Q_INTERFACES(tc::plugins::IGamePlugin)
-
-	private:
-		QString getName() const override;
-		QStringList getSupportedNodes() const override;
-		nodes::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const override;
-		nodes::INodePtr createNode(const QString & nodeType, const QJsonObject & json) const override;
-	};
-
-} /* namespace redskiesascensiondemo */
-} /* namespace plugins */
-} /* namespace tc */
+void ICondition::write(QJsonObject & json) const {
+	json["type"] = getType();
+}

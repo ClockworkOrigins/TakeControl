@@ -22,6 +22,9 @@
 #include "DialogTab.h"
 #include "TakeControlConfig.h"
 
+#include "nodes/ConditionFactory.h"
+#include "nodes/NodeFactory.h"
+
 #include "plugins/IGamePlugin.h"
 #include "plugins/PluginLoader.h"
 
@@ -35,6 +38,7 @@
 #include <QMenuBar>
 
 using namespace tc::client;
+using namespace tc::nodes;
 using namespace tc::plugins;
 using namespace tc::projects;
 using namespace tc::utils;
@@ -66,6 +70,11 @@ void MainWindow::createNewProject() {
 	if (!_project) return;
 
 	_characterTab->setCharacters({});
+
+	const auto * usedPlugin = _pluginLoader->getGamePlugin(_project->getType());
+	
+	ConditionFactory::instance()->setActivePlugin(usedPlugin);
+	NodeFactory::instance()->setActivePlugin(usedPlugin);
 	
 	emit projectLoaded();
 }
@@ -160,6 +169,11 @@ void MainWindow::loadProject(const QString & path) {
 	_project->load(path, characters, dialogs);
 
 	_characterTab->setCharacters(characters);
+
+	const auto * usedPlugin = _pluginLoader->getGamePlugin(_project->getType());
+	
+	ConditionFactory::instance()->setActivePlugin(usedPlugin);
+	NodeFactory::instance()->setActivePlugin(usedPlugin);
 
 	emit projectLoaded();
 }

@@ -34,6 +34,14 @@ QList<IGamePlugin *> PluginLoader::getGamePlugins() const {
 	return _gamePlugins;
 }
 
+const IGamePlugin * PluginLoader::getGamePlugin(const QString & type) const {
+	for (const auto * plugin : _gamePlugins) {
+		if (plugin->getName() == type) return plugin;
+	}
+
+	return nullptr;
+}
+
 void PluginLoader::loadGamePlugins() {
 	const QDir pluginsDir = QDir(qApp->applicationDirPath() + "/plugins/game");
 	for (const QString & fileName : pluginsDir.entryList(QDir::Files)) {

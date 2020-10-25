@@ -16,19 +16,21 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/INode.h"
+#include "nodes/implementations/OrNode.h"
 
 using namespace tc;
 using namespace tc::nodes;
 
-uint32_t INode::_ids = 0;
+OrNode::OrNode() : ConditionNode() {}
 
-INode::INode() : _id(0) {
+void OrNode::read(const QJsonObject & json) {
+	ConditionNode::read(json);
 }
 
-INode::INode(uint32_t id) : _id(id) {
+void OrNode::write(QJsonObject & json) const {
+	ConditionNode::write(json);
 }
 
-uint32_t INode::getNextID() {
-	return _ids++;
+QString OrNode::getType() const {
+	return "Or";
 }
