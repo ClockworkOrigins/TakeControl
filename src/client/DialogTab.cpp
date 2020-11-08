@@ -35,45 +35,16 @@ using namespace tc::client;
 using namespace tc::client::commands;
 using namespace tc::utils;
 
-DialogTab::DialogTab(QWidget * par) : QWidget(par), _dialogList(nullptr), _dialogModel(nullptr) {
-	QHBoxLayout * hl = new QHBoxLayout();
-
-	{
-		QVBoxLayout * vl = new QVBoxLayout();
-
-		_dialogList = new QListView(this);
-
-		_dialogModel = new QStandardItemModel(this);
-
-		auto * sortModel = new QSortFilterProxyModel(this);
-		sortModel->setSourceModel(_dialogModel);
-		
-		_dialogList->setModel(sortModel);
-
-		vl->addWidget(_dialogList);
-
-		QPushButton * pb = new QPushButton(QApplication::tr("AddDialog"), this);
-		vl->addWidget(pb);
-
-		connect(pb, &QPushButton::released, this, &DialogTab::addDialog);
-
-		hl->addLayout(vl);
-	}
-
-	_graphicScene = new QGraphicsScene(this);
-	
-	_graphicView = new QGraphicsView(_graphicScene);
-
-	hl->addWidget(_graphicView, 1);
-
-	setLayout(hl);
+DialogTab::DialogTab(QWidget * par) : QWidget(par) {
+	initGui();
+	initConnections();
 }
 
-QList<std::shared_ptr<Dialog>> DialogTab::getDialogs() const {
+QList<DialogPtr> DialogTab::getDialogs() const {
 	return _dialogs;
 }
 
-void DialogTab::setDialog(const QList<std::shared_ptr<Dialog>> & dialogs) {
+void DialogTab::setDialog(const QList<DialogPtr> & dialogs) {
 	_dialogs = dialogs;
 	_dialogModel->clear();
 	
@@ -85,4 +56,80 @@ void DialogTab::setDialog(const QList<std::shared_ptr<Dialog>> & dialogs) {
 void DialogTab::addDialog() {
 	auto * cmd = new AddDialogCommand(this);	
 	UndoStack::instance()->push(cmd);
+}
+
+void DialogTab::initGui() {
+	auto * hl = new QHBoxLayout();
+
+	{
+		auto * vl = new QVBoxLayout();
+
+		_dialogList = new QListView(this);
+
+		_dialogModel = new QStandardItemModel(this);
+
+		_sortModel = new QSortFilterProxyModel(this);
+		_sortModel->setSourceModel(_dialogModel);
+
+		_dialogList->setModel(_sortModel);
+
+		vl->addWidget(_dialogList);
+
+		auto * pb = new QPushButton(QApplication::tr("AddDialog"), this);
+		vl->addWidget(pb);
+
+		connect(pb, &QPushButton::released, this, &DialogTab::addDialog);
+
+		hl->addLayout(vl);
+	}
+
+	_graphicScene = new QGraphicsScene(this);
+
+	_graphicView = new QGraphicsView(_graphicScene);
+
+	hl->addWidget(_graphicView, 1);
+
+	setLayout(hl);
+}
+
+void DialogTab::initConnections() {
+	connect(_dialogList, &QListView::doubleClicked, this, QOverload<const QModelIndex &>::of(&DialogTab::openDialog));
+}
+
+void DialogTab::openDialog(const QModelIndex & idx) {
+	Q_ASSERT(idx.model() == _sortModel);
+
+	const auto sourceIdx = _sortModel->mapToSource(idx);
+
+	const int row = sourceIdx.row();
+	
+	Q_ASSERT(row < _dialogs.count());
+
+	if (row >= _dialogs.count()) return;
+
+	openDialog(_dialogs[row]);
+}
+
+void DialogTab::openDialog(const QString & name) {
+	const auto it = std::find_if(_dialogs.begin(), _dialogs.end(), [name](const DialogPtr& d) {
+		return name == d->getName();
+	});
+
+	Q_ASSERT(it != _dialogs.end());
+
+	if (it == _dialogs.end()) return;
+
+	openDialog(*it);
+}
+
+void DialogTab::openDialog(const DialogPtr & dialog) {
+	if (_currentDialog == dialog) return;
+	
+	_currentDialog = dialog;
+
+	// TODO: add nodes
+
+	// TODO: add connections
+
+	// TODO: restore layout
 }

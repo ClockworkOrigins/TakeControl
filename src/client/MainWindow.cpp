@@ -102,17 +102,17 @@ void MainWindow::loadProject() {
 }
 
 void MainWindow::createFileMenu() {
-	QMenu * fileMenu = new QMenu(QApplication::tr("File"), this);
+	auto * fileMenu = new QMenu(QApplication::tr("File"), this);
 
-	QAction * newProject = fileMenu->addAction(QApplication::tr("NewProject"));
+	auto * newProject = fileMenu->addAction(QApplication::tr("NewProject"));
 	newProject->setShortcut(QKeySequence::StandardKey::New);
 	connect(newProject, &QAction::triggered, this, &MainWindow::createNewProject);
 
-	QAction * openProject = fileMenu->addAction(QApplication::tr("OpenProject"));
+	auto * openProject = fileMenu->addAction(QApplication::tr("OpenProject"));
 	openProject->setShortcut(QKeySequence::StandardKey::Open);
 	connect(openProject, &QAction::triggered, this, static_cast<void(MainWindow::*)()>(&MainWindow::loadProject));
 
-	QAction * saveProject = fileMenu->addAction(QApplication::tr("SaveProject"));
+	auto * saveProject = fileMenu->addAction(QApplication::tr("SaveProject"));
 	saveProject->setShortcut(QKeySequence::StandardKey::Save);
 	connect(saveProject, &QAction::triggered, this, &MainWindow::saveProject);
 	connect(this, &MainWindow::projectLoaded, [saveProject]() {
@@ -124,14 +124,14 @@ void MainWindow::createFileMenu() {
 }
 
 void MainWindow::createEditMenu() {
-	QMenu * editMenu = new QMenu(QApplication::tr("Edit"), this);
+	auto * editMenu = new QMenu(QApplication::tr("Edit"), this);
 
-	QAction * redoAction = UndoStack::instance()->createRedoAction(editMenu, QApplication::tr("Redo"));
+	auto * redoAction = UndoStack::instance()->createRedoAction(editMenu, QApplication::tr("Redo"));
 	redoAction->setShortcut(QKeySequence::Redo);
 
 	editMenu->addAction(redoAction);
 
-	QAction * undoAction = UndoStack::instance()->createUndoAction(editMenu, QApplication::tr("Undo"));
+	auto * undoAction = UndoStack::instance()->createUndoAction(editMenu, QApplication::tr("Undo"));
 	undoAction->setShortcut(QKeySequence::Undo);
 
 	editMenu->addAction(undoAction);
@@ -143,7 +143,7 @@ void MainWindow::createTabs() {
 	_characterTab = new CharacterTab(this);
 	_dialogTab = new DialogTab(this);
 	
-	QTabWidget * tabWidget = new QTabWidget(this);
+	auto * tabWidget = new QTabWidget(this);
 	tabWidget->addTab(_characterTab, QApplication::tr("Characters"));
 	tabWidget->addTab(_dialogTab, QApplication::tr("Dialogs"));
 
@@ -179,7 +179,7 @@ void MainWindow::loadProject(const QString & path) {
 }
 
 void MainWindow::adjustTitle() {
-	QString title = QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING));
+	auto title = QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING));
 	
 	if (_project) {
 		title.prepend(_project->getName() + " - ");

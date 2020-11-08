@@ -26,6 +26,9 @@
 namespace tc {
 namespace utils {
 
+	class Dialog;
+	typedef std::shared_ptr<Dialog> DialogPtr;
+
 	class Dialog {
 	public:
 		explicit Dialog(const QString & name);
@@ -34,7 +37,7 @@ namespace utils {
 
 		QJsonObject save() const;
 
-		static std::shared_ptr<Dialog> load(const QJsonObject & json);
+		static DialogPtr load(const QJsonObject & json);
 
 	private:
 		QString _name;

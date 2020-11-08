@@ -25,38 +25,50 @@
 class QGraphicsScene;
 class QGraphicsView;
 class QListView;
+class QSortFilterProxyModel;
 class QStandardItemModel;
 
 namespace tc {
 namespace utils {
 	class Dialog;
+	typedef std::shared_ptr<Dialog> DialogPtr;
 } /* namespace utils */
 namespace client {
 namespace commands {
 	class AddDialogCommand;
 } /* namespace commands */
 
-	class DialogTab : public QWidget {
+	class DialogTab final : public QWidget {
 		Q_OBJECT
 
 		friend class commands::AddDialogCommand;
 		
 	public:
-		DialogTab(QWidget * par);
+		explicit DialogTab(QWidget * par);
 
-		QList<std::shared_ptr<utils::Dialog>> getDialogs() const;
-		void setDialog(const QList<std::shared_ptr<utils::Dialog>> & dialogs);
+		QList<utils::DialogPtr> getDialogs() const;
+		void setDialog(const QList<utils::DialogPtr> & dialogs);
 
 	private slots:
 		void addDialog();
 
 	private:
-		QListView * _dialogList;
-		QStandardItemModel * _dialogModel;
-		QList<std::shared_ptr<utils::Dialog>> _dialogs;
+		QListView * _dialogList = nullptr;
+		QStandardItemModel * _dialogModel = nullptr;
+		QSortFilterProxyModel * _sortModel = nullptr;
+		QList<utils::DialogPtr> _dialogs;
 
-		QGraphicsScene * _graphicScene;
-		QGraphicsView * _graphicView;
+		utils::DialogPtr _currentDialog;
+
+		QGraphicsScene * _graphicScene = nullptr;
+		QGraphicsView * _graphicView = nullptr;
+
+		void initGui();
+		void initConnections();
+
+		void openDialog(const QModelIndex & idx);
+		void openDialog(const QString & name);
+		void openDialog(const utils::DialogPtr & dialog);
 	};
 
 } /* namespace client */

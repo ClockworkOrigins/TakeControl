@@ -35,10 +35,10 @@ using namespace tc::client::commands;
 using namespace tc::utils;
 
 CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr), _characterModel(nullptr) {
-	QHBoxLayout * hl = new QHBoxLayout();
+	auto * hl = new QHBoxLayout();
 
 	{
-		QVBoxLayout * vl = new QVBoxLayout();
+		auto * vl = new QVBoxLayout();
 		
 		_characterList = new QListView(this);
 
@@ -51,7 +51,7 @@ CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr
 
 		vl->addWidget(_characterList);
 
-		QPushButton * pb = new QPushButton(QApplication::tr("AddCharacter"), this);
+		auto * pb = new QPushButton(QApplication::tr("AddCharacter"), this);
 		vl->addWidget(pb);
 
 		connect(pb, &QPushButton::released, this, &CharacterTab::addCharacter);

@@ -33,7 +33,7 @@ QJsonObject Dialog::save() const {
 	return json;
 }
 
-std::shared_ptr<Dialog> Dialog::load(const QJsonObject & json) {
+DialogPtr Dialog::load(const QJsonObject & json) {
 	if (!json.contains("Name")) return nullptr;
 	
 	QString name = json["Name"].toString();
