@@ -20,40 +20,33 @@
 
 #include <memory>
 
-#include <QWidget>
+#include "nodesGuiParameters.h"
 
-class QListView;
-class QStandardItemModel;
+#include "utils/Singleton.h"
 
 namespace tc {
-namespace utils {
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-} /* namespace utils */
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
+namespace nodes {
+    class INode;
+    typedef std::shared_ptr<INode> INodePtr;
+} /* namespace plugins */
+namespace plugins {
+    class IGamePlugin;
+} /* namespace plugins */
+namespace nodesGui {
 
-	class CharacterTab : public QWidget {
-		Q_OBJECT
-
-		friend class commands::AddCharacterCommand;
+    class NodeItem;
+	
+	class TC_NODESGUI_API NodeItemFactory : public utils::Singleton<NodeItemFactory>{
+        friend class utils::Singleton<NodeItemFactory>;
 		
 	public:
-		explicit CharacterTab(QWidget * par);
+        NodeItem * create(const nodes::INodePtr & node) const;
 
-		QList<utils::CharacterPtr> getCharacters() const;
-		void setCharacters(const QList<utils::CharacterPtr> & characters);
+        void setActivePlugin(const plugins::IGamePlugin * plugin);
 
-	private slots:
-		void addCharacter();
-
-	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
-		QList<utils::CharacterPtr> _characters;
+    private:
+        const plugins::IGamePlugin * _activePlugin = nullptr;
 	};
 
-} /* namespace client */
+} /* namespace nodesGui */
 } /* namespace tc */

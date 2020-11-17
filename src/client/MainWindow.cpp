@@ -25,6 +25,8 @@
 #include "nodes/ConditionFactory.h"
 #include "nodes/NodeFactory.h"
 
+#include "nodesGui/NodeItemFactory.h"
+
 #include "plugins/IGamePlugin.h"
 #include "plugins/PluginLoader.h"
 
@@ -39,6 +41,7 @@
 
 using namespace tc::client;
 using namespace tc::nodes;
+using namespace tc::nodesGui;
 using namespace tc::plugins;
 using namespace tc::projects;
 using namespace tc::utils;
@@ -70,11 +73,14 @@ void MainWindow::createNewProject() {
 	if (!_project) return;
 
 	_characterTab->setCharacters({});
+	_dialogTab->setDialogs({});
 
 	const auto * usedPlugin = _pluginLoader->getGamePlugin(_project->getType());
 	
 	ConditionFactory::instance()->setActivePlugin(usedPlugin);
 	NodeFactory::instance()->setActivePlugin(usedPlugin);
+	NodeItemFactory::instance()->setActivePlugin(usedPlugin);
+	_dialogTab->setActivePlugin(usedPlugin);
 	
 	emit projectLoaded();
 }
@@ -163,17 +169,20 @@ void MainWindow::loadProject(const QString & path) {
 
 	if (!Project::supports(path)) return;
 
-	QList<std::shared_ptr<Character>> characters;
-	QList<std::shared_ptr<Dialog>> dialogs;
+	QList<CharacterPtr> characters;
+	QList<DialogPtr> dialogs;
 	
 	_project->load(path, characters, dialogs);
 
 	_characterTab->setCharacters(characters);
+	_dialogTab->setDialogs(dialogs);
 
 	const auto * usedPlugin = _pluginLoader->getGamePlugin(_project->getType());
 	
 	ConditionFactory::instance()->setActivePlugin(usedPlugin);
 	NodeFactory::instance()->setActivePlugin(usedPlugin);
+	NodeItemFactory::instance()->setActivePlugin(usedPlugin);
+	_dialogTab->setActivePlugin(usedPlugin);
 
 	emit projectLoaded();
 }

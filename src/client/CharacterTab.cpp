@@ -41,6 +41,7 @@ CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr
 		auto * vl = new QVBoxLayout();
 		
 		_characterList = new QListView(this);
+		_characterList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 		_characterModel = new QStandardItemModel(this);
 
@@ -62,11 +63,11 @@ CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr
 	setLayout(hl);
 }
 
-QList<std::shared_ptr<Character>> CharacterTab::getCharacters() const {
+QList<CharacterPtr> CharacterTab::getCharacters() const {
 	return _characters;
 }
 
-void CharacterTab::setCharacters(const QList<std::shared_ptr<Character>> & characters) {
+void CharacterTab::setCharacters(const QList<CharacterPtr> & characters) {
 	_characters = characters;
 	_characterModel->clear();
 	

@@ -59,5 +59,9 @@
         <source>AddDialog</source>
         <translation>Add Dialog</translation>
     </message>
+    <message>
+        <source>AddNode</source>
+        <translation>Add Node</translation>
+    </message>
 </context>
 </TS>

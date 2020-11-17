@@ -19,6 +19,12 @@
 #include "DialogTab.h"
 
 #include "commands/AddDialogCommand.h"
+#include "commands/AddNodeCommand.h"
+
+#include "nodesGui/NodeItem.h"
+#include "nodesGui/NodeItemFactory.h"
+
+#include "plugins/IGamePlugin.h"
 
 #include "utils/Dialog.h"
 #include "utils/UndoStack.h"
@@ -27,12 +33,18 @@
 #include <QGraphicsView>
 #include <QHBoxLayout>
 #include <QListView>
+#include <QMenu>
 #include <QPushButton>
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
+#include <QToolBar>
+#include <QToolButton>
 
 using namespace tc::client;
 using namespace tc::client::commands;
+using namespace tc::nodes;
+using namespace tc::nodesGui;
+using namespace tc::plugins;
 using namespace tc::utils;
 
 DialogTab::DialogTab(QWidget * par) : QWidget(par) {
@@ -44,7 +56,7 @@ QList<DialogPtr> DialogTab::getDialogs() const {
 	return _dialogs;
 }
 
-void DialogTab::setDialog(const QList<DialogPtr> & dialogs) {
+void DialogTab::setDialogs(const QList<DialogPtr> & dialogs) {
 	_dialogs = dialogs;
 	_dialogModel->clear();
 	
@@ -53,9 +65,54 @@ void DialogTab::setDialog(const QList<DialogPtr> & dialogs) {
 	}
 }
 
+void DialogTab::setActivePlugin(const IGamePlugin* plugin) {
+	_activePlugin = plugin;
+
+	_addNodesMenu->clear();
+
+	_addNodesButton->setEnabled(false);
+
+	if (!_activePlugin) return;
+
+	auto supportedNodes = _activePlugin->getSupportedNodes();
+
+	std::sort(supportedNodes.begin(), supportedNodes.end());
+
+	for (const auto & nodeType : supportedNodes) {
+		QAction * action = _addNodesMenu->addAction(nodeType);
+		connect(action, &QAction::triggered, [this, nodeType]() {
+			auto * cmd = new AddNodeCommand(_currentDialog, nodeType);
+
+			connect(cmd, &AddNodeCommand::addedNode, this, &DialogTab::addNode);
+			connect(cmd, &AddNodeCommand::removedNode, this, &DialogTab::removeNode);
+
+			UndoStack::instance()->push(cmd);
+		});
+	}
+
+	_addNodesButton->setEnabled(!supportedNodes.isEmpty() && _currentDialog);
+}
+
 void DialogTab::addDialog() {
-	auto * cmd = new AddDialogCommand(this);	
+	auto * cmd = new AddDialogCommand(this);
 	UndoStack::instance()->push(cmd);
+}
+
+void DialogTab::addNode(const INodePtr & node) {
+	auto * nodeItem = NodeItemFactory::instance()->create(node);
+	_graphicScene->addItem(nodeItem);
+
+	_nodeItems.insert(node, nodeItem);
+}
+
+void DialogTab::removeNode(const INodePtr & node) {
+	const auto it = _nodeItems.find(node);
+
+	if (it == _nodeItems.end()) return;
+
+	delete it.value();
+
+	_nodeItems.erase(it);
 }
 
 void DialogTab::initGui() {
@@ -65,6 +122,7 @@ void DialogTab::initGui() {
 		auto * vl = new QVBoxLayout();
 
 		_dialogList = new QListView(this);
+		_dialogList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 		_dialogModel = new QStandardItemModel(this);
 
@@ -83,11 +141,38 @@ void DialogTab::initGui() {
 		hl->addLayout(vl);
 	}
 
-	_graphicScene = new QGraphicsScene(this);
+	{
+		auto * vl = new QVBoxLayout();
 
-	_graphicView = new QGraphicsView(_graphicScene);
+		auto * tb = new QToolBar(this);
+		vl->addWidget(tb);
 
-	hl->addWidget(_graphicView, 1);
+		{
+			_addNodesButton = new QToolButton(tb);
+			const QIcon icon(":/svg/add.svg");
+			Q_ASSERT(!icon.isNull());
+			_addNodesButton->setIcon(icon);
+
+			_addNodesMenu = new QMenu(_addNodesButton);
+			
+			_addNodesButton->setMenu(_addNodesMenu);
+			_addNodesButton->setPopupMode(QToolButton::InstantPopup);
+
+			_addNodesButton->setEnabled(false);
+
+			tb->addWidget(_addNodesButton);
+		}
+		
+		_graphicScene = new QGraphicsScene(this);
+		_graphicScene->setBackgroundBrush(QBrush(QColor(32, 32, 32)));
+
+		_graphicView = new QGraphicsView(_graphicScene);
+		_graphicView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
+		vl->addWidget(_graphicView, 1);
+
+		hl->addLayout(vl);
+	}
 
 	setLayout(hl);
 }
@@ -126,6 +211,12 @@ void DialogTab::openDialog(const DialogPtr & dialog) {
 	if (_currentDialog == dialog) return;
 	
 	_currentDialog = dialog;
+
+	_addNodesButton->setEnabled(_activePlugin && !_activePlugin->getSupportedNodes().isEmpty() && _currentDialog);
+
+	for (const auto & node : _currentDialog->getNodes()) {
+		addNode(node);
+	}
 
 	// TODO: add nodes
 

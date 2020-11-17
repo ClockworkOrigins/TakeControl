@@ -16,32 +16,33 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "commands/AddNodeCommand.h"
 
-#include <memory>
+#include "DialogTab.h"
 
-#include <QJsonObject>
-#include <QString>
+#include "nodes/NodeFactory.h"
 
-namespace tc {
-namespace utils {
+#include "utils/Dialog.h"
 
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
+#include <QApplication>
 
-	class Character {
-	public:
-		explicit Character(const QString & name);
+using namespace tc::client;
+using namespace tc::client::commands;
+using namespace tc::nodes;
+using namespace tc::utils;
 
-		QString getName() const;
+AddNodeCommand::AddNodeCommand(const DialogPtr & dialog, const QString & nodeType) : QUndoCommand(QApplication::tr("AddNode")), _dialog(dialog) {
+    _node = NodeFactory::instance()->create(nodeType);
+}
 
-		QJsonObject save() const;
+void AddNodeCommand::redo() {
+    _dialog->addNode(_node);
 
-		static CharacterPtr load(const QJsonObject & json);
+    emit addedNode(_node);
+}
 
-	private:
-		QString _name;
-	};
+void AddNodeCommand::undo() {
+    _dialog->removeNode(_node);
 
-} /* namespace utils */
-} /* namespace tc */
+    emit removedNode(_node);
+}

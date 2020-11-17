@@ -33,7 +33,8 @@ namespace redskiesascensiondemo {
 		QString getName() const override;
 		QStringList getSupportedNodes() const override;
 		nodes::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const override;
-		nodes::INodePtr createNode(const QString & nodeType, const QJsonObject & json) const override;
+		nodes::INodePtr createNode(const QString & nodeType) const override;
+		nodesGui::NodeItem * createNodeItem(const QString & nodeType) const override;
 	};
 
 } /* namespace redskiesascensiondemo */

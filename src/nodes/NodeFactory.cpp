@@ -33,24 +33,30 @@ INodePtr NodeFactory::create(const QJsonObject & json) const {
 	
 	const auto nodeType = json["type"].toString();
 
-	INodePtr nodePtr;
-	
-	if (nodeType == "And") {
-		nodePtr = std::make_shared<AndNode>();
-	}
-	
-	if (nodeType == "Or") {
-		nodePtr = std::make_shared<OrNode>();
-	}
-
-	// if no built-in condition matches, try plugin conditions
-
-	if (!nodePtr) {
-		nodePtr = _activePlugin->createNode(nodeType, json);
-	}
+	INodePtr nodePtr = create(nodeType);
 
 	if (nodePtr) {
 		nodePtr->read(json);
+	}
+
+	return nodePtr;
+}
+
+INodePtr NodeFactory::create(const QString & type) const {
+	INodePtr nodePtr;
+
+	if (type == "And") {
+		nodePtr = std::make_shared<AndNode>();
+	}
+
+	if (type == "Or") {
+		nodePtr = std::make_shared<OrNode>();
+	}
+
+	// if no built-in node matches, try plugin nodes
+
+	if (!nodePtr) {
+		nodePtr = _activePlugin->createNode(type);
 	}
 
 	return nodePtr;

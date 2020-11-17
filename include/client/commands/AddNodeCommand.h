@@ -20,40 +20,39 @@
 
 #include <memory>
 
-#include <QWidget>
-
-class QListView;
-class QStandardItemModel;
+#include <QUndoCommand>
 
 namespace tc {
+namespace nodes {
+	class INode;
+	typedef std::shared_ptr<INode> INodePtr;
+} /* namespace utils */
 namespace utils {
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
+	class Dialog;
+	typedef std::shared_ptr<Dialog> DialogPtr;
 } /* namespace utils */
 namespace client {
+	class DialogTab;
 namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
 
-	class CharacterTab : public QWidget {
+	class AddNodeCommand : public QObject, public QUndoCommand {
 		Q_OBJECT
-
-		friend class commands::AddCharacterCommand;
 		
 	public:
-		explicit CharacterTab(QWidget * par);
+		AddNodeCommand(const utils::DialogPtr & dialog, const QString & nodeType);
 
-		QList<utils::CharacterPtr> getCharacters() const;
-		void setCharacters(const QList<utils::CharacterPtr> & characters);
-
-	private slots:
-		void addCharacter();
+	signals:
+		void addedNode(const nodes::INodePtr & node);
+		void removedNode(const nodes::INodePtr & node);
 
 	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
-		QList<utils::CharacterPtr> _characters;
+		utils::DialogPtr _dialog;
+		nodes::INodePtr _node;
+
+		void undo() override;
+		void redo() override;
 	};
 
+} /* namespace commands */
 } /* namespace client */
 } /* namespace tc */

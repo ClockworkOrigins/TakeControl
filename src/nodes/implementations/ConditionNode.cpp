@@ -31,23 +31,24 @@ ConditionNode::ConditionNode() : INode() {}
 
 void ConditionNode::read(const QJsonObject & json) {
 	auto it = json.find("conditions");
-	if (it != json.end()) {
-		const auto c = it->toArray();
-		for (auto conditionEntry : c) {
-			const auto conditionObject = conditionEntry.toObject();
+	
+	if (it == json.end()) return;
+	
+	const auto c = it->toArray();
+	for (auto conditionEntry : c) {
+		const auto conditionObject = conditionEntry.toObject();
 
-			if (conditionObject.isEmpty()) continue;
+		if (conditionObject.isEmpty()) continue;
 
-			if (!conditionObject.contains("type")) continue;
+		if (!conditionObject.contains("type")) continue;
 
-			const auto conditionType = conditionObject["type"].toString();
+		const auto conditionType = conditionObject["type"].toString();
 
-			IConditionPtr condition = ConditionFactory::instance()->create(conditionObject);
+		IConditionPtr condition = ConditionFactory::instance()->create(conditionObject);
 
-			if (!condition) continue;
+		if (!condition) continue;
 			
-			_conditions << condition;
-		}
+		_conditions << condition;
 	}
 }
 

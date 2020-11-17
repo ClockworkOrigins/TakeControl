@@ -25,6 +25,7 @@
 namespace tc {
 namespace utils {
 	class Dialog;
+	typedef std::shared_ptr<Dialog> DialogPtr;
 } /* namespace utils */
 namespace client {
 	class DialogTab;
@@ -36,7 +37,7 @@ namespace commands {
 
 	private:
 		DialogTab * _dialogTab;
-		std::shared_ptr<utils::Dialog> _dialog;
+		utils::DialogPtr _dialog;
 
 		void undo() override;
 		void redo() override;

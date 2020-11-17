@@ -20,39 +20,38 @@
 
 #include <memory>
 
-#include <QJsonObject>
-#include <QList>
-#include <QString>
+#include "nodesGuiParameters.h"
+
+#include <QFont>
+#include <QGraphicsItem>
 
 namespace tc {
 namespace nodes {
-	class INode;
-	typedef std::shared_ptr<INode> INodePtr;
-} /* namespace nodes */
-namespace utils {
+    class INode;
+    typedef std::shared_ptr<INode> INodePtr;
+}
+namespace nodesGui {
 
-	class Dialog;
-	typedef std::shared_ptr<Dialog> DialogPtr;
-
-	class Dialog {
+	class TC_NODESGUI_API NodeItem : public QGraphicsItem {
 	public:
-		explicit Dialog(const QString & name);
+        NodeItem();
+		
+        virtual void configure(const nodes::INodePtr & node);
 
-		QString getName() const;
+    protected:
+        QFont _textFont;
+        QString _name;
 
-		QJsonObject save() const;
+        bool _hovered = false;
+		
+		QRectF boundingRect() const override;
+		void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
+        QVariant itemChange(GraphicsItemChange change, const QVariant & value) override;
+		void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
+		void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
-		static DialogPtr load(const QJsonObject & json);
-
-		void addNode(const nodes::INodePtr & node);
-		void removeNode(const nodes::INodePtr & node);
-
-		QList<nodes::INodePtr> getNodes() const;
-
-	private:
-		QString _name;
-		QList<nodes::INodePtr> _nodes;
+        bool isHovered() const;
 	};
 
-} /* namespace utils */
+} /* namespace nodesGui */
 } /* namespace tc */

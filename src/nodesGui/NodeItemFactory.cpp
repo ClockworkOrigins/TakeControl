@@ -16,33 +16,41 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "redskiesascensiondemoplugin/RedSkiesAscensionDemoPlugin.h"
+#include "nodesGui/NodeItemFactory.h"
+
+#include "nodes/interfaces/INode.h"
+
+#include "nodesGui/NodeItem.h"
+
+#include "plugins/IGamePlugin.h"
 
 using namespace tc;
+using namespace tc::nodes;
+using namespace tc::nodesGui;
 using namespace tc::plugins;
-using namespace tc::plugins::redskiesascensiondemo;
 
-QString RedSkiesAscensionDemoPlugin::getName() const {
-	return "Red Skies: Ascension - Demo";
+NodeItem * NodeItemFactory::create(const INodePtr & node) const {
+	const auto type = node->getType();
+
+	// handle special types we can handle ourselves
+
+	NodeItem * nodeItem = nullptr;
+
+	// if no built-in node matches, try plugin nodes
+
+	if (!nodeItem) {
+		nodeItem = _activePlugin->createNodeItem(type);
+	}
+
+	if (!nodeItem) {
+		nodeItem = new NodeItem();
+	}
+
+	nodeItem->configure(node);
+
+	return nodeItem;
 }
 
-QStringList RedSkiesAscensionDemoPlugin::getSupportedNodes() const {
-	return {
-		"And",
-		"Or"
-	};
+void NodeItemFactory::setActivePlugin(const IGamePlugin * plugin) {
+	_activePlugin = plugin;
 }
-
-nodes::IConditionPtr RedSkiesAscensionDemoPlugin::createCondition(const QString &, const QJsonObject &) const {
-	return nullptr;
-}
-
-nodes::INodePtr RedSkiesAscensionDemoPlugin::createNode(const QString &) const {
-	return nullptr;
-}
-
-nodesGui::NodeItem * RedSkiesAscensionDemoPlugin::createNodeItem(const QString &) const {
-    return nullptr;
-}
-
-Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")

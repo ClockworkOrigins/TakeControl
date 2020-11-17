@@ -20,15 +20,28 @@
 
 #include <memory>
 
+#include <QMap>
 #include <QWidget>
 
 class QGraphicsScene;
 class QGraphicsView;
 class QListView;
+class QMenu;
 class QSortFilterProxyModel;
 class QStandardItemModel;
+class QToolButton;
 
 namespace tc {
+namespace nodes {
+	class INode;
+	typedef std::shared_ptr<INode> INodePtr;
+} /* namespace nodes */
+namespace nodesGui {
+	class NodeItem;
+} /* namespace nodesGui */
+namespace plugins {
+	class IGamePlugin;
+} /* namespace plugins */
 namespace utils {
 	class Dialog;
 	typedef std::shared_ptr<Dialog> DialogPtr;
@@ -47,10 +60,14 @@ namespace commands {
 		explicit DialogTab(QWidget * par);
 
 		QList<utils::DialogPtr> getDialogs() const;
-		void setDialog(const QList<utils::DialogPtr> & dialogs);
+		void setDialogs(const QList<utils::DialogPtr> & dialogs);
+
+		void setActivePlugin(const plugins::IGamePlugin* plugin);
 
 	private slots:
 		void addDialog();
+		void addNode(const nodes::INodePtr & node);
+		void removeNode(const nodes::INodePtr & node);
 
 	private:
 		QListView * _dialogList = nullptr;
@@ -62,6 +79,13 @@ namespace commands {
 
 		QGraphicsScene * _graphicScene = nullptr;
 		QGraphicsView * _graphicView = nullptr;
+
+		QToolButton * _addNodesButton = nullptr;
+		QMenu * _addNodesMenu = nullptr;
+		
+		const plugins::IGamePlugin* _activePlugin = nullptr;
+
+		QMap<nodes::INodePtr, nodesGui::NodeItem *> _nodeItems;
 
 		void initGui();
 		void initConnections();

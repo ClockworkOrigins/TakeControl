@@ -32,10 +32,11 @@ namespace plugins {
 namespace nodes {
 
 	class TC_NODES_API NodeFactory : public utils::Singleton<NodeFactory> {
-	friend class utils::Singleton<NodeFactory>;
+		friend class utils::Singleton<NodeFactory>;
 		
 	public:
 		INodePtr create(const QJsonObject & json) const;
+		INodePtr create(const QString & type) const;
 
 		void setActivePlugin(const plugins::IGamePlugin * plugin);
 

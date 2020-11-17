@@ -18,30 +18,19 @@
 
 #pragma once
 
-#include <memory>
+#include <QObject>
 
-#include <QJsonObject>
-#include <QString>
-
-namespace tc {
-namespace utils {
-
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-
-	class Character {
-	public:
-		explicit Character(const QString & name);
-
-		QString getName() const;
-
-		QJsonObject save() const;
-
-		static CharacterPtr load(const QJsonObject & json);
-
-	private:
-		QString _name;
-	};
-
-} /* namespace utils */
-} /* namespace tc */
+// Dynamic library import/export macro
+#ifndef TC_NODESGUI_API
+	#if defined Q_OS_WIN
+		#ifdef TCNodesGui_EXPORTS
+			#define TC_NODESGUI_API __declspec(dllexport)
+		#else
+			#define TC_NODESGUI_API __declspec(dllimport)
+		#endif
+	#elif defined Q_OS_UNIX
+		#define TC_NODESGUI_API
+	#else
+		#define TC_NODESGUI_API
+	#endif
+#endif

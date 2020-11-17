@@ -29,6 +29,9 @@ namespace nodes {
 	typedef std::shared_ptr<ICondition> IConditionPtr;
 	typedef std::shared_ptr<INode> INodePtr;
 } /* namespace nodes */
+namespace nodesGui {
+	class NodeItem;
+} /* namespace nodesGui */
 namespace plugins {
 
 	class IGamePlugin {
@@ -52,9 +55,15 @@ namespace plugins {
 		virtual nodes::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const = 0;
 
 		/**
-		 * \ brief tries to create a node from the given node type and json string
+		 * \ brief tries to create a node from the given node type
 		 */
-		virtual nodes::INodePtr createNode(const QString & nodeType, const QJsonObject & json) const = 0;
+		virtual nodes::INodePtr createNode(const QString & nodeType) const = 0;
+
+		/**
+		 * \brief tries to create a NodeItem specialization for the given node type
+		 * will automatically fall back to the generic solution provided by TakeControl itself
+		 */
+		virtual nodesGui::NodeItem * createNodeItem(const QString & nodeType) const = 0;
 	};
 
 } /* namespace plugins */

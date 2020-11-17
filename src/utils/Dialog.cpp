@@ -18,6 +18,11 @@
 
 #include "Dialog.h"
 
+#include "nodes/NodeFactory.h"
+
+#include <QJsonArray>
+
+using namespace tc::nodes;
 using namespace tc::utils;
 
 Dialog::Dialog(const QString & name) : _name(name) {}
@@ -30,6 +35,16 @@ QJsonObject Dialog::save() const {
 	QJsonObject json;
 	json["Name"] = _name;
 
+	QJsonArray nodes;
+
+	for (const auto & node : _nodes) {
+		QJsonObject jsonNode;
+		node->write(jsonNode);
+		nodes << jsonNode;
+	}
+
+	json["Nodes"] = nodes;
+
 	return json;
 }
 
@@ -40,5 +55,35 @@ DialogPtr Dialog::load(const QJsonObject & json) {
 	
 	auto c = std::make_shared<Dialog>(name);
 
+	if (json.contains("Nodes")) {
+		auto nodes = json["Nodes"].toArray();
+
+		for (auto node : nodes) {
+			const auto jsonNode = node.toObject();
+
+			auto nodePtr = NodeFactory::instance()->create(jsonNode);
+
+			if (!nodePtr) continue;
+
+			c->_nodes << nodePtr;
+		}
+	}
+
 	return c;
+}
+
+void Dialog::addNode(const INodePtr & node) {
+	Q_ASSERT(!_nodes.contains(node));
+
+	if (_nodes.contains(node)) return;
+
+	_nodes << node;
+}
+
+void Dialog::removeNode(const INodePtr & node) {
+	_nodes.removeAll(node);
+}
+
+QList<INodePtr> Dialog::getNodes() const {
+	return _nodes;
 }
