@@ -26,6 +26,7 @@
 #include "nodes/NodeFactory.h"
 
 #include "nodesGui/NodeItemFactory.h"
+#include "nodesGui/PropertyItemFactory.h"
 
 #include "plugins/IGamePlugin.h"
 #include "plugins/PluginLoader.h"
@@ -33,6 +34,7 @@
 #include "projects/NewProjectDialog.h"
 #include "projects/Project.h"
 
+#include "utils/CharacterPool.h"
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -72,15 +74,10 @@ void MainWindow::createNewProject() {
 
 	if (!_project) return;
 
-	_characterTab->setCharacters({});
+	CharacterPool::instance()->setCharacters({});
 	_dialogTab->setDialogs({});
 
-	const auto * usedPlugin = _pluginLoader->getGamePlugin(_project->getType());
-	
-	ConditionFactory::instance()->setActivePlugin(usedPlugin);
-	NodeFactory::instance()->setActivePlugin(usedPlugin);
-	NodeItemFactory::instance()->setActivePlugin(usedPlugin);
-	_dialogTab->setActivePlugin(usedPlugin);
+	updatePlugin();
 	
 	emit projectLoaded();
 }
@@ -88,7 +85,7 @@ void MainWindow::createNewProject() {
 void MainWindow::saveProject() {
 	if (!_project) return;
 
-	const auto characterList = _characterTab->getCharacters();
+	const auto characterList = CharacterPool::instance()->getCharacters();
 	const auto dialogList = _dialogTab->getDialogs();
 	
 	_project->save(characterList, dialogList);
@@ -174,15 +171,10 @@ void MainWindow::loadProject(const QString & path) {
 	
 	_project->load(path, characters, dialogs);
 
-	_characterTab->setCharacters(characters);
+	CharacterPool::instance()->setCharacters(characters);
 	_dialogTab->setDialogs(dialogs);
 
-	const auto * usedPlugin = _pluginLoader->getGamePlugin(_project->getType());
-	
-	ConditionFactory::instance()->setActivePlugin(usedPlugin);
-	NodeFactory::instance()->setActivePlugin(usedPlugin);
-	NodeItemFactory::instance()->setActivePlugin(usedPlugin);
-	_dialogTab->setActivePlugin(usedPlugin);
+	updatePlugin();
 
 	emit projectLoaded();
 }
@@ -199,4 +191,14 @@ void MainWindow::adjustTitle() {
 	}
 	
 	setWindowTitle(title);
+}
+
+void MainWindow::updatePlugin() {
+	const auto * usedPlugin = _pluginLoader->getGamePlugin(_project->getType());
+
+	ConditionFactory::instance()->setActivePlugin(usedPlugin);
+	NodeFactory::instance()->setActivePlugin(usedPlugin);
+	NodeItemFactory::instance()->setActivePlugin(usedPlugin);
+	PropertyItemFactory::instance()->setActivePlugin(usedPlugin);
+	_dialogTab->setActivePlugin(usedPlugin);
 }

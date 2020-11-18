@@ -16,52 +16,43 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/NodeFactory.h"
+#include "nodesGui/PropertyItemFactory.h"
 
-#include "nodes/implementations/nodes/AndNode.h"
-#include "nodes/implementations/nodes/OrNode.h"
+#include "nodes/interfaces/IProperty.h"
+
+#include "nodesGui/CharacterPropertyItem.h"
 
 #include "plugins/IGamePlugin.h"
 
-#include <QJsonObject>
-
 using namespace tc;
 using namespace tc::nodes;
+using namespace tc::nodesGui;
+using namespace tc::plugins;
 
-INodePtr NodeFactory::create(const QJsonObject & json) const {
-	if (!json.contains("type")) return nullptr;
-	
-	const auto nodeType = json["type"].toString();
+PropertyItem * PropertyItemFactory::create(const IPropertyPtr & prop) const {
+	const auto type = prop->getType();
 
-	INodePtr nodePtr = create(nodeType);
+	// handle special types we can handle ourselves
 
-	if (nodePtr) {
-		nodePtr->read(json);
-	}
+	PropertyItem * propertyItem = nullptr;
 
-	return nodePtr;
-}
-
-INodePtr NodeFactory::create(const QString & type) const {
-	INodePtr nodePtr;
-
-	if (type == "And") {
-		nodePtr = std::make_shared<AndNode>();
-	}
-
-	if (type == "Or") {
-		nodePtr = std::make_shared<OrNode>();
+	if (type == "Character") {
+		propertyItem = new CharacterPropertyItem();
 	}
 
 	// if no built-in node matches, try plugin nodes
 
-	if (!nodePtr) {
-		nodePtr = _activePlugin->createNode(type);
+	if (!propertyItem) {
+		propertyItem = _activePlugin->createPropertyItem(type);
 	}
 
-	return nodePtr;
+	if (propertyItem) {
+		propertyItem->configure(prop);
+	}
+
+	return propertyItem;
 }
 
-void NodeFactory::setActivePlugin(const plugins::IGamePlugin * plugin) {
+void PropertyItemFactory::setActivePlugin(const IGamePlugin * plugin) {
 	_activePlugin = plugin;
 }

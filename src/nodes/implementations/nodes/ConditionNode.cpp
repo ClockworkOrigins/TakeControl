@@ -16,7 +16,7 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/implementations/ConditionNode.h"
+#include "nodes/implementations/nodes/ConditionNode.h"
 
 #include "nodes/ConditionFactory.h"
 #include "nodes/interfaces/ICondition.h"
@@ -30,6 +30,8 @@ using namespace tc::nodes;
 ConditionNode::ConditionNode() : INode() {}
 
 void ConditionNode::read(const QJsonObject & json) {
+	INode::read(json);
+	
 	auto it = json.find("conditions");
 	
 	if (it == json.end()) return;

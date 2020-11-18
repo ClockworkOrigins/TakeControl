@@ -214,11 +214,13 @@ void DialogTab::openDialog(const DialogPtr & dialog) {
 
 	_addNodesButton->setEnabled(_activePlugin && !_activePlugin->getSupportedNodes().isEmpty() && _currentDialog);
 
+	while (!_nodeItems.isEmpty()) {
+		removeNode(_nodeItems.firstKey());
+	}
+
 	for (const auto & node : _currentDialog->getNodes()) {
 		addNode(node);
 	}
-
-	// TODO: add nodes
 
 	// TODO: add connections
 

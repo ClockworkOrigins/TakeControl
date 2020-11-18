@@ -18,12 +18,14 @@
 
 #pragma once
 
+#include "utils/utilsParameters.h"
+
 class QString;
 
 namespace tc {
 namespace utils {
 
-	class Config {
+	class TC_UTILS_API Config {
 	public:
 		static void init();
 

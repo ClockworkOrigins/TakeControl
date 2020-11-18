@@ -18,25 +18,29 @@
 
 #pragma once
 
-#include <cstdint>
-
 #include "nodesParameters.h"
-#include "implementations/ConditionNode.h"
+#include "interfaces/IProperty.h"
+
+#include "utils/Singleton.h"
 
 class QJsonObject;
 
 namespace tc {
+namespace plugins {
+	class IGamePlugin;
+} /* namespace plugins */
 namespace nodes {
 
-	class TC_NODES_API OrNode : public ConditionNode {
+	class TC_NODES_API PropertyFactory : public utils::Singleton<PropertyFactory> {
+		friend class utils::Singleton<PropertyFactory>;
+		
 	public:
-		OrNode();
+		IPropertyPtr create(const QString & type) const;
+
+		void setActivePlugin(const plugins::IGamePlugin * plugin);
 
 	private:
-		void read(const QJsonObject &json) override;
-		void write(QJsonObject & json) const override;
-
-		QString getType() const override;
+		const plugins::IGamePlugin * _activePlugin = nullptr;
 	};
 
 } /* namespace nodes */

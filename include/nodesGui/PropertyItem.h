@@ -16,21 +16,27 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/implementations/OrNode.h"
+#pragma once
 
-using namespace tc;
-using namespace tc::nodes;
+#include <memory>
 
-OrNode::OrNode() : ConditionNode() {}
+#include "nodesGuiParameters.h"
 
-void OrNode::read(const QJsonObject & json) {
-	ConditionNode::read(json);
+#include <QGraphicsItem>
+
+namespace tc {
+namespace nodes {
+    class IProperty;
+    typedef std::shared_ptr<IProperty> IPropertyPtr;
 }
+namespace nodesGui {
 
-void OrNode::write(QJsonObject & json) const {
-	ConditionNode::write(json);
-}
+	class TC_NODESGUI_API PropertyItem : public QGraphicsItem {
+	public:
+        ~PropertyItem() = default;
+		
+        virtual void configure(const nodes::IPropertyPtr & prop) = 0;
+	};
 
-QString OrNode::getType() const {
-	return "Or";
-}
+} /* namespace nodesGui */
+} /* namespace tc */

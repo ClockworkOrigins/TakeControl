@@ -21,6 +21,7 @@
 #include "commands/AddCharacterCommand.h"
 
 #include "utils/Character.h"
+#include "utils/CharacterPool.h"
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -61,22 +62,34 @@ CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr
 	}
 
 	setLayout(hl);
+
+	connect(CharacterPool::instance(), &CharacterPool::charactersChanged, this, &CharacterTab::updateCharacters);
+	connect(CharacterPool::instance(), &CharacterPool::characterAdded, this, &CharacterTab::addedCharacter);
+	connect(CharacterPool::instance(), &CharacterPool::characterRemoved, this, &CharacterTab::removedCharacter);
 }
 
-QList<CharacterPtr> CharacterTab::getCharacters() const {
-	return _characters;
-}
-
-void CharacterTab::setCharacters(const QList<CharacterPtr> & characters) {
-	_characters = characters;
+void CharacterTab::updateCharacters() {
 	_characterModel->clear();
 	
-	for (const auto & c : characters) {
+	for (const auto & c : CharacterPool::instance()->getCharacters()) {
 		_characterModel->appendRow(new QStandardItem(c->getName()));
 	}
 }
 
 void CharacterTab::addCharacter() {
-	auto * cmd = new AddCharacterCommand(this);	
+	auto * cmd = new AddCharacterCommand();	
 	UndoStack::instance()->push(cmd);
+}
+
+void CharacterTab::addedCharacter(const CharacterPtr & character) {
+	_characterModel->appendRow(new QStandardItem(character->getName()));
+}
+
+void CharacterTab::removedCharacter(const CharacterPtr & character) {
+	const auto itemList = _characterModel->findItems(character->getName());
+
+	for (const auto & item : itemList) {
+		const auto idx = _characterModel->indexFromItem(item);
+		_characterModel->removeRows(idx.row(), 1);
+	}
 }

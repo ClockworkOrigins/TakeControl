@@ -20,12 +20,14 @@
 
 #include "Singleton.h"
 
+#include "utilsParameters.h"
+
 #include <QUndoStack>
 
 namespace tc {
 namespace utils {
 
-	class UndoStack : public Singleton<UndoStack>, public QUndoStack {
+	class TC_UTILS_API UndoStack : public Singleton<UndoStack>, public QUndoStack {
 		friend class Singleton<UndoStack>;
 		
 	private:

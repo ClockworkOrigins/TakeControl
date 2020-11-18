@@ -16,34 +16,21 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "nodes/implementations/nodes/AndNode.h"
 
-#include <memory>
+using namespace tc;
+using namespace tc::nodes;
 
-#include "utils/utilsParameters.h"
+AndNode::AndNode() : ConditionNode() {}
 
-#include <QJsonObject>
-#include <QString>
+void AndNode::read(const QJsonObject & json) {
+	ConditionNode::read(json);
+}
 
-namespace tc {
-namespace utils {
+void AndNode::write(QJsonObject & json) const {
+	ConditionNode::write(json);
+}
 
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-
-	class TC_UTILS_API Character {
-	public:
-		explicit Character(const QString & name);
-
-		QString getName() const;
-
-		QJsonObject save() const;
-
-		static CharacterPtr load(const QJsonObject & json);
-
-	private:
-		QString _name;
-	};
-
-} /* namespace utils */
-} /* namespace tc */
+QString AndNode::getType() const {
+	return "And";
+}

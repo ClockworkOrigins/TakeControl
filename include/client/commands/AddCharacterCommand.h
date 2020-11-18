@@ -25,18 +25,17 @@
 namespace tc {
 namespace utils {
 	class Character;
+	typedef std::shared_ptr<Character> CharacterPtr;
 } /* namespace utils */
 namespace client {
-	class CharacterTab;
 namespace commands {
 
 	class AddCharacterCommand : public QUndoCommand {
 	public:
-		AddCharacterCommand(CharacterTab * characterTab);
+		AddCharacterCommand();
 
 	private:
-		CharacterTab * _characterTab;
-		std::shared_ptr<utils::Character> _character;
+		utils::CharacterPtr _character;
 
 		void undo() override;
 		void redo() override;

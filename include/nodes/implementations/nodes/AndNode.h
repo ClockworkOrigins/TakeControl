@@ -18,43 +18,26 @@
 
 #pragma once
 
-#include <memory>
+#include <cstdint>
 
-#include <QWidget>
+#include "nodesParameters.h"
+#include "implementations/nodes/ConditionNode.h"
 
-class QListView;
-class QStandardItemModel;
+class QJsonObject;
 
 namespace tc {
-namespace utils {
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-} /* namespace utils */
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
+namespace nodes {
 
-	class CharacterTab : public QWidget {
-		Q_OBJECT
-
-		friend class commands::AddCharacterCommand;
-		
+	class TC_NODES_API AndNode : public ConditionNode {
 	public:
-		explicit CharacterTab(QWidget * par);
-
-		void updateCharacters();
-
-	private slots:
-		void addCharacter();
-
-		void addedCharacter(const utils::CharacterPtr & character);
-		void removedCharacter(const utils::CharacterPtr & character);
+		AndNode();
 
 	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
+		void read(const QJsonObject &json) override;
+		void write(QJsonObject & json) const override;
+
+		QString getType() const override;
 	};
 
-} /* namespace client */
+} /* namespace nodes */
 } /* namespace tc */

@@ -20,6 +20,8 @@
 
 #include <memory>
 
+#include "utils/utilsParameters.h"
+
 #include <QJsonObject>
 #include <QList>
 #include <QString>
@@ -34,7 +36,7 @@ namespace utils {
 	class Dialog;
 	typedef std::shared_ptr<Dialog> DialogPtr;
 
-	class Dialog {
+	class TC_UTILS_API Dialog {
 	public:
 		explicit Dialog(const QString & name);
 

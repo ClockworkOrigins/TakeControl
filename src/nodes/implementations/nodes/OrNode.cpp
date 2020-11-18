@@ -16,34 +16,23 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "nodes/implementations/nodes/OrNode.h"
 
-#include <memory>
+#include "nodes/PropertyFactory.h"
 
-#include "utils/utilsParameters.h"
+using namespace tc;
+using namespace tc::nodes;
 
-#include <QJsonObject>
-#include <QString>
+OrNode::OrNode() : ConditionNode() {}
 
-namespace tc {
-namespace utils {
+void OrNode::read(const QJsonObject & json) {	
+	ConditionNode::read(json);
+}
 
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
+void OrNode::write(QJsonObject & json) const {
+	ConditionNode::write(json);
+}
 
-	class TC_UTILS_API Character {
-	public:
-		explicit Character(const QString & name);
-
-		QString getName() const;
-
-		QJsonObject save() const;
-
-		static CharacterPtr load(const QJsonObject & json);
-
-	private:
-		QString _name;
-	};
-
-} /* namespace utils */
-} /* namespace tc */
+QString OrNode::getType() const {
+	return "Or";
+}

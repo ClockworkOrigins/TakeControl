@@ -20,38 +20,38 @@
 
 #include <memory>
 
-#include "nodesGuiParameters.h"
+#include "nodesGui/PropertyItem.h"
 
-#include <QFont>
-#include <QGraphicsItem>
+class QComboBox;
+class QCompleter;
+class QGraphicsProxyWidget;
 
 namespace tc {
 namespace nodes {
-    class INode;
-    typedef std::shared_ptr<INode> INodePtr;
-}
+    class CharacterProperty;
+    typedef std::shared_ptr<CharacterProperty> CharacterPropertyPtr;
+} /* namespace nodes */
 namespace nodesGui {
 
-	class TC_NODESGUI_API NodeItem : public QGraphicsItem {
+	class TC_NODESGUI_API CharacterPropertyItem : public QObject, public PropertyItem {
 	public:
-        NodeItem();
+        CharacterPropertyItem();
 		
-        virtual void configure(const nodes::INodePtr & node);
+        void configure(const nodes::IPropertyPtr & prop) override;
 
     protected:
-        QFont _textFont;
-        QString _name;
-        qreal _labelHeight;
-
-        bool _hovered = false;
-		
-		QRectF boundingRect() const override;
+        QRectF boundingRect() const override;
 		void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
-        QVariant itemChange(GraphicsItemChange change, const QVariant & value) override;
-		void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
-		void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
-        bool isHovered() const;
+    private:
+        nodes::CharacterPropertyPtr _property;
+        QGraphicsProxyWidget * _graphicsProxyWidget = nullptr;
+        QComboBox * _comboBox = nullptr;
+
+        QRectF _boundingRect;
+
+        void updateCharacters();
+        void updateCompleter(const QStringList & options);
 	};
 
 } /* namespace nodesGui */

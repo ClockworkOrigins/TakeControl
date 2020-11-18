@@ -16,21 +16,37 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/implementations/AndNode.h"
+#include <memory>
 
-using namespace tc;
-using namespace tc::nodes;
+#include "utils/Singleton.h"
 
-AndNode::AndNode() : ConditionNode() {}
+#include <QList>
+#include <QObject>
 
-void AndNode::read(const QJsonObject & json) {
-	ConditionNode::read(json);
-}
+namespace tc {
+namespace utils {
 
-void AndNode::write(QJsonObject & json) const {
-	ConditionNode::write(json);
-}
+	class Dialog;
+	typedef std::shared_ptr<Dialog> DialogPtr;
 
-QString AndNode::getType() const {
-	return "And";
-}
+	class DialogPool : public QObject, public Singleton<DialogPool> {
+		Q_OBJECT
+
+		friend class Singleton<DialogPool>;
+
+	public:
+		void setDialogs(const QList<DialogPtr> & dialogs);
+		QList<DialogPtr> getDialogs() const;
+
+		void addDialog(const DialogPtr & dialog);
+		void removeDialog(const DialogPtr & dialog);
+
+	signals:
+		void dialogsChanged();
+
+	private:
+		QList<DialogPtr> _dialogs;
+	};
+
+} /* namespace utils */
+} /* namespace tc */

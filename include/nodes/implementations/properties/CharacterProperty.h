@@ -18,43 +18,34 @@
 
 #pragma once
 
-#include <memory>
+#include <cstdint>
 
-#include <QWidget>
+#include "nodesParameters.h"
 
-class QListView;
-class QStandardItemModel;
+#include "interfaces/IProperty.h"
+
+class QJsonObject;
 
 namespace tc {
-namespace utils {
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-} /* namespace utils */
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
+namespace nodes {
 
-	class CharacterTab : public QWidget {
-		Q_OBJECT
-
-		friend class commands::AddCharacterCommand;
-		
+	class TC_NODES_API CharacterProperty : public IProperty {
 	public:
-		explicit CharacterTab(QWidget * par);
+        CharacterProperty();
 
-		void updateCharacters();
-
-	private slots:
-		void addCharacter();
-
-		void addedCharacter(const utils::CharacterPtr & character);
-		void removedCharacter(const utils::CharacterPtr & character);
+        void setValue(const QString & value);
+        QString getValue() const;
 
 	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
+        QString _value;
+		
+		void read(const QJsonObject &json) override;
+		void write(QJsonObject & json) const override;
+
+		QString getType() const override;
+
+        static QString getDefaultValue();
 	};
 
-} /* namespace client */
+} /* namespace nodes */
 } /* namespace tc */

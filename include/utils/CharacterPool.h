@@ -20,41 +20,38 @@
 
 #include <memory>
 
-#include <QWidget>
+#include "utils/Singleton.h"
+#include "utils/utilsParameters.h"
 
-class QListView;
-class QStandardItemModel;
+#include <QList>
+#include <QObject>
 
 namespace tc {
 namespace utils {
+
 	class Character;
 	typedef std::shared_ptr<Character> CharacterPtr;
-} /* namespace utils */
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
 
-	class CharacterTab : public QWidget {
+	class TC_UTILS_API CharacterPool : public QObject, public Singleton<CharacterPool> {
 		Q_OBJECT
-
-		friend class commands::AddCharacterCommand;
+		
+		friend class Singleton<CharacterPool>;
 		
 	public:
-		explicit CharacterTab(QWidget * par);
+		void setCharacters(const QList<CharacterPtr> & characters);
+		QList<CharacterPtr> getCharacters() const;
 
-		void updateCharacters();
+		void addCharacter(const CharacterPtr & character);
+		void removeCharacter(const CharacterPtr & character);
 
-	private slots:
-		void addCharacter();
-
-		void addedCharacter(const utils::CharacterPtr & character);
-		void removedCharacter(const utils::CharacterPtr & character);
+	signals:
+		void charactersChanged();
+		void characterAdded(const CharacterPtr & character);
+		void characterRemoved(const CharacterPtr & character);
 
 	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
+		QList<CharacterPtr> _characters;
 	};
 
-} /* namespace client */
+} /* namespace utils */
 } /* namespace tc */

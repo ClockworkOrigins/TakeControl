@@ -16,34 +16,28 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "CharacterPool.h"
 
-#include <memory>
+using namespace tc::utils;
 
-#include "utils/utilsParameters.h"
+void CharacterPool::setCharacters(const QList<CharacterPtr> & characters) {
+    _characters = characters;
 
-#include <QJsonObject>
-#include <QString>
+    emit charactersChanged();
+}
 
-namespace tc {
-namespace utils {
+QList<CharacterPtr> CharacterPool::getCharacters() const {
+    return _characters;
+}
 
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
+void CharacterPool::addCharacter(const CharacterPtr & character) {
+    _characters << character;
 
-	class TC_UTILS_API Character {
-	public:
-		explicit Character(const QString & name);
+    emit characterAdded(character);
+}
 
-		QString getName() const;
+void CharacterPool::removeCharacter(const CharacterPtr & character) {
+    _characters.removeAll(character);
 
-		QJsonObject save() const;
-
-		static CharacterPtr load(const QJsonObject & json);
-
-	private:
-		QString _name;
-	};
-
-} /* namespace utils */
-} /* namespace tc */
+    emit characterRemoved(character);
+}

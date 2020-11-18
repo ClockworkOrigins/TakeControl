@@ -9,7 +9,7 @@ FILE(GLOB_RECURSE NodesGuiHeader ${includedir}/*.h)
 
 ADD_LIBRARY(TCNodesGui SHARED ${NodesGuiSrc} ${NodesGuiHeader})
 
-target_link_libraries(TCNodesGui ${QT_LIBRARIES})
+target_link_libraries(TCNodesGui TCNodes TCUtils ${QT_LIBRARIES})
 
 set_target_properties(
 	TCNodesGui PROPERTIES FOLDER Libraries

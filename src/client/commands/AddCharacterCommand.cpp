@@ -20,9 +20,8 @@
 
 #include <cassert>
 
-#include "CharacterTab.h"
-
 #include "utils/Character.h"
+#include "utils/CharacterPool.h"
 
 #include <QApplication>
 #include <QStandardItemModel>
@@ -31,10 +30,12 @@ using namespace tc::client;
 using namespace tc::client::commands;
 using namespace tc::utils;
 
-AddCharacterCommand::AddCharacterCommand(CharacterTab * characterTab) : QUndoCommand(QApplication::tr("AddCharacter")), _characterTab(characterTab) {
+AddCharacterCommand::AddCharacterCommand() : QUndoCommand(QApplication::tr("AddCharacter")) {
 	int number = 1;
 
-	while (std::find_if(_characterTab->_characters.begin(), _characterTab->_characters.end(), [number](const std::shared_ptr<Character> & c) { return c->getName() == QString("New Character %1").arg(number); }) != _characterTab->_characters.end()) {
+	const auto characters = CharacterPool::instance()->getCharacters();
+	
+	while (std::find_if(characters.begin(), characters.end(), [number](const std::shared_ptr<Character> & c) { return c->getName() == QString("New Character %1").arg(number); }) != characters.end()) {
 		number++;
 	}
 	
@@ -42,17 +43,9 @@ AddCharacterCommand::AddCharacterCommand(CharacterTab * characterTab) : QUndoCom
 }
 
 void AddCharacterCommand::redo() {
-	_characterTab->_characters.append(_character);
-
-	_characterTab->_characterModel->appendRow(new QStandardItem(_character->getName()));
+	CharacterPool::instance()->addCharacter(_character);
 }
 
 void AddCharacterCommand::undo() {
-	const int idx = _characterTab->_characters.indexOf(_character);
-
-	assert(idx == _characterTab->_characters.size() - 1);
-
-	_characterTab->_characterModel->removeRows(idx, 1);
-
-	_characterTab->_characters.pop_back();
+	CharacterPool::instance()->removeCharacter(_character);
 }

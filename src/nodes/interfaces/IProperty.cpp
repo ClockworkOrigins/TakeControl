@@ -16,29 +16,14 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "nodes/interfaces/IProperty.h"
 
-#include <cstdint>
+#include <QJsonObject>
+#include <QVariant>
 
-#include "nodesParameters.h"
-#include "implementations/ConditionNode.h"
+using namespace tc;
+using namespace tc::nodes;
 
-class QJsonObject;
-
-namespace tc {
-namespace nodes {
-
-	class TC_NODES_API AndNode : public ConditionNode {
-	public:
-		AndNode();
-		explicit AndNode(qint64 id);
-
-	private:
-		void read(const QJsonObject &json) override;
-		void write(QJsonObject & json) const override;
-
-		QString getType() const override;
-	};
-
-} /* namespace nodes */
-} /* namespace tc */
+void IProperty::write(QJsonObject & json) const {
+	json["type"] = getType();
+}

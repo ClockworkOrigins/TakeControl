@@ -27,19 +27,22 @@ class QJsonObject;
 namespace tc {
 namespace nodes {
 
+	class IProperty;
+	typedef std::shared_ptr<IProperty> IPropertyPtr;
+
 	class TC_NODES_API INode {
 	public:
 		virtual ~INode() {}
 
 		/**
 		 * \brief restores INode from json
-		 * default implementation restores nothing
+		 * default implementation restores all properties
 		 */
 		virtual void read(const QJsonObject &json) = 0;
 
 		/**
 		 * \brief saves INode to json
-		 * default implementation saves the type of the node retrieved via getType()
+		 * default implementation saves the type of the node retrieved via getType() and all properties
 		 */
 		virtual void write(QJsonObject & json) const = 0;
 
@@ -66,6 +69,14 @@ namespace nodes {
 		 * used to uniquely identify the node
 		 */
 		virtual QString getType() const = 0;
+
+		/**
+		 * \brief returns the list of properties this node owns
+		 */
+		QList<IPropertyPtr> getProperties() const;
+
+	protected:
+		QList<IPropertyPtr> _properties;
 	};
 	typedef std::shared_ptr<INode> INodePtr;
 

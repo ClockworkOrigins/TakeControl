@@ -16,34 +16,31 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "nodes/PropertyFactory.h"
 
-#include <memory>
+#include "nodes/implementations/properties/CharacterProperty.h"
 
-#include "utils/utilsParameters.h"
+#include "plugins/IGamePlugin.h"
 
-#include <QJsonObject>
-#include <QString>
+using namespace tc;
+using namespace tc::nodes;
 
-namespace tc {
-namespace utils {
+IPropertyPtr PropertyFactory::create(const QString & type) const {
+	IPropertyPtr propertyPtr;
 
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
+	if (type == "Character") {
+		propertyPtr = std::make_shared<CharacterProperty>();
+	}
 
-	class TC_UTILS_API Character {
-	public:
-		explicit Character(const QString & name);
+	// if no built-in node matches, try plugin nodes
 
-		QString getName() const;
+	if (!propertyPtr) {
+		propertyPtr = _activePlugin->createProperty(type);
+	}
 
-		QJsonObject save() const;
+	return propertyPtr;
+}
 
-		static CharacterPtr load(const QJsonObject & json);
-
-	private:
-		QString _name;
-	};
-
-} /* namespace utils */
-} /* namespace tc */
+void PropertyFactory::setActivePlugin(const plugins::IGamePlugin * plugin) {
+	_activePlugin = plugin;
+}

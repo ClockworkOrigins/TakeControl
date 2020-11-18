@@ -20,28 +20,55 @@
 
 #include "nodes/interfaces/INode.h"
 
+#include "nodesGui/PropertyItem.h"
+#include "nodesGui/PropertyItemFactory.h"
+
 #include <QFontMetrics>
 #include <QPainter>
 
 using namespace tc;
 using namespace tc::nodesGui;
 
+constexpr qreal START_HEIGHT = -50.0;
+
 NodeItem::NodeItem() : QGraphicsItem() {
     setFlags(ItemIsMovable | ItemIsSelectable);
     setAcceptHoverEvents(true);
-
+	
     _textFont.setPointSize(16);
+
+    const QFontMetrics fm = QFontMetrics(_textFont);
+    _labelHeight = fm.height();
 }
 
 void NodeItem::configure(const nodes::INodePtr & node) {
     _name = node->getType();
+
+    qreal lastHeight = START_HEIGHT + 1.5 * _labelHeight;
+
+	for (const auto & prop : node->getProperties()) {
+        PropertyItem * propertyItem = PropertyItemFactory::instance()->create(prop);
+
+        Q_ASSERT(propertyItem);
+		
+        if (!propertyItem) continue;
+
+        propertyItem->setParentItem(this);
+        propertyItem->setPos(-90, lastHeight);
+
+        lastHeight += propertyItem->boundingRect().height() + 20;
+	}
 }
 
 QRectF NodeItem::boundingRect() const {
-    return QRectF(-100, -50, 200, 100);
+    qreal childHeight = 0;
+    for (const auto * child : childItems()) {
+        childHeight += child->boundingRect().height();
+    }
+    return QRectF(-100, START_HEIGHT, 200, 2 * _labelHeight + childHeight + std::max(0, childItems().count() - 1) * 20);
 }
 
-void NodeItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+void NodeItem::paint(QPainter * painter, const QStyleOptionGraphicsItem *, QWidget *) {
     const auto br = boundingRect();
 	
     if (isSelected()) {
@@ -53,7 +80,6 @@ void NodeItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
     }
     painter->drawRect(br);
 
-
     auto innerRect = br;
     innerRect.setX(innerRect.x() + 2);
     innerRect.setY(innerRect.y() + 2);
@@ -64,12 +90,11 @@ void NodeItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	
     const QFontMetrics fm = QFontMetrics(_textFont);
     const auto lblWidth = fm.width(_name);
-    const auto lblHeight = fm.height();
 
     const QPen pen(QColor(193, 193, 193));
     painter->setFont(_textFont);
     painter->setPen(pen);
-    painter->drawText(-lblWidth / 2, br.y() + lblHeight, _name);
+    painter->drawText(-lblWidth / 2, br.y() + _labelHeight, _name);
 }
 
 QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant & value) {
@@ -80,12 +105,12 @@ QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant & value)
     return value;
 }
 
-void NodeItem::hoverEnterEvent(QGraphicsSceneHoverEvent * event) {
+void NodeItem::hoverEnterEvent(QGraphicsSceneHoverEvent *) {
     _hovered = true;
     update();
 }
 
-void NodeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent * event) {
+void NodeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
     _hovered = false;
     update();
 }

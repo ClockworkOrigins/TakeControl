@@ -20,6 +20,4 @@
 
 using namespace tc::utils;
 
-UndoStack::UndoStack() {
-	// TODO
-}
+UndoStack::UndoStack() {}

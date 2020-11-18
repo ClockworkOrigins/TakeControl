@@ -26,11 +26,14 @@ namespace tc {
 namespace nodes {
 	class ICondition;
 	class INode;
+	class IProperty;
 	typedef std::shared_ptr<ICondition> IConditionPtr;
 	typedef std::shared_ptr<INode> INodePtr;
+	typedef std::shared_ptr<IProperty> IPropertyPtr;
 } /* namespace nodes */
 namespace nodesGui {
 	class NodeItem;
+	class PropertyItem;
 } /* namespace nodesGui */
 namespace plugins {
 
@@ -64,6 +67,16 @@ namespace plugins {
 		 * will automatically fall back to the generic solution provided by TakeControl itself
 		 */
 		virtual nodesGui::NodeItem * createNodeItem(const QString & nodeType) const = 0;
+
+		/**
+		 * \ brief tries to create a property from the given property type
+		 */
+		virtual nodes::IPropertyPtr createProperty(const QString & propertyType) const = 0;
+
+		/**
+		 * \brief tries to create a PropertyItem specialization for the given property type
+		 */
+		virtual nodesGui::PropertyItem * createPropertyItem(const QString & propertyType) const = 0;
 	};
 
 } /* namespace plugins */

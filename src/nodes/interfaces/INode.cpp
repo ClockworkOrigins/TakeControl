@@ -18,14 +18,49 @@
 
 #include "nodes/interfaces/INode.h"
 
+#include "nodes/PropertyFactory.h"
+
+#include "nodes/interfaces/IProperty.h"
+
+#include <QJsonArray>
 #include <QJsonObject>
 #include <QVariant>
 
 using namespace tc;
 using namespace tc::nodes;
 
+void INode::read(const QJsonObject & json) {
+    _properties.clear();
+	
+    QJsonArray propertyArray = json["properties"].toArray();
+
+	for (const auto p : propertyArray) {
+        const QJsonObject propertyJson = p.toObject();
+        const QString type = propertyJson["type"].toString();
+
+        IPropertyPtr prop = PropertyFactory::instance()->create(type);
+
+        if (!prop) continue;
+
+        prop->read(propertyJson);
+
+        _properties << prop;
+	}
+}
+
 void INode::write(QJsonObject & json) const {
 	json["type"] = getType();
+
+    QJsonArray propertyArray;
+
+	for (const auto & p : _properties) {
+        QJsonObject propertyJson;
+        p->write(propertyJson);
+
+        propertyArray << propertyJson;
+	}
+
+    json["properties"] = propertyArray;
 }
 
 qint32 INode::getInputCount() const {
@@ -38,4 +73,8 @@ qint32 INode::getOutputCount() const {
 
 QString INode::getOutputLabel(qint32) const {
 	return QString();
+}
+
+QList<IPropertyPtr> INode::getProperties() const {
+    return _properties;
 }

@@ -20,41 +20,41 @@
 
 #include <memory>
 
-#include <QWidget>
+#include "nodesParameters.h"
 
-class QListView;
-class QStandardItemModel;
+class QJsonObject;
 
 namespace tc {
-namespace utils {
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-} /* namespace utils */
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
+namespace nodes {
 
-	class CharacterTab : public QWidget {
+	class TC_NODES_API IProperty : public QObject {
 		Q_OBJECT
 
-		friend class commands::AddCharacterCommand;
-		
 	public:
-		explicit CharacterTab(QWidget * par);
+		virtual ~IProperty() {}
 
-		void updateCharacters();
+		/**
+		 * \brief restores INode from json
+		 * default implementation restores nothing
+		 */
+		virtual void read(const QJsonObject &json) = 0;
 
-	private slots:
-		void addCharacter();
+		/**
+		 * \brief saves INode to json
+		 * default implementation saves the type of the node retrieved via getType()
+		 */
+		virtual void write(QJsonObject & json) const = 0;
 
-		void addedCharacter(const utils::CharacterPtr & character);
-		void removedCharacter(const utils::CharacterPtr & character);
+		/**
+		 * \brief returns type of this property
+		 * used to uniquely identify the property
+		 */
+		virtual QString getType() const = 0;
 
-	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
+	signals:
+		void valueChanged();
 	};
+	typedef std::shared_ptr<IProperty> IPropertyPtr;
 
-} /* namespace client */
+} /* namespace nodes */
 } /* namespace tc */

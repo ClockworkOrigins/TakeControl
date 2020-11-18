@@ -65,6 +65,8 @@ namespace client {
 		void loadProject(const QString & path);
 
 		void adjustTitle();
+
+		void updatePlugin();
 	};
 
 } /* namespace client */

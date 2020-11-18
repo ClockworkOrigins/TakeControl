@@ -16,34 +16,28 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "DialogPool.h"
 
-#include <memory>
+using namespace tc::utils;
 
-#include "utils/utilsParameters.h"
+void DialogPool::setDialogs(const QList<DialogPtr> & dialogs) {
+    _dialogs = dialogs;
 
-#include <QJsonObject>
-#include <QString>
+    emit dialogsChanged();
+}
 
-namespace tc {
-namespace utils {
+QList<DialogPtr> DialogPool::getDialogs() const {
+    return _dialogs;
+}
 
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
+void DialogPool::addDialog(const DialogPtr & dialog) {
+    _dialogs << dialog;
 
-	class TC_UTILS_API Character {
-	public:
-		explicit Character(const QString & name);
+    emit dialogsChanged();
+}
 
-		QString getName() const;
+void DialogPool::removeDialog(const DialogPtr & dialog) {
+    _dialogs.removeAll(dialog);
 
-		QJsonObject save() const;
-
-		static CharacterPtr load(const QJsonObject & json);
-
-	private:
-		QString _name;
-	};
-
-} /* namespace utils */
-} /* namespace tc */
+    emit dialogsChanged();
+}

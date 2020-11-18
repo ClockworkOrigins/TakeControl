@@ -45,4 +45,12 @@ nodesGui::NodeItem * RedSkiesAscensionDemoPlugin::createNodeItem(const QString &
     return nullptr;
 }
 
+nodes::IPropertyPtr RedSkiesAscensionDemoPlugin::createProperty(const QString &) const {
+    return nullptr;
+}
+
+nodesGui::PropertyItem * RedSkiesAscensionDemoPlugin::createPropertyItem(const QString &) const {
+    return nullptr;
+}
+
 Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")
