@@ -18,8 +18,8 @@
 
 #include "redskiesascensiondemoplugin/RedSkiesAscensionDemoPlugin.h"
 
-using namespace tc;
-using namespace tc::plugins;
+using namespace tc::core;
+using namespace tc::gui;
 using namespace tc::plugins::redskiesascensiondemo;
 
 QString RedSkiesAscensionDemoPlugin::getName() const {
@@ -33,23 +33,23 @@ QStringList RedSkiesAscensionDemoPlugin::getSupportedNodes() const {
 	};
 }
 
-nodes::IConditionPtr RedSkiesAscensionDemoPlugin::createCondition(const QString &, const QJsonObject &) const {
+IConditionPtr RedSkiesAscensionDemoPlugin::createCondition(const QString &, const QJsonObject &) const {
 	return nullptr;
 }
 
-nodes::INodePtr RedSkiesAscensionDemoPlugin::createNode(const QString &) const {
+INodePtr RedSkiesAscensionDemoPlugin::createNode(const QString &) const {
 	return nullptr;
 }
 
-nodesGui::NodeItem * RedSkiesAscensionDemoPlugin::createNodeItem(const QString &) const {
+NodeItem * RedSkiesAscensionDemoPlugin::createNodeItem(const QString &) const {
     return nullptr;
 }
 
-nodes::IPropertyPtr RedSkiesAscensionDemoPlugin::createProperty(const QString &) const {
+IPropertyPtr RedSkiesAscensionDemoPlugin::createProperty(const QString &) const {
     return nullptr;
 }
 
-nodesGui::PropertyItem * RedSkiesAscensionDemoPlugin::createPropertyItem(const QString &) const {
+PropertyItem * RedSkiesAscensionDemoPlugin::createPropertyItem(const QString &) const {
     return nullptr;
 }
 

@@ -32,51 +32,44 @@ class QStandardItemModel;
 class QToolButton;
 
 namespace tc {
-namespace nodes {
-	class INode;
-	typedef std::shared_ptr<INode> INodePtr;
-} /* namespace nodes */
-namespace nodesGui {
-	class NodeItem;
-} /* namespace nodesGui */
-namespace plugins {
-	class IGamePlugin;
-} /* namespace plugins */
-namespace utils {
+namespace core {
 	class Dialog;
 	typedef std::shared_ptr<Dialog> DialogPtr;
-} /* namespace utils */
+	
+	class IGamePlugin;
+	
+	class INode;
+	typedef std::shared_ptr<INode> INodePtr;
+} /* namespace core */
+namespace gui {
+	class NodeItem;
+} /* namespace gui */
 namespace client {
-namespace commands {
-	class AddDialogCommand;
-} /* namespace commands */
 
 	class DialogTab final : public QWidget {
 		Q_OBJECT
 
-		friend class commands::AddDialogCommand;
-		
 	public:
 		explicit DialogTab(QWidget * par);
 
-		void setActivePlugin(const plugins::IGamePlugin* plugin);
+		void setActivePlugin(const core::IGamePlugin* plugin);
 
 	private slots:
 		void addDialog();
-		void addNode(const nodes::INodePtr & node);
-		void removeNode(const nodes::INodePtr & node);
+		void addNode(const core::INodePtr & node);
+		void removeNode(const core::INodePtr & node);
 		
 		void updateDialogs();
 
-		void addedDialog(const utils::DialogPtr & dialog);
-		void removedDialog(const utils::DialogPtr & dialog);
+		void addedDialog(const core::DialogPtr & dialog);
+		void removedDialog(const core::DialogPtr & dialog);
 
 	private:
 		QListView * _dialogList = nullptr;
 		QStandardItemModel * _dialogModel = nullptr;
 		QSortFilterProxyModel * _sortModel = nullptr;
 
-		utils::DialogPtr _currentDialog;
+		core::DialogPtr _currentDialog;
 
 		QGraphicsScene * _graphicScene = nullptr;
 		QGraphicsView * _graphicView = nullptr;
@@ -84,16 +77,16 @@ namespace commands {
 		QToolButton * _addNodesButton = nullptr;
 		QMenu * _addNodesMenu = nullptr;
 		
-		const plugins::IGamePlugin* _activePlugin = nullptr;
+		const core::IGamePlugin* _activePlugin = nullptr;
 
-		QMap<nodes::INodePtr, nodesGui::NodeItem *> _nodeItems;
+		QMap<core::INodePtr, gui::NodeItem *> _nodeItems;
 
 		void initGui();
 		void initConnections();
 
 		void openDialog(const QModelIndex & idx);
 		void openDialog(const QString & name);
-		void openDialog(const utils::DialogPtr & dialog);
+		void openDialog(const core::DialogPtr & dialog);
 	};
 
 } /* namespace client */

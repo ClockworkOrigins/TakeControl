@@ -17,7 +17,7 @@ QT5_ADD_TRANSLATION(QT_TRANSLATION_FILES ${TRANS})
 
 ADD_EXECUTABLE(TakeControl ${ClientSrc} ${ClientHeader} ${QT_TRANSLATION_FILES} ${CMAKE_SOURCE_DIR}/resources/resources.qrc)
 
-target_link_libraries(TakeControl TCNodes TCNodesGui TCPlugins TCProjects TCUtils ${QT_LIBRARIES})
+target_link_libraries(TakeControl TCCore TCGui TCPlugins TCUtils ${QT_LIBRARIES})
 
 add_custom_command(TARGET TakeControl POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/de_DE.qm $<TARGET_FILE:TakeControl>/..)
 add_custom_command(TARGET TakeControl POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/en_US.qm $<TARGET_FILE:TakeControl>/..)

@@ -18,25 +18,26 @@
 
 #pragma once
 
-#include "pluginsParameters.h"
+#include "plugins/PluginsParameters.h"
 
 #include <QList>
 
 namespace tc {
+namespace core {
+	class IGamePlugin;
+} /* namespace core */
 namespace plugins {
 
-	class IGamePlugin;
-	
 	class TC_PLUGINS_API PluginLoader {
 	public:
 		PluginLoader();
 
-		QList<IGamePlugin *> getGamePlugins() const;
+		QList<core::IGamePlugin *> getGamePlugins() const;
 
-		const IGamePlugin * getGamePlugin(const QString & type) const;
+		const core::IGamePlugin * getGamePlugin(const QString & type) const;
 
 	private:
-		QList<IGamePlugin *> _gamePlugins;
+		QList<core::IGamePlugin *> _gamePlugins;
 		
 		void loadGamePlugins();
 	};

@@ -23,10 +23,10 @@
 #include <QUndoCommand>
 
 namespace tc {
-namespace utils {
+namespace core {
 	class Character;
 	typedef std::shared_ptr<Character> CharacterPtr;
-} /* namespace utils */
+} /* namespace core */
 namespace client {
 namespace commands {
 
@@ -35,7 +35,7 @@ namespace commands {
 		AddCharacterCommand();
 
 	private:
-		utils::CharacterPtr _character;
+		core::CharacterPtr _character;
 
 		void undo() override;
 		void redo() override;

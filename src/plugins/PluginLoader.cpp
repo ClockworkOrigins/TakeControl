@@ -18,12 +18,13 @@
 
 #include "plugins/PluginLoader.h"
 
-#include "plugins/IGamePlugin.h"
+#include "core/IGamePlugin.h"
 
 #include <QApplication>
 #include <QDir>
 #include <QPluginLoader>
 
+using namespace tc::core;
 using namespace tc::plugins;
 
 PluginLoader::PluginLoader() {

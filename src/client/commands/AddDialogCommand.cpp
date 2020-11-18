@@ -20,17 +20,16 @@
 
 #include <cassert>
 
-#include "utils/Dialog.h"
-#include "utils/DialogPool.h"
+#include "core/Dialog.h"
+#include "core/DialogPool.h"
 
 #include <QApplication>
 #include <QStandardItemModel>
 
-using namespace tc::client;
 using namespace tc::client::commands;
-using namespace tc::utils;
+using namespace tc::core;
 
-AddDialogCommand::AddDialogCommand(DialogTab * dialogTab) : QUndoCommand(QApplication::tr("AddDialog")), _dialogTab(dialogTab) {
+AddDialogCommand::AddDialogCommand() : QUndoCommand(QApplication::tr("AddDialog")) {
 	int number = 1;
 
 	const auto dialogs = DialogPool::instance()->getDialogs();

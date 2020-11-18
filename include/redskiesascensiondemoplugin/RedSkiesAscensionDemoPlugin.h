@@ -18,25 +18,25 @@
 
 #pragma once
 
-#include "plugins/IGamePlugin.h"
+#include "core/IGamePlugin.h"
 
 namespace tc {
 namespace plugins {
 namespace redskiesascensiondemo {
 
-	class RedSkiesAscensionDemoPlugin : public QObject, public IGamePlugin {
+	class RedSkiesAscensionDemoPlugin : public QObject, public core::IGamePlugin {
 		Q_OBJECT
 		Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")
-		Q_INTERFACES(tc::plugins::IGamePlugin)
+		Q_INTERFACES(tc::core::IGamePlugin)
 
 	private:
 		QString getName() const override;
 		QStringList getSupportedNodes() const override;
-		nodes::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const override;
-		nodes::INodePtr createNode(const QString & nodeType) const override;
-		nodesGui::NodeItem * createNodeItem(const QString & nodeType) const override;
-		nodes::IPropertyPtr createProperty(const QString & propertyType) const override;
-		nodesGui::PropertyItem * createPropertyItem(const QString & propertyType) const override;
+		core::IConditionPtr createCondition(const QString & conditionType, const QJsonObject & json) const override;
+		core::INodePtr createNode(const QString & nodeType) const override;
+		gui::NodeItem * createNodeItem(const QString & nodeType) const override;
+		core::IPropertyPtr createProperty(const QString & propertyType) const override;
+		gui::PropertyItem * createPropertyItem(const QString & propertyType) const override;
 	};
 
 } /* namespace redskiesascensiondemo */

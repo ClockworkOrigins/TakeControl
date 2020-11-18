@@ -23,12 +23,12 @@
 #include <QMainWindow>
 
 namespace tc {
-namespace plugins {
-	class PluginLoader;
-}
-namespace projects {
+namespace core {
 	class Project;
 	typedef std::shared_ptr<Project> ProjectPtr;
+} /* namespace core */
+namespace plugins {
+	class PluginLoader;
 }
 namespace client {
 
@@ -51,7 +51,7 @@ namespace client {
 
 	private:
 		plugins::PluginLoader * _pluginLoader;
-		projects::ProjectPtr _project;
+		core::ProjectPtr _project;
 
 		CharacterTab * _characterTab;
 		DialogTab * _dialogTab;

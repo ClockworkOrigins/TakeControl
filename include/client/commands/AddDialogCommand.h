@@ -23,21 +23,19 @@
 #include <QUndoCommand>
 
 namespace tc {
-namespace utils {
+namespace core {
 	class Dialog;
 	typedef std::shared_ptr<Dialog> DialogPtr;
-} /* namespace utils */
+} /* namespace core */
 namespace client {
-	class DialogTab;
 namespace commands {
 
 	class AddDialogCommand : public QUndoCommand {
 	public:
-		AddDialogCommand(DialogTab * dialogTab);
+		AddDialogCommand();
 
 	private:
-		DialogTab * _dialogTab;
-		utils::DialogPtr _dialog;
+		core::DialogPtr _dialog;
 
 		void undo() override;
 		void redo() override;

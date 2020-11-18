@@ -20,8 +20,9 @@
 
 #include "commands/AddCharacterCommand.h"
 
-#include "utils/Character.h"
-#include "utils/CharacterPool.h"
+#include "core/Character.h"
+#include "core/CharacterPool.h"
+
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -33,6 +34,7 @@
 
 using namespace tc::client;
 using namespace tc::client::commands;
+using namespace tc::core;
 using namespace tc::utils;
 
 CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr), _characterModel(nullptr) {

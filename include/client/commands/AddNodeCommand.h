@@ -23,31 +23,29 @@
 #include <QUndoCommand>
 
 namespace tc {
-namespace nodes {
+namespace core {
+	class Dialog;
+	typedef std::shared_ptr<Dialog> DialogPtr;
+	
 	class INode;
 	typedef std::shared_ptr<INode> INodePtr;
 } /* namespace utils */
-namespace utils {
-	class Dialog;
-	typedef std::shared_ptr<Dialog> DialogPtr;
-} /* namespace utils */
 namespace client {
-	class DialogTab;
 namespace commands {
 
 	class AddNodeCommand : public QObject, public QUndoCommand {
 		Q_OBJECT
 		
 	public:
-		AddNodeCommand(const utils::DialogPtr & dialog, const QString & nodeType);
+		AddNodeCommand(const core::DialogPtr & dialog, const QString & nodeType);
 
 	signals:
-		void addedNode(const nodes::INodePtr & node);
-		void removedNode(const nodes::INodePtr & node);
+		void addedNode(const core::INodePtr & node);
+		void removedNode(const core::INodePtr & node);
 
 	private:
-		utils::DialogPtr _dialog;
-		nodes::INodePtr _node;
+		core::DialogPtr _dialog;
+		core::INodePtr _node;
 
 		void undo() override;
 		void redo() override;

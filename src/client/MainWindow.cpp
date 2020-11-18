@@ -20,22 +20,21 @@
 
 #include "CharacterTab.h"
 #include "DialogTab.h"
+#include "NewProjectDialog.h"
 #include "TakeControlConfig.h"
 
-#include "nodes/ConditionFactory.h"
-#include "nodes/NodeFactory.h"
+#include "core/CharacterPool.h"
+#include "core/ConditionFactory.h"
+#include "core/DialogPool.h"
+#include "core/IGamePlugin.h"
+#include "core/NodeFactory.h"
+#include "core/Project.h"
 
-#include "nodesGui/NodeItemFactory.h"
-#include "nodesGui/PropertyItemFactory.h"
+#include "gui/NodeItemFactory.h"
+#include "gui/PropertyItemFactory.h"
 
-#include "plugins/IGamePlugin.h"
 #include "plugins/PluginLoader.h"
 
-#include "projects/NewProjectDialog.h"
-#include "projects/Project.h"
-
-#include "utils/CharacterPool.h"
-#include "utils/DialogPool.h"
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -43,10 +42,9 @@
 #include <QMenuBar>
 
 using namespace tc::client;
-using namespace tc::nodes;
-using namespace tc::nodesGui;
+using namespace tc::core;
+using namespace tc::gui;
 using namespace tc::plugins;
-using namespace tc::projects;
 using namespace tc::utils;
 
 MainWindow::MainWindow() : _pluginLoader(new PluginLoader()), _characterTab(nullptr), _dialogTab(nullptr) {

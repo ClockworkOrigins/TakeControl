@@ -21,13 +21,13 @@
 #include "commands/AddDialogCommand.h"
 #include "commands/AddNodeCommand.h"
 
-#include "nodesGui/NodeItem.h"
-#include "nodesGui/NodeItemFactory.h"
+#include "core/Dialog.h"
+#include "core/DialogPool.h"
+#include "core/IGamePlugin.h"
 
-#include "plugins/IGamePlugin.h"
+#include "gui/NodeItem.h"
+#include "gui/NodeItemFactory.h"
 
-#include "utils/Dialog.h"
-#include "utils/DialogPool.h"
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -43,9 +43,8 @@
 
 using namespace tc::client;
 using namespace tc::client::commands;
-using namespace tc::nodes;
-using namespace tc::nodesGui;
-using namespace tc::plugins;
+using namespace tc::core;
+using namespace tc::gui;
 using namespace tc::utils;
 
 DialogTab::DialogTab(QWidget * par) : QWidget(par) {
@@ -82,7 +81,7 @@ void DialogTab::setActivePlugin(const IGamePlugin* plugin) {
 }
 
 void DialogTab::addDialog() {
-	auto * cmd = new AddDialogCommand(this);
+	auto * cmd = new AddDialogCommand();
 	UndoStack::instance()->push(cmd);
 }
 

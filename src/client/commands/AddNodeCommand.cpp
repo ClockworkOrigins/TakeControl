@@ -18,18 +18,13 @@
 
 #include "commands/AddNodeCommand.h"
 
-#include "DialogTab.h"
-
-#include "nodes/NodeFactory.h"
-
-#include "utils/Dialog.h"
+#include "core/Dialog.h"
+#include "core/NodeFactory.h"
 
 #include <QApplication>
 
-using namespace tc::client;
 using namespace tc::client::commands;
-using namespace tc::nodes;
-using namespace tc::utils;
+using namespace tc::core;
 
 AddNodeCommand::AddNodeCommand(const DialogPtr & dialog, const QString & nodeType) : QUndoCommand(QApplication::tr("AddNode")), _dialog(dialog) {
     _node = NodeFactory::instance()->create(nodeType);

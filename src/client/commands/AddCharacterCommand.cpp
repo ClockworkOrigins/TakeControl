@@ -20,15 +20,15 @@
 
 #include <cassert>
 
-#include "utils/Character.h"
-#include "utils/CharacterPool.h"
+#include "core/Character.h"
+#include "core/CharacterPool.h"
 
 #include <QApplication>
 #include <QStandardItemModel>
 
 using namespace tc::client;
 using namespace tc::client::commands;
-using namespace tc::utils;
+using namespace tc::core;
 
 AddCharacterCommand::AddCharacterCommand() : QUndoCommand(QApplication::tr("AddCharacter")) {
 	int number = 1;

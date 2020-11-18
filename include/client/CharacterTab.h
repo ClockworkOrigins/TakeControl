@@ -26,10 +26,10 @@ class QListView;
 class QStandardItemModel;
 
 namespace tc {
-namespace utils {
+namespace core {
 	class Character;
 	typedef std::shared_ptr<Character> CharacterPtr;
-} /* namespace utils */
+} /* namespace core */
 namespace client {
 namespace commands {
 	class AddCharacterCommand;
@@ -37,8 +37,6 @@ namespace commands {
 
 	class CharacterTab : public QWidget {
 		Q_OBJECT
-
-		friend class commands::AddCharacterCommand;
 		
 	public:
 		explicit CharacterTab(QWidget * par);
@@ -48,8 +46,8 @@ namespace commands {
 	
 		void addCharacter();
 
-		void addedCharacter(const utils::CharacterPtr & character);
-		void removedCharacter(const utils::CharacterPtr & character);
+		void addedCharacter(const core::CharacterPtr & character);
+		void removedCharacter(const core::CharacterPtr & character);
 
 	private:
 		QListView * _characterList;

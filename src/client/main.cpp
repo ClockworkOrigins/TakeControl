@@ -18,12 +18,12 @@
 
 #include "MainWindow.h"
 
-#include "utils/Config.h"
+#include "core/Config.h"
 
 #include <QApplication>
 
 using namespace tc::client;
-using namespace tc::utils;
+using namespace tc::core;
 
 int main(int argc, char ** argv) {
 	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

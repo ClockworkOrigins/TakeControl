@@ -18,9 +18,8 @@
 
 #pragma once
 
-#include "Singleton.h"
-
-#include "utilsParameters.h"
+#include "utils/Singleton.h"
+#include "utils/UtilsParameters.h"
 
 #include <QUndoStack>
 
