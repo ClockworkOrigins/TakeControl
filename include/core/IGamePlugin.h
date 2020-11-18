@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <memory>
+#include "core/CoreTypes.h"
 
 #include <QtPlugin>
 
@@ -28,13 +28,6 @@ namespace gui {
 	class PropertyItem;
 } /* namespace gui */
 namespace core {
-
-	class ICondition;
-	class INode;
-	class IProperty;
-	typedef std::shared_ptr<ICondition> IConditionPtr;
-	typedef std::shared_ptr<INode> INodePtr;
-	typedef std::shared_ptr<IProperty> IPropertyPtr;
 	
 	class IGamePlugin {
 	public:

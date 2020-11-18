@@ -19,14 +19,12 @@
 #pragma once
 
 #include "core/CoreParameters.h"
-#include "core/ICondition.h"
+#include "core/CoreTypes.h"
 
 #include "utils/Singleton.h"
 
 namespace tc {
 namespace core {
-	
-	class IGamePlugin;
 
 	class TC_CORE_API ConditionFactory : public utils::Singleton<ConditionFactory> {
 		friend class utils::Singleton<ConditionFactory>;

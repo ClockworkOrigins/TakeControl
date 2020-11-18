@@ -18,17 +18,13 @@
 
 #pragma once
 
-#include <memory>
-
 #include "core/CoreParameters.h"
+#include "core/CoreTypes.h"
 
 class QJsonObject;
 
 namespace tc {
 namespace core {
-
-	class IProperty;
-	typedef std::shared_ptr<IProperty> IPropertyPtr;
 
 	class TC_CORE_API INode {
 	public:
@@ -78,7 +74,6 @@ namespace core {
 	protected:
 		QList<IPropertyPtr> _properties;
 	};
-	typedef std::shared_ptr<INode> INodePtr;
 
 } /* namespace core */
 } /* namespace tc */

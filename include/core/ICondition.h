@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include <memory>
-
 #include "core/CoreParameters.h"
 
 class QJsonObject;
@@ -38,7 +36,6 @@ namespace core {
 
 		virtual QString getType() const = 0;
 	};
-	typedef std::shared_ptr<ICondition> IConditionPtr;
 
 } /* namespace core */
 } /* namespace tc */

@@ -21,6 +21,7 @@
 #include <memory>
 
 #include "core/CoreParameters.h"
+#include "core/CoreTypes.h"
 
 #include "utils/Singleton.h"
 
@@ -29,9 +30,6 @@
 
 namespace tc {
 namespace core {
-
-	class Dialog;
-	typedef std::shared_ptr<Dialog> DialogPtr;
 
 	class TC_CORE_API DialogPool : public QObject, public utils::Singleton<DialogPool> {
 		Q_OBJECT

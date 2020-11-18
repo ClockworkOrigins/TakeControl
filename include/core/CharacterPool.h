@@ -21,6 +21,7 @@
 #include <memory>
 
 #include "core/CoreParameters.h"
+#include "core/CoreTypes.h"
 
 #include "utils/Singleton.h"
 
@@ -29,9 +30,6 @@
 
 namespace tc {
 namespace core {
-
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
 
 	class TC_CORE_API CharacterPool : public QObject, public utils::Singleton<CharacterPool> {
 		Q_OBJECT

@@ -21,17 +21,12 @@
 #include <memory>
 
 #include "core/CoreParameters.h"
+#include "core/CoreTypes.h"
 
 #include <QString>
 
 namespace tc {
 namespace core {
-	
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-	
-	class Dialog;
-	typedef std::shared_ptr<Dialog> DialogPtr;
 
 	class TC_CORE_API Project {
 	public:
@@ -51,7 +46,6 @@ namespace core {
 		QString _name;
 		QString _type;
 	};
-	typedef std::shared_ptr<Project> ProjectPtr;
 
 } /* namespace core */
 } /* namespace tc */

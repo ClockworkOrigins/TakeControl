@@ -21,15 +21,13 @@
 #include <memory>
 
 #include "core/CoreParameters.h"
+#include "core/CoreTypes.h"
 
 #include <QJsonObject>
 #include <QString>
 
 namespace tc {
 namespace core {
-
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
 
 	class TC_CORE_API Character {
 	public:

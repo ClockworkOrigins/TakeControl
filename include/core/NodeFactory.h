@@ -27,8 +27,6 @@ class QJsonObject;
 
 namespace tc {
 namespace core {
-	
-	class IGamePlugin;
 
 	class TC_CORE_API NodeFactory : public utils::Singleton<NodeFactory> {
 		friend class utils::Singleton<NodeFactory>;

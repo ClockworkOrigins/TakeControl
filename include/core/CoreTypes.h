@@ -18,25 +18,30 @@
 
 #pragma once
 
-#include "core/CoreParameters.h"
-#include "core/CoreTypes.h"
-
-#include "utils/Singleton.h"
+#include <memory>
 
 namespace tc {
 namespace core {
 
-	class TC_CORE_API PropertyFactory : public utils::Singleton<PropertyFactory> {
-		friend class utils::Singleton<PropertyFactory>;
-		
-	public:
-		IPropertyPtr create(const QString & type) const;
+	class Character;
+	typedef std::shared_ptr<Character> CharacterPtr;
 
-		void setActivePlugin(const IGamePlugin * plugin);
+    class Dialog;
+    typedef std::shared_ptr<Dialog> DialogPtr;
 
-	private:
-		const IGamePlugin * _activePlugin = nullptr;
-	};
+    class ICondition;
+    typedef std::shared_ptr<ICondition> IConditionPtr;
+
+    class IGamePlugin;
+
+    class INode;
+    typedef std::shared_ptr<INode> INodePtr;
+
+    class IProperty;
+    typedef std::shared_ptr<IProperty> IPropertyPtr;
+
+    class Project;
+    typedef std::shared_ptr<Project> ProjectPtr;
 
 } /* namespace core */
 } /* namespace tc */

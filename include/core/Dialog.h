@@ -21,6 +21,7 @@
 #include <memory>
 
 #include "core/CoreParameters.h"
+#include "core/CoreTypes.h"
 
 #include <QJsonObject>
 #include <QList>
@@ -28,12 +29,6 @@
 
 namespace tc {
 namespace core {
-
-	class Dialog;
-	typedef std::shared_ptr<Dialog> DialogPtr;
-	
-	class INode;
-	typedef std::shared_ptr<INode> INodePtr;
 
 	class TC_CORE_API Dialog {
 	public:

@@ -18,15 +18,13 @@
 
 #pragma once
 
-#include "INode.h"
+#include "core/CoreTypes.h"
+#include "core/INode.h"
 
 class QJsonObject;
 
 namespace tc {
 namespace core {
-
-	class ICondition;
-	typedef std::shared_ptr<ICondition> IConditionPtr;
 
 	class ConditionNode : public INode {
 	public:

@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include <memory>
-
 #include "core/CoreParameters.h"
 
 class QJsonObject;
@@ -54,7 +52,6 @@ namespace core {
 	signals:
 		void valueChanged();
 	};
-	typedef std::shared_ptr<IProperty> IPropertyPtr;
 
 } /* namespace core */
 } /* namespace tc */
