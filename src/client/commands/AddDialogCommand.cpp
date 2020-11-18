@@ -20,9 +20,8 @@
 
 #include <cassert>
 
-#include "DialogTab.h"
-
 #include "utils/Dialog.h"
+#include "utils/DialogPool.h"
 
 #include <QApplication>
 #include <QStandardItemModel>
@@ -34,7 +33,11 @@ using namespace tc::utils;
 AddDialogCommand::AddDialogCommand(DialogTab * dialogTab) : QUndoCommand(QApplication::tr("AddDialog")), _dialogTab(dialogTab) {
 	int number = 1;
 
-	while (std::find_if(_dialogTab->_dialogs.begin(), _dialogTab->_dialogs.end(), [number](const std::shared_ptr<Dialog> & c) { return c->getName() == QString("New Dialog %1").arg(number); }) != _dialogTab->_dialogs.end()) {
+	const auto dialogs = DialogPool::instance()->getDialogs();
+
+	while (std::find_if(dialogs.begin(), dialogs.end(), [number](const std::shared_ptr<Dialog> & c) {
+		return c->getName() == QString("New Dialog %1").arg(number);
+	}) != dialogs.end()) {
 		number++;
 	}
 	
@@ -42,17 +45,9 @@ AddDialogCommand::AddDialogCommand(DialogTab * dialogTab) : QUndoCommand(QApplic
 }
 
 void AddDialogCommand::redo() {
-	_dialogTab->_dialogs.append(_dialog);
-
-	_dialogTab->_dialogModel->appendRow(new QStandardItem(_dialog->getName()));
+	DialogPool::instance()->addDialog(_dialog);
 }
 
 void AddDialogCommand::undo() {
-	const int idx = _dialogTab->_dialogs.indexOf(_dialog);
-
-	assert(idx == _dialogTab->_dialogs.size() - 1);
-
-	_dialogTab->_dialogModel->removeRows(idx, 1);
-
-	_dialogTab->_dialogs.pop_back();
+	DialogPool::instance()->removeDialog(_dialog);
 }

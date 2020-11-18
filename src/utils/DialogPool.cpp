@@ -33,11 +33,11 @@ QList<DialogPtr> DialogPool::getDialogs() const {
 void DialogPool::addDialog(const DialogPtr & dialog) {
     _dialogs << dialog;
 
-    emit dialogsChanged();
+    emit dialogAdded(dialog);
 }
 
 void DialogPool::removeDialog(const DialogPtr & dialog) {
     _dialogs.removeAll(dialog);
 
-    emit dialogsChanged();
+    emit dialogRemoved(dialog);
 }

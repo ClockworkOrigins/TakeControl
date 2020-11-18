@@ -35,6 +35,7 @@
 #include "projects/Project.h"
 
 #include "utils/CharacterPool.h"
+#include "utils/DialogPool.h"
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -75,7 +76,7 @@ void MainWindow::createNewProject() {
 	if (!_project) return;
 
 	CharacterPool::instance()->setCharacters({});
-	_dialogTab->setDialogs({});
+	DialogPool::instance()->setDialogs({});
 
 	updatePlugin();
 	
@@ -86,7 +87,7 @@ void MainWindow::saveProject() {
 	if (!_project) return;
 
 	const auto characterList = CharacterPool::instance()->getCharacters();
-	const auto dialogList = _dialogTab->getDialogs();
+	const auto dialogList = DialogPool::instance()->getDialogs();
 	
 	_project->save(characterList, dialogList);
 
@@ -172,7 +173,7 @@ void MainWindow::loadProject(const QString & path) {
 	_project->load(path, characters, dialogs);
 
 	CharacterPool::instance()->setCharacters(characters);
-	_dialogTab->setDialogs(dialogs);
+	DialogPool::instance()->setDialogs(dialogs);
 
 	updatePlugin();
 

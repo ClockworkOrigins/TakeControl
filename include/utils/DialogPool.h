@@ -16,9 +16,12 @@
  */
 // Copyright 2020 Clockwork Origins
 
+#pragma once
+
 #include <memory>
 
 #include "utils/Singleton.h"
+#include "utils/utilsParameters.h"
 
 #include <QList>
 #include <QObject>
@@ -29,7 +32,7 @@ namespace utils {
 	class Dialog;
 	typedef std::shared_ptr<Dialog> DialogPtr;
 
-	class DialogPool : public QObject, public Singleton<DialogPool> {
+	class TC_UTILS_API DialogPool : public QObject, public Singleton<DialogPool> {
 		Q_OBJECT
 
 		friend class Singleton<DialogPool>;
@@ -43,6 +46,8 @@ namespace utils {
 
 	signals:
 		void dialogsChanged();
+		void dialogAdded(const DialogPtr & dialog);
+		void dialogRemoved(const DialogPtr & dialog);
 
 	private:
 		QList<DialogPtr> _dialogs;

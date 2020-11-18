@@ -59,21 +59,22 @@ namespace commands {
 	public:
 		explicit DialogTab(QWidget * par);
 
-		QList<utils::DialogPtr> getDialogs() const;
-		void setDialogs(const QList<utils::DialogPtr> & dialogs);
-
 		void setActivePlugin(const plugins::IGamePlugin* plugin);
 
 	private slots:
 		void addDialog();
 		void addNode(const nodes::INodePtr & node);
 		void removeNode(const nodes::INodePtr & node);
+		
+		void updateDialogs();
+
+		void addedDialog(const utils::DialogPtr & dialog);
+		void removedDialog(const utils::DialogPtr & dialog);
 
 	private:
 		QListView * _dialogList = nullptr;
 		QStandardItemModel * _dialogModel = nullptr;
 		QSortFilterProxyModel * _sortModel = nullptr;
-		QList<utils::DialogPtr> _dialogs;
 
 		utils::DialogPtr _currentDialog;
 

@@ -27,6 +27,7 @@
 #include "plugins/IGamePlugin.h"
 
 #include "utils/Dialog.h"
+#include "utils/DialogPool.h"
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -50,19 +51,6 @@ using namespace tc::utils;
 DialogTab::DialogTab(QWidget * par) : QWidget(par) {
 	initGui();
 	initConnections();
-}
-
-QList<DialogPtr> DialogTab::getDialogs() const {
-	return _dialogs;
-}
-
-void DialogTab::setDialogs(const QList<DialogPtr> & dialogs) {
-	_dialogs = dialogs;
-	_dialogModel->clear();
-	
-	for (const auto & d : dialogs) {
-		_dialogModel->appendRow(new QStandardItem(d->getName()));
-	}
 }
 
 void DialogTab::setActivePlugin(const IGamePlugin* plugin) {
@@ -113,6 +101,27 @@ void DialogTab::removeNode(const INodePtr & node) {
 	delete it.value();
 
 	_nodeItems.erase(it);
+}
+
+void DialogTab::updateDialogs() {
+	_dialogModel->clear();
+
+	for (const auto & d : DialogPool::instance()->getDialogs()) {
+		_dialogModel->appendRow(new QStandardItem(d->getName()));
+	}
+}
+
+void DialogTab::addedDialog(const DialogPtr & dialog) {
+	_dialogModel->appendRow(new QStandardItem(dialog->getName()));
+}
+
+void DialogTab::removedDialog(const DialogPtr & dialog) {
+	const auto itemList = _dialogModel->findItems(dialog->getName());
+
+	for (const auto & item : itemList) {
+		const auto idx = _dialogModel->indexFromItem(item);
+		_dialogModel->removeRows(idx.row(), 1);
+	}
 }
 
 void DialogTab::initGui() {
@@ -179,6 +188,10 @@ void DialogTab::initGui() {
 
 void DialogTab::initConnections() {
 	connect(_dialogList, &QListView::doubleClicked, this, QOverload<const QModelIndex &>::of(&DialogTab::openDialog));
+
+	connect(DialogPool::instance(), &DialogPool::dialogsChanged, this, &DialogTab::updateDialogs);
+	connect(DialogPool::instance(), &DialogPool::dialogAdded, this, &DialogTab::addedDialog);
+	connect(DialogPool::instance(), &DialogPool::dialogRemoved, this, &DialogTab::removedDialog);
 }
 
 void DialogTab::openDialog(const QModelIndex & idx) {
@@ -187,22 +200,26 @@ void DialogTab::openDialog(const QModelIndex & idx) {
 	const auto sourceIdx = _sortModel->mapToSource(idx);
 
 	const int row = sourceIdx.row();
+
+	const auto dialogs = DialogPool::instance()->getDialogs();
 	
-	Q_ASSERT(row < _dialogs.count());
+	Q_ASSERT(row < dialogs.count());
 
-	if (row >= _dialogs.count()) return;
+	if (row >= dialogs.count()) return;
 
-	openDialog(_dialogs[row]);
+	openDialog(dialogs[row]);
 }
 
 void DialogTab::openDialog(const QString & name) {
-	const auto it = std::find_if(_dialogs.begin(), _dialogs.end(), [name](const DialogPtr& d) {
+	const auto dialogs = DialogPool::instance()->getDialogs();
+	
+	const auto it = std::find_if(dialogs.begin(), dialogs.end(), [name](const DialogPtr& d) {
 		return name == d->getName();
 	});
 
-	Q_ASSERT(it != _dialogs.end());
+	Q_ASSERT(it != dialogs.end());
 
-	if (it == _dialogs.end()) return;
+	if (it == dialogs.end()) return;
 
 	openDialog(*it);
 }

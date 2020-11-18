@@ -43,9 +43,9 @@ namespace commands {
 	public:
 		explicit CharacterTab(QWidget * par);
 
-		void updateCharacters();
-
 	private slots:
+		void updateCharacters();
+	
 		void addCharacter();
 
 		void addedCharacter(const utils::CharacterPtr & character);
