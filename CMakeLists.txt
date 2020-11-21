@@ -1,4 +1,6 @@
-cmake_minimum_required (VERSION 3.7.0)
+cmake_minimum_required (VERSION 3.12.0)
+
+set(CMAKE_CXX_STANDARD 11)
 
 #########################################################################
 #########################################################################
@@ -6,6 +8,8 @@ cmake_minimum_required (VERSION 3.7.0)
 # Global Build Configuration Options
 #
 #########################################################################
+
+OPTION(WITH_TESTS "builds with unittests" OFF)
 
 project(TakeControl CXX)
 
@@ -27,6 +31,8 @@ IF(WIN32)
 	SET(CMAKE_CXX_FLAGS_MINSIZEREL		"${CMAKE_CXX_FLAGS_MINSIZEREL} /bigobj /D_WIN32_WINNT=0x0501")
 ENDIF(WIN32)
 
+SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
+
 #########################################################################
 # Library Section
 #########################################################################
@@ -45,3 +51,9 @@ SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTORCC ON)
 
 ADD_SUBDIRECTORY(src)
+
+IF(WITH_TESTS)
+	ENABLE_TESTING()
+
+	ADD_SUBDIRECTORY(tests)
+ENDIF(WITH_TESTS)

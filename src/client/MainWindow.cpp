@@ -48,7 +48,7 @@ using namespace tc::plugins;
 using namespace tc::utils;
 
 MainWindow::MainWindow() : _pluginLoader(new PluginLoader()), _characterTab(nullptr), _dialogTab(nullptr) {
-	setWindowTitle(QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING)));
+	adjustTitle();
 
 	createFileMenu();
 	createEditMenu();
@@ -179,7 +179,7 @@ void MainWindow::loadProject(const QString & path) {
 }
 
 void MainWindow::adjustTitle() {
-	auto title = QString("TakeControl %1").arg(QString::fromStdString(VERSION_STRING));
+	auto title = QString("TakeControl %1").arg(VERSION_STRING);
 	
 	if (_project) {
 		title.prepend(_project->getName() + " - ");
