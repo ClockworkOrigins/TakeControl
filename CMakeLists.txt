@@ -23,15 +23,8 @@ INCLUDE(cmake/common.cmake)
 INCLUDE(cmake/variables.cmake)
 
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin)
-
-IF(WIN32)
-	SET(CMAKE_CXX_FLAGS_DEBUG		"${CMAKE_CXX_FLAGS_DEBUG} /bigobj /D_WIN32_WINNT=0x0501")
-	SET(CMAKE_CXX_FLAGS_RELEASE		"${CMAKE_CXX_FLAGS_RELEASE} /DTakeControl_RELEASE /bigobj /D_WIN32_WINNT=0x0501")
-	SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO		"${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /bigobj /DQT_FORCE_ASSERTS /D_WIN32_WINNT=0x0501")
-	SET(CMAKE_CXX_FLAGS_MINSIZEREL		"${CMAKE_CXX_FLAGS_MINSIZEREL} /bigobj /D_WIN32_WINNT=0x0501")
-ENDIF(WIN32)
-
-SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
+execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin/Debug)
+execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin/Release)
 
 #########################################################################
 # Library Section
