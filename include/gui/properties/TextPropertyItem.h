@@ -20,34 +20,33 @@
 
 #include <memory>
 
+#include "core/CoreTypes.h"
+
+#include "gui/PropertyItem.h"
+
+class QGraphicsProxyWidget;
+class QLineEdit;
+
 namespace tc {
-namespace core {
+namespace gui {
 
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-	
-    class CharacterProperty;
-    typedef std::shared_ptr<CharacterProperty> CharacterPropertyPtr;
+	class TC_GUI_API TextPropertyItem : public QObject, public PropertyItem {
+	public:
+        TextPropertyItem();
+		
+        void configure(const core::IPropertyPtr & prop) override;
 
-    class Dialog;
-    typedef std::shared_ptr<Dialog> DialogPtr;
+    protected:
+        QRectF boundingRect() const override;
+		void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
 
-    class ICondition;
-    typedef std::shared_ptr<ICondition> IConditionPtr;
+    private:
+        core::TextPropertyPtr _property;
+        QGraphicsProxyWidget * _graphicsProxyWidget = nullptr;
+        QLineEdit * _lineEdit = nullptr;
 
-    class IGamePlugin;
+        QRectF _boundingRect;
+	};
 
-    class INode;
-    typedef std::shared_ptr<INode> INodePtr;
-
-    class IProperty;
-    typedef std::shared_ptr<IProperty> IPropertyPtr;
-
-    class Project;
-    typedef std::shared_ptr<Project> ProjectPtr;
-
-    class TextProperty;
-    typedef std::shared_ptr<TextProperty> TextPropertyPtr;
-
-} /* namespace core */
+} /* namespace gui */
 } /* namespace tc */

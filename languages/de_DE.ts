@@ -63,5 +63,9 @@
         <source>AddNode</source>
         <translation>Node hinzufügen</translation>
     </message>
+    <message>
+        <source>ChangeText</source>
+        <translation>Text ändern</translation>
+    </message>
 </context>
 </TS>

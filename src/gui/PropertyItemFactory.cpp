@@ -18,7 +18,8 @@
 
 #include "PropertyItemFactory.h"
 
-#include "CharacterPropertyItem.h"
+#include "properties/CharacterPropertyItem.h"
+#include "properties/TextPropertyItem.h"
 
 #include "core/IGamePlugin.h"
 #include "core/IProperty.h"
@@ -37,9 +38,13 @@ PropertyItem * PropertyItemFactory::create(const IPropertyPtr & prop) const {
 		propertyItem = new CharacterPropertyItem();
 	}
 
+	if (type == "Text") {
+		propertyItem = new TextPropertyItem();
+	}
+
 	// if no built-in node matches, try plugin nodes
 
-	if (!propertyItem) {
+	if (!propertyItem && _activePlugin) {
 		propertyItem = _activePlugin->createPropertyItem(type);
 	}
 

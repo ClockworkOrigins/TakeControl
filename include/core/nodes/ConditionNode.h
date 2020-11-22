@@ -21,8 +21,6 @@
 #include "core/CoreTypes.h"
 #include "core/INode.h"
 
-class QJsonObject;
-
 namespace tc {
 namespace core {
 

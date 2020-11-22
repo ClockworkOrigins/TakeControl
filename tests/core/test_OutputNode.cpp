@@ -16,30 +16,43 @@
  */
  // Copyright 2020 Clockwork Origins
 
-#include "Character.h"
+#include "nodes/OutputNode.h"
 
 #include "TakeControlConfig.h"
+
+#include "IProperty.h"
 
 #include "gtest/gtest.h"
 
 #include <QFile>
 #include <QJsonDocument>
+#include <QJsonObject>
 
 using namespace tc::core;
 
-TEST(Character, ctor) {
-	const Character c("Test");
-	ASSERT_EQ("Test", c.getName());
+TEST(OutputNode, ctor) {
+	const INodePtr outputNode = std::make_shared<OutputNode>();
+
+	const auto properties = outputNode->getProperties();
+	
+	ASSERT_EQ(2, properties.count());
+	ASSERT_EQ("Character", properties[0]->getType());
+	ASSERT_EQ("Text", properties[1]->getType());
+
+	const auto type = outputNode->getType();
+
+	ASSERT_EQ("Output", type);
 }
 
-TEST(Character, save) {
-	const Character c("SaveTest");
+TEST(OutputNode, save) {
+	const OutputNode outputNode;
 	
-	const QJsonObject json = c.save();
+	QJsonObject json;
+	outputNode.write(json);
 	const QJsonDocument jsonDoc(json);
 	const auto jsonData = jsonDoc.toJson();
 
-	QFile referenceFile(TESTFOLDER + "/core/resources/Character/save.json");
+	QFile referenceFile(TESTFOLDER + "/core/resources/OutputNode/save.json");
 	ASSERT_TRUE(referenceFile.open(QIODevice::ReadOnly));
 
 	const auto referenceData = referenceFile.readAll();
@@ -47,8 +60,8 @@ TEST(Character, save) {
 	ASSERT_EQ(referenceData, jsonData);
 }
 
-TEST(Character, load) {
-	QFile referenceFile(TESTFOLDER + "/core/resources/Character/load.json");
+TEST(OutputNode, load) {
+	QFile referenceFile(TESTFOLDER + "/core/resources/OutputNode/load.json");
 	ASSERT_TRUE(referenceFile.open(QIODevice::ReadOnly));
 
 	const auto referenceData = referenceFile.readAll();
@@ -56,8 +69,12 @@ TEST(Character, load) {
 	const auto jsonDoc = QJsonDocument::fromJson(referenceData);
 	const auto json = jsonDoc.object();
 
-	const auto c = Character::load(json);
-	ASSERT_TRUE(c);
+	OutputNode outputNode;
+	outputNode.read(json);
 
-	ASSERT_EQ("LoadTest", c->getName());
+	const auto properties = outputNode.getProperties();
+
+	ASSERT_EQ(2, properties.count());
+	ASSERT_EQ("Character", properties[0]->getType());
+	ASSERT_EQ("Text", properties[1]->getType());
 }

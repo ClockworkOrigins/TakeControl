@@ -22,6 +22,7 @@
 
 #include "nodes/AndNode.h"
 #include "nodes/OrNode.h"
+#include "nodes/OutputNode.h"
 
 #include <QJsonObject>
 
@@ -52,9 +53,13 @@ INodePtr NodeFactory::create(const QString & type) const {
 		nodePtr = std::make_shared<OrNode>();
 	}
 
+	if (type == "Output") {
+		nodePtr = std::make_shared<OutputNode>();
+	}
+
 	// if no built-in node matches, try plugin nodes
 
-	if (!nodePtr) {
+	if (!nodePtr && _activePlugin) {
 		nodePtr = _activePlugin->createNode(type);
 	}
 

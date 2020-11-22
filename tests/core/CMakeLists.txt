@@ -11,6 +11,7 @@ ADD_EXECUTABLE(CoreTests ${CoreTestsSrc} ${CoreTestsGuiHeader})
 target_link_libraries(CoreTests debug ${GTEST_DEBUG_LIBRARIES} optimized ${GTEST_RELEASE_LIBRARIES})
 target_link_libraries(CoreTests ${QT_LIBRARIES})
 target_link_libraries(CoreTests TCCore)
+target_link_libraries(CoreTests TCUtils)
 
 set_target_properties(
 	CoreTests PROPERTIES FOLDER Tests

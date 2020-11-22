@@ -16,20 +16,17 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/OrNode.h"
+#include "nodes/OutputNode.h"
+
+#include "PropertyFactory.h"
 
 using namespace tc::core;
 
-OrNode::OrNode() : ConditionNode() {}
-
-void OrNode::read(const QJsonObject & json) {	
-	ConditionNode::read(json);
+OutputNode::OutputNode() : INode() {
+	_properties << PropertyFactory::instance()->create("Character");
+	_properties << PropertyFactory::instance()->create("Text");
 }
 
-void OrNode::write(QJsonObject & json) const {
-	ConditionNode::write(json);
-}
-
-QString OrNode::getType() const {
-	return "Or";
+QString OutputNode::getType() const {
+    return "Output";
 }

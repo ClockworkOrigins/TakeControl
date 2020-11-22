@@ -16,32 +16,43 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "ConditionFactory.h"
+#include "properties/TextProperty.h"
 
-#include "IGamePlugin.h"
+#include "commands/SetTextPropertyValueCommand.h"
+
+#include "utils/UndoStack.h"
 
 #include <QJsonObject>
 
 using namespace tc::core;
+using namespace tc::utils;
 
-IConditionPtr ConditionFactory::create(const QJsonObject & json) const {
-	if (!json.contains("type")) return nullptr;
-	
-	const auto conditionType = json["type"].toString();
+TextProperty::TextProperty() : IProperty(), _value(getDefaultValue()) {}
 
-    IConditionPtr condition;
-	
-	// TODO: add built-in conditions
+void TextProperty::setValue(const QString & value) {
+    if (_value == value) return;
 
-	// if no built-in condition matches, try plugin conditions
-
-	if (!condition && _activePlugin) {
-		condition = _activePlugin->createCondition(conditionType, json);
-	}
-
-	return condition;
+    auto * cmd = new SetTextPropertyValueCommand(this, value);
+    UndoStack::instance()->push(cmd);
 }
 
-void ConditionFactory::setActivePlugin(const IGamePlugin * plugin) {
-	_activePlugin = plugin;
+QString TextProperty::getValue() const {
+    return _value;
+}
+
+void TextProperty::read(const QJsonObject & json) {
+    _value = json["value"].toString();
+}
+
+void TextProperty::write(QJsonObject & json) const {
+	IProperty::write(json);
+    json["value"] = _value;
+}
+
+QString TextProperty::getType() const {
+	return "Text";
+}
+
+QString TextProperty::getDefaultValue() {
+    return QString();
 }

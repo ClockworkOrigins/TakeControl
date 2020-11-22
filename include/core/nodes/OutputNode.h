@@ -16,20 +16,20 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/OrNode.h"
+#pragma once
 
-using namespace tc::core;
+#include "core/INode.h"
 
-OrNode::OrNode() : ConditionNode() {}
+namespace tc {
+namespace core {
 
-void OrNode::read(const QJsonObject & json) {	
-	ConditionNode::read(json);
-}
+	class TC_CORE_API OutputNode : public INode {
+	public:
+		OutputNode();
 
-void OrNode::write(QJsonObject & json) const {
-	ConditionNode::write(json);
-}
+	private:
+		QString getType() const override;
+	};
 
-QString OrNode::getType() const {
-	return "Or";
-}
+} /* namespace core */
+} /* namespace tc */

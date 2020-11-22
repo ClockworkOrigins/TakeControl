@@ -29,7 +29,8 @@ QString RedSkiesAscensionDemoPlugin::getName() const {
 QStringList RedSkiesAscensionDemoPlugin::getSupportedNodes() const {
 	return {
 		"And",
-		"Or"
+		"Or",
+		"Output"
 	};
 }
 

@@ -16,7 +16,7 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "CharacterPropertyItem.h"
+#include "properties/CharacterPropertyItem.h"
 
 #include "core/Character.h"
 #include "core/CharacterPool.h"
@@ -92,4 +92,3 @@ void CharacterPropertyItem::updateCompleter(const QStringList & options) {
 	
     _comboBox->setCompleter(completer);
 }
-

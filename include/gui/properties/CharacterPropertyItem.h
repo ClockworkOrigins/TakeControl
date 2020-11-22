@@ -20,6 +20,8 @@
 
 #include <memory>
 
+#include "core/CoreTypes.h"
+
 #include "gui/PropertyItem.h"
 
 class QComboBox;
@@ -27,10 +29,6 @@ class QCompleter;
 class QGraphicsProxyWidget;
 
 namespace tc {
-namespace core {
-    class CharacterProperty;
-    typedef std::shared_ptr<CharacterProperty> CharacterPropertyPtr;
-} /* namespace core */
 namespace gui {
 
 	class TC_GUI_API CharacterPropertyItem : public QObject, public PropertyItem {

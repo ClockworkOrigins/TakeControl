@@ -9,6 +9,7 @@ FILE(GLOB_RECURSE CoreHeader ${includedir}/*.h)
 ADD_LIBRARY(TCCore SHARED ${CoreSrc} ${CoreHeader})
 
 target_link_libraries(TCCore ${QT_LIBRARIES})
+target_link_libraries(TCCore TCUtils)
 
 set_target_properties(
 	TCCore PROPERTIES FOLDER Libraries

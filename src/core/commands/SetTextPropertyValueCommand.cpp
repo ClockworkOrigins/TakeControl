@@ -16,20 +16,24 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/OrNode.h"
+#include "commands/SetTextPropertyValueCommand.h"
+
+#include "properties/TextProperty.h"
+
+#include <QApplication>
 
 using namespace tc::core;
 
-OrNode::OrNode() : ConditionNode() {}
-
-void OrNode::read(const QJsonObject & json) {	
-	ConditionNode::read(json);
+SetTextPropertyValueCommand::SetTextPropertyValueCommand(TextProperty * prop, const QString & value) : QUndoCommand(QApplication::tr("ChangeText")), _property(prop), _redoValue(value) {
+    _undoValue = _property->getValue();
 }
 
-void OrNode::write(QJsonObject & json) const {
-	ConditionNode::write(json);
+void SetTextPropertyValueCommand::redo() {
+    _property->_value = _redoValue;
+    emit _property->valueChanged();
 }
 
-QString OrNode::getType() const {
-	return "Or";
+void SetTextPropertyValueCommand::undo() {
+    _property->_value = _undoValue;
+    emit _property->valueChanged();
 }

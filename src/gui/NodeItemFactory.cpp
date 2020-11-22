@@ -35,7 +35,7 @@ NodeItem * NodeItemFactory::create(const INodePtr & node) const {
 
 	// if no built-in node matches, try plugin nodes
 
-	if (!nodeItem) {
+	if (!nodeItem && _activePlugin) {
 		nodeItem = _activePlugin->createNodeItem(type);
 	}
 

@@ -16,20 +16,32 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/OrNode.h"
+#pragma once
 
-using namespace tc::core;
+#include "core/IProperty.h"
 
-OrNode::OrNode() : ConditionNode() {}
+namespace tc {
+namespace core {
 
-void OrNode::read(const QJsonObject & json) {	
-	ConditionNode::read(json);
-}
+	class TC_CORE_API TextProperty : public IProperty {
+        friend class SetTextPropertyValueCommand;
+		
+	public:
+        TextProperty();
 
-void OrNode::write(QJsonObject & json) const {
-	ConditionNode::write(json);
-}
+        void setValue(const QString & value);
+        QString getValue() const;
 
-QString OrNode::getType() const {
-	return "Or";
-}
+	private:
+        QString _value;
+		
+		void read(const QJsonObject &json) override;
+		void write(QJsonObject & json) const override;
+
+		QString getType() const override;
+
+        static QString getDefaultValue();
+	};
+
+} /* namespace core */
+} /* namespace tc */

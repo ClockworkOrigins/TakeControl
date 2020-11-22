@@ -34,13 +34,13 @@ namespace core {
 		 * \brief restores INode from json
 		 * default implementation restores all properties
 		 */
-		virtual void read(const QJsonObject &json) = 0;
+		virtual void read(const QJsonObject &json);
 
 		/**
 		 * \brief saves INode to json
 		 * default implementation saves the type of the node retrieved via getType() and all properties
 		 */
-		virtual void write(QJsonObject & json) const = 0;
+		virtual void write(QJsonObject & json) const;
 
 		/**
 		 * \brief specifies how many inputs this node accepts

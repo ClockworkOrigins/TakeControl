@@ -1,0 +1,13 @@
+{
+    "properties": [
+        {
+            "type": "Character",
+            "value": ""
+        },
+        {
+            "type": "Text",
+            "value": ""
+        }
+    ],
+    "type": "Output"
+}

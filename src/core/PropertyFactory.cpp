@@ -21,6 +21,7 @@
 #include "IGamePlugin.h"
 
 #include "properties/CharacterProperty.h"
+#include "properties/TextProperty.h"
 
 using namespace tc::core;
 
@@ -31,9 +32,13 @@ IPropertyPtr PropertyFactory::create(const QString & type) const {
 		propertyPtr = std::make_shared<CharacterProperty>();
 	}
 
+	if (type == "Text") {
+		propertyPtr = std::make_shared<TextProperty>();
+	}
+
 	// if no built-in node matches, try plugin nodes
 
-	if (!propertyPtr) {
+	if (!propertyPtr && _activePlugin) {
 		propertyPtr = _activePlugin->createProperty(type);
 	}
 
