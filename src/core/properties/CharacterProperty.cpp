@@ -18,20 +18,22 @@
 
 #include "properties/CharacterProperty.h"
 
+#include "commands/SetCharacterPropertyValueCommand.h"
+
+#include "utils/UndoStack.h"
+
 #include <QJsonObject>
 
 using namespace tc::core;
+using namespace tc::utils;
 
 CharacterProperty::CharacterProperty() : IProperty(), _value(getDefaultValue()) {}
 
 void CharacterProperty::setValue(const QString & value) {
     if (_value == value) return;
 
-    // TODO: add UndoCommand
-	
-    _value = value;
-
-    emit valueChanged();
+    auto * cmd = new SetCharacterPropertyValueCommand(this, value);
+    UndoStack::instance()->push(cmd);
 }
 
 QString CharacterProperty::getValue() const {

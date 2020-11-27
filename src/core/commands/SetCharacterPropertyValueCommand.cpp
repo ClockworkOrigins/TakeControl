@@ -16,27 +16,24 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "commands/SetCharacterPropertyValueCommand.h"
 
-#include "core/CoreTypes.h"
+#include "properties/CharacterProperty.h"
 
-#include <QUndoCommand>
+#include <QApplication>
 
-namespace tc {
-namespace core {
+using namespace tc::core;
 
-	class SetTextPropertyValueCommand : public QUndoCommand {
-	public:
-		SetTextPropertyValueCommand(TextProperty * prop, const QString & value);
+SetCharacterPropertyValueCommand::SetCharacterPropertyValueCommand(CharacterProperty * prop, const QString & value) : QUndoCommand(QApplication::tr("ChangeText")), _property(prop), _redoValue(value) {
+    _undoValue = _property->getValue();
+}
 
-	private:
-		TextProperty * _property;
-		QString _undoValue;
-		QString _redoValue;
+void SetCharacterPropertyValueCommand::redo() {
+    _property->_value = _redoValue;
+    emit _property->valueChanged();
+}
 
-		void undo() override;
-		void redo() override;
-	};
-
-} /* namespace core */
-} /* namespace tc */
+void SetCharacterPropertyValueCommand::undo() {
+    _property->_value = _undoValue;
+    emit _property->valueChanged();
+}

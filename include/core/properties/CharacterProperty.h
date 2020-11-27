@@ -26,6 +26,8 @@ namespace tc {
 namespace core {
 
 	class TC_CORE_API CharacterProperty : public IProperty {
+        friend class SetCharacterPropertyValueCommand;
+		
 	public:
         CharacterProperty();
 

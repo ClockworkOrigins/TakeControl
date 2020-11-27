@@ -25,12 +25,12 @@
 namespace tc {
 namespace core {
 
-	class SetTextPropertyValueCommand : public QUndoCommand {
+	class SetCharacterPropertyValueCommand : public QUndoCommand {
 	public:
-		SetTextPropertyValueCommand(TextProperty * prop, const QString & value);
+		SetCharacterPropertyValueCommand(CharacterProperty * prop, const QString & value);
 
 	private:
-		TextProperty * _property;
+		CharacterProperty * _property;
 		QString _undoValue;
 		QString _redoValue;
 
