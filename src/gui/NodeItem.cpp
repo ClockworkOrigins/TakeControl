@@ -18,6 +18,7 @@
 
 #include "NodeItem.h"
 
+#include "ConnectorItem.h"
 #include "PropertyItem.h"
 #include "PropertyItemFactory.h"
 
@@ -43,6 +44,7 @@ NodeItem::NodeItem() : QGraphicsItem() {
 
 void NodeItem::configure(const INodePtr & node) {
     _name = node->getType();
+    _node = node;
 
     qreal lastHeight = START_HEIGHT + 1.5 * _labelHeight;
 
@@ -58,14 +60,63 @@ void NodeItem::configure(const INodePtr & node) {
 
         lastHeight += propertyItem->boundingRect().height() + 20;
 	}
+
+    const auto br = boundingRect();
+	
+    _inputConnectorItem = new ConnectorItem(ConnectorItem::Type::Input, _node, 0);
+
+    const auto connectorBr = _inputConnectorItem->boundingRect();
+
+    auto xPos = br.left() - connectorBr.width() * 3 / 4;
+    auto yPos = br.top() + br.height() / 2;
+	
+    _inputConnectorItem->setParentItem(this);
+    _inputConnectorItem->setPos(xPos, yPos);
+
+    const auto outputCount = node->getOutputCount();
+	
+	for (int i = 0; i < outputCount; i++) {
+        auto * outputConnector = new ConnectorItem(ConnectorItem::Type::Output, _node, i);
+
+        xPos = br.right() - connectorBr.width() / 4;
+        yPos = br.top() + (i + 1) * (br.height() / (outputCount + 1));
+
+        outputConnector->setParentItem(this);
+        outputConnector->setPos(xPos, yPos);
+
+        _outputConnectorItems << outputConnector;
+	}
+}
+
+ConnectorItem * NodeItem::getInputConnector() const {
+    return _inputConnectorItem;
+}
+
+ConnectorItem * NodeItem::getOutputConnector(int output) const {
+    return _outputConnectorItems[output];
 }
 
 QRectF NodeItem::boundingRect() const {
-    qreal childHeight = 0;
+    qreal propertyHeight = 0;
+    int propertyCount = 0;
+	
+    const qreal connectorHeight = ConnectorItem::getHeight();
+	
     for (const auto * child : childItems()) {
-        childHeight += child->boundingRect().height();
+        if (dynamic_cast<const ConnectorItem *>(child)) continue;
+    	
+        propertyHeight += child->boundingRect().height();
+        propertyCount++;
     }
-    return QRectF(-100, START_HEIGHT, 200, 2 * _labelHeight + childHeight + std::max(0, childItems().count() - 1) * 20);
+
+    qreal height = 2 * _labelHeight;
+
+    const qreal absolutePropertyHeight = propertyHeight + std::max(0, propertyCount - 1) * 20;
+    const qreal absoluteConnectorHeight = connectorHeight * _node->getOutputCount() + std::max(0, _node->getOutputCount() - 1) * 10;
+
+    height += std::max(absolutePropertyHeight, absoluteConnectorHeight);
+	
+    return QRectF(-100, START_HEIGHT, 200, height);
 }
 
 void NodeItem::paint(QPainter * painter, const QStyleOptionGraphicsItem *, QWidget *) {

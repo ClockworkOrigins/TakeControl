@@ -18,39 +18,31 @@
 
 #pragma once
 
-#include <memory>
+#include "core/CoreParameters.h"
+#include "core/CoreTypes.h"
+
+class QJsonObject;
 
 namespace tc {
 namespace core {
 
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-	
-    class CharacterProperty;
-    typedef std::shared_ptr<CharacterProperty> CharacterPropertyPtr;
+	class TC_CORE_API Connection {
+	public:
+        Connection(const INodePtr & startNode, int startNodeOutput, const INodePtr & endNode);
+		
+		void read(const QJsonObject & json, const QList<INodePtr> & nodes);
 
-    class Connection;
-    typedef std::shared_ptr<Connection> ConnectionPtr;
+		void write(QJsonObject & json) const;
 
-    class Dialog;
-    typedef std::shared_ptr<Dialog> DialogPtr;
+        INodePtr getStartNode() const;
+        int getStartNodeOutput() const;
+        INodePtr getEndNode() const;
 
-    class ICondition;
-    typedef std::shared_ptr<ICondition> IConditionPtr;
-
-    class IGamePlugin;
-
-    class INode;
-    typedef std::shared_ptr<INode> INodePtr;
-
-    class IProperty;
-    typedef std::shared_ptr<IProperty> IPropertyPtr;
-
-    class Project;
-    typedef std::shared_ptr<Project> ProjectPtr;
-
-    class TextProperty;
-    typedef std::shared_ptr<TextProperty> TextPropertyPtr;
+	protected:
+        INodePtr _startNode;
+        int _startNodeOutput;
+        INodePtr _endNode;
+	};
 
 } /* namespace core */
 } /* namespace tc */

@@ -45,6 +45,8 @@ void INode::read(const QJsonObject & json) {
 
         _properties << prop;
 	}
+
+    _id = json["id"].toInt();
 }
 
 void INode::write(QJsonObject & json) const {
@@ -60,6 +62,7 @@ void INode::write(QJsonObject & json) const {
 	}
 
     json["properties"] = propertyArray;
+    json["id"] = _id;
 }
 
 qint32 INode::getInputCount() const {
@@ -76,4 +79,12 @@ QString INode::getOutputLabel(qint32) const {
 
 QList<IPropertyPtr> INode::getProperties() const {
     return _properties;
+}
+
+void INode::setID(int id) {
+    _id = id;
+}
+
+int INode::getID() const {
+    return _id;
 }

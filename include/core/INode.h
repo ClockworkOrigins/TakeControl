@@ -32,13 +32,13 @@ namespace core {
 
 		/**
 		 * \brief restores INode from json
-		 * default implementation restores all properties
+		 * default implementation restores all properties and the ID
 		 */
 		virtual void read(const QJsonObject &json);
 
 		/**
 		 * \brief saves INode to json
-		 * default implementation saves the type of the node retrieved via getType() and all properties
+		 * default implementation saves the type of the node retrieved via getType(), all properties and the ID
 		 */
 		virtual void write(QJsonObject & json) const;
 
@@ -71,8 +71,22 @@ namespace core {
 		 */
 		QList<IPropertyPtr> getProperties() const;
 
+		/**
+		 * \brief sets the ID to uniquely define this node
+		 * The setter is called when saving the project, so the IDs can change for each change but are persistent across save and load operations
+		 */
+		void setID(int id);
+
+		/**
+		 * \brief returns the ID uniquely defining this node
+		 */
+		int getID() const;
+
 	protected:
 		QList<IPropertyPtr> _properties;
+
+	private:
+		int _id = 0;
 	};
 
 } /* namespace core */

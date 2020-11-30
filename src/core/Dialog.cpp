@@ -18,6 +18,7 @@
 
 #include "Dialog.h"
 
+#include "Connection.h"
 #include "INode.h"
 #include "NodeFactory.h"
 
@@ -37,13 +38,26 @@ QJsonObject Dialog::save() const {
 
 	QJsonArray nodes;
 
+	int counter = 0;
+
 	for (const auto & node : _nodes) {
 		QJsonObject jsonNode;
+		node->setID(counter++);
 		node->write(jsonNode);
 		nodes << jsonNode;
 	}
 
 	json["Nodes"] = nodes;
+
+	QJsonArray connections;
+	
+	for (const auto & connection : _connections) {
+		QJsonObject jsonConnection;
+		connection->write(jsonConnection);
+		connections << jsonConnection;
+	}
+
+	json["Connections"] = connections;
 
 	return json;
 }
@@ -69,6 +83,19 @@ DialogPtr Dialog::load(const QJsonObject & json) {
 		}
 	}
 
+	if (json.contains("Connections")) {
+		auto connections = json["Connections"].toArray();
+
+		for (auto connection : connections) {
+			const auto jsonConnection = connection.toObject();
+
+			auto connectionPtr = std::make_shared<Connection>(nullptr, 0, nullptr);
+			connectionPtr->read(jsonConnection, c->_nodes);
+
+			c->_connections << connectionPtr;
+		}
+	}
+
 	return c;
 }
 
@@ -86,4 +113,20 @@ void Dialog::removeNode(const INodePtr & node) {
 
 QList<INodePtr> Dialog::getNodes() const {
 	return _nodes;
+}
+
+void Dialog::addConnection(const ConnectionPtr & connection) {
+	Q_ASSERT(!_connections.contains(connection));
+
+	if (_connections.contains(connection)) return;
+
+	_connections << connection;
+}
+
+void Dialog::removeConnection(const ConnectionPtr & connection) {
+	_connections.removeAll(connection);
+}
+
+QList<ConnectionPtr> Dialog::getConnections() const {
+	return _connections;
 }

@@ -18,43 +18,36 @@
 
 #pragma once
 
-#include <memory>
-
-#include "core/CoreParameters.h"
 #include "core/CoreTypes.h"
 
-#include <QJsonObject>
-#include <QList>
-#include <QString>
+#include "GuiParameters.h"
+
+#include <QFont>
+#include <QGraphicsItem>
 
 namespace tc {
-namespace core {
+namespace gui {
 
-	class TC_CORE_API Dialog {
+    class ConnectorItem;
+    class NodeItem;
+
+	class TC_GUI_API ConnectionItem : public QGraphicsItem {
 	public:
-		explicit Dialog(const QString & name);
+        ConnectionItem(NodeItem * startNodeItem, int startNodeOutput, NodeItem * endNodeItem);
 
-		QString getName() const;
+    protected:
+        ConnectorItem * _startConnectorItem;
+        ConnectorItem * _endConnectorItem;
 
-		QJsonObject save() const;
+        bool _hovered = false;
+		
+		QRectF boundingRect() const override;
+		void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
+		void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
+		void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
-		static DialogPtr load(const QJsonObject & json);
-
-		void addNode(const INodePtr & node);
-		void removeNode(const INodePtr & node);
-
-		QList<INodePtr> getNodes() const;
-
-		void addConnection(const ConnectionPtr & connection);
-		void removeConnection(const ConnectionPtr & connection);
-
-		QList<ConnectionPtr> getConnections() const;
-
-	private:
-		QString _name;
-		QList<INodePtr> _nodes;
-		QList<ConnectionPtr> _connections;
+        bool isHovered() const;
 	};
 
-} /* namespace core */
+} /* namespace gui */
 } /* namespace tc */

@@ -18,8 +18,6 @@
 
 #pragma once
 
-#include <memory>
-
 #include "core/CoreTypes.h"
 
 #include "GuiParameters.h"
@@ -30,31 +28,31 @@
 namespace tc {
 namespace gui {
 
-    class ConnectorItem;
-
-	class TC_GUI_API NodeItem : public QGraphicsItem {
+	class TC_GUI_API ConnectorItem : public QGraphicsItem {
 	public:
-        NodeItem();
+		enum class Type {
+			Input,
+			Output
+		};
 		
-        virtual void configure(const core::INodePtr & node);
-
-        ConnectorItem * getInputConnector() const;
-        ConnectorItem * getOutputConnector(int output) const;
-
-    protected:
-        QFont _textFont;
-        QString _name;
-        qreal _labelHeight;
-        core::INodePtr _node;
-
-        bool _hovered = false;
-
-        ConnectorItem * _inputConnectorItem = nullptr;
-        QList<ConnectorItem *> _outputConnectorItems;
+        ConnectorItem(Type type, const core::INodePtr & node, int output);
 		
 		QRectF boundingRect() const override;
+
+        Type getType() const;
+        core::INodePtr getNode() const;
+        int getOutput() const;
+
+        static qreal getHeight();
+
+    protected:
+        Type _type;
+        core::INodePtr _node;
+        int _output;
+		
+        bool _hovered = false;
+
 		void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
-        QVariant itemChange(GraphicsItemChange change, const QVariant & value) override;
 		void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 		void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 

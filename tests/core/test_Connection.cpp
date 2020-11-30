@@ -16,11 +16,11 @@
  */
  // Copyright 2020 Clockwork Origins
 
-#include "nodes/OutputNode.h"
+#include "Connection.h"
 
 #include "TakeControlConfig.h"
 
-#include "IProperty.h"
+#include "NodeFactory.h"
 
 #include "gtest/gtest.h"
 
@@ -30,42 +30,39 @@
 
 using namespace tc::core;
 
-TEST(OutputNode, ctor) {
-	const INodePtr outputNode = std::make_shared<OutputNode>();
-
-	const auto properties = outputNode->getProperties();
+TEST(Connection, save) {
+	auto startNode = NodeFactory::instance()->create("And");
+	auto endNode = NodeFactory::instance()->create("And");
 	
-	ASSERT_EQ(2, properties.count());
-	ASSERT_EQ("Character", properties[0]->getType());
-	ASSERT_EQ("Text", properties[1]->getType());
+	const Connection c(startNode, 0, endNode);
 
-	const auto type = outputNode->getType();
-
-	ASSERT_EQ("Output", type);
-	ASSERT_EQ(0, outputNode->getID());
-}
-
-TEST(OutputNode, save) {
-	OutputNode outputNode;
-	outputNode.setID(2);
+	startNode->setID(0);
+	endNode->setID(1);
 	
 	QJsonObject json;
-	outputNode.write(json);
+	c.write(json);
+	
 	const QJsonDocument jsonDoc(json);
 	const auto jsonData = jsonDoc.toJson();
 
-	QFile referenceFile(TESTFOLDER + "/core/resources/OutputNode/save.json");
+	QFile referenceFile(TESTFOLDER + "/core/resources/Connection/save.json");
 	ASSERT_TRUE(referenceFile.open(QIODevice::ReadOnly));
 
 	const auto referenceData = referenceFile.readAll();
 
-	QString text = QString::fromLatin1(jsonData);
-
 	ASSERT_EQ(referenceData, jsonData);
 }
 
-TEST(OutputNode, load) {
-	QFile referenceFile(TESTFOLDER + "/core/resources/OutputNode/load.json");
+TEST(Connection, load) {
+	auto startNode = NodeFactory::instance()->create("And");
+	auto endNode = NodeFactory::instance()->create("And");
+
+	startNode->setID(5);
+	endNode->setID(2);
+
+	const QList<INodePtr> nodes = { startNode, endNode };
+	
+	QFile referenceFile(TESTFOLDER + "/core/resources/Connection/load.json");
 	ASSERT_TRUE(referenceFile.open(QIODevice::ReadOnly));
 
 	const auto referenceData = referenceFile.readAll();
@@ -73,13 +70,10 @@ TEST(OutputNode, load) {
 	const auto jsonDoc = QJsonDocument::fromJson(referenceData);
 	const auto json = jsonDoc.object();
 
-	OutputNode outputNode;
-	outputNode.read(json);
+	auto c = std::make_shared<Connection>(nullptr, 0, nullptr);
+	c->read(json, nodes);
 
-	const auto properties = outputNode.getProperties();
-
-	ASSERT_EQ(2, properties.count());
-	ASSERT_EQ("Character", properties[0]->getType());
-	ASSERT_EQ("Text", properties[1]->getType());
-	ASSERT_EQ(1, outputNode.getID());
+	ASSERT_EQ(startNode, c->getStartNode());
+	ASSERT_EQ(endNode, c->getEndNode());
+	ASSERT_EQ(1, c->getStartNodeOutput());
 }

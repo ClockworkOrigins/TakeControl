@@ -18,13 +18,11 @@
 
 #pragma once
 
-#include <memory>
+#include "core/CoreTypes.h"
 
 #include <QMap>
 #include <QWidget>
 
-class QGraphicsScene;
-class QGraphicsView;
 class QListView;
 class QMenu;
 class QSortFilterProxyModel;
@@ -32,16 +30,10 @@ class QStandardItemModel;
 class QToolButton;
 
 namespace tc {
-namespace core {
-	class Dialog;
-	typedef std::shared_ptr<Dialog> DialogPtr;
-	
-	class IGamePlugin;
-	
-	class INode;
-	typedef std::shared_ptr<INode> INodePtr;
-} /* namespace core */
 namespace gui {
+	class ConnectionItem;
+	class GraphicsScene;
+	class GraphicsView;
 	class NodeItem;
 } /* namespace gui */
 namespace client {
@@ -64,6 +56,11 @@ namespace client {
 		void addedDialog(const core::DialogPtr & dialog);
 		void removedDialog(const core::DialogPtr & dialog);
 
+		void addConnection(const core::INodePtr & startNode, int startNodeOutput, const core::INodePtr & endNode);
+
+		void addedConnection(const core::ConnectionPtr & connection);
+		void removedConnection(const core::ConnectionPtr & connection);
+
 	private:
 		QListView * _dialogList = nullptr;
 		QStandardItemModel * _dialogModel = nullptr;
@@ -71,8 +68,8 @@ namespace client {
 
 		core::DialogPtr _currentDialog;
 
-		QGraphicsScene * _graphicScene = nullptr;
-		QGraphicsView * _graphicView = nullptr;
+		gui::GraphicsScene * _graphicScene = nullptr;
+		gui::GraphicsView * _graphicView = nullptr;
 
 		QToolButton * _addNodesButton = nullptr;
 		QMenu * _addNodesMenu = nullptr;
@@ -80,6 +77,7 @@ namespace client {
 		const core::IGamePlugin* _activePlugin = nullptr;
 
 		QMap<core::INodePtr, gui::NodeItem *> _nodeItems;
+		QMap<core::ConnectionPtr, gui::ConnectionItem *> _connectionItems;
 
 		void initGui();
 		void initConnections();

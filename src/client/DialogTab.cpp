@@ -18,13 +18,18 @@
 
 #include "DialogTab.h"
 
+#include "commands/AddConnectionCommand.h"
 #include "commands/AddDialogCommand.h"
 #include "commands/AddNodeCommand.h"
 
+#include "core/Connection.h"
 #include "core/Dialog.h"
 #include "core/DialogPool.h"
 #include "core/IGamePlugin.h"
 
+#include "gui/ConnectionItem.h"
+#include "gui/GraphicsScene.h"
+#include "gui/GraphicsView.h"
 #include "gui/NodeItem.h"
 #include "gui/NodeItemFactory.h"
 
@@ -123,6 +128,32 @@ void DialogTab::removedDialog(const DialogPtr & dialog) {
 	}
 }
 
+void DialogTab::addConnection(const INodePtr & startNode, int startNodeOutput, const INodePtr & endNode) {
+	auto * cmd = new AddConnectionCommand(_currentDialog, startNode, startNodeOutput, endNode);
+
+	connect(cmd, &AddConnectionCommand::addedConnection, this, &DialogTab::addedConnection);
+	connect(cmd, &AddConnectionCommand::removedConnection, this, &DialogTab::removedConnection);
+	
+	UndoStack::instance()->push(cmd);
+}
+
+void DialogTab::addedConnection(const ConnectionPtr & connection) {
+	auto * item = new ConnectionItem(_nodeItems[connection->getStartNode()], connection->getStartNodeOutput(), _nodeItems[connection->getEndNode()]);
+	
+	_connectionItems.insert(connection, item);
+
+	_graphicScene->addItem(item);
+}
+
+void DialogTab::removedConnection(const ConnectionPtr & connection) {
+	if (!_connectionItems.contains(connection)) return;
+
+	auto * item = _connectionItems[connection];
+	_graphicScene->removeItem(item);
+	delete item;
+	_connectionItems.remove(connection);
+}
+
 void DialogTab::initGui() {
 	auto * hl = new QHBoxLayout();
 
@@ -171,11 +202,13 @@ void DialogTab::initGui() {
 			tb->addWidget(_addNodesButton);
 		}
 		
-		_graphicScene = new QGraphicsScene(this);
+		_graphicScene = new GraphicsScene(this);
 		_graphicScene->setBackgroundBrush(QBrush(QColor(32, 32, 32)));
 
-		_graphicView = new QGraphicsView(_graphicScene);
+		_graphicView = new GraphicsView(_graphicScene);
 		_graphicView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
+		_graphicScene->setView(_graphicView);
 
 		vl->addWidget(_graphicView, 1);
 
@@ -191,6 +224,8 @@ void DialogTab::initConnections() {
 	connect(DialogPool::instance(), &DialogPool::dialogsChanged, this, &DialogTab::updateDialogs);
 	connect(DialogPool::instance(), &DialogPool::dialogAdded, this, &DialogTab::addedDialog);
 	connect(DialogPool::instance(), &DialogPool::dialogRemoved, this, &DialogTab::removedDialog);
+
+	connect(_graphicScene, &GraphicsScene::addConnection, this, &DialogTab::addConnection);
 }
 
 void DialogTab::openDialog(const QModelIndex & idx) {

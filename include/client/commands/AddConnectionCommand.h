@@ -18,43 +18,32 @@
 
 #pragma once
 
-#include <memory>
-
-#include "core/CoreParameters.h"
 #include "core/CoreTypes.h"
 
-#include <QJsonObject>
-#include <QList>
-#include <QString>
+#include <QUndoCommand>
 
 namespace tc {
-namespace core {
+namespace client {
+namespace commands {
 
-	class TC_CORE_API Dialog {
+	class AddConnectionCommand : public QObject, public QUndoCommand {
+		Q_OBJECT
+		
 	public:
-		explicit Dialog(const QString & name);
+		AddConnectionCommand(const core::DialogPtr & dialog, const core::INodePtr & startNode, int startNodeOutput, const core::INodePtr & endNode);
 
-		QString getName() const;
-
-		QJsonObject save() const;
-
-		static DialogPtr load(const QJsonObject & json);
-
-		void addNode(const INodePtr & node);
-		void removeNode(const INodePtr & node);
-
-		QList<INodePtr> getNodes() const;
-
-		void addConnection(const ConnectionPtr & connection);
-		void removeConnection(const ConnectionPtr & connection);
-
-		QList<ConnectionPtr> getConnections() const;
+	signals:
+		void addedConnection(const core::ConnectionPtr & connection);
+		void removedConnection(const core::ConnectionPtr & connection);
 
 	private:
-		QString _name;
-		QList<INodePtr> _nodes;
-		QList<ConnectionPtr> _connections;
+		core::DialogPtr _dialog;
+		core::ConnectionPtr _connection;
+
+		void undo() override;
+		void redo() override;
 	};
 
-} /* namespace core */
+} /* namespace commands */
+} /* namespace client */
 } /* namespace tc */

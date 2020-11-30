@@ -18,43 +18,32 @@
 
 #pragma once
 
-#include <memory>
-
-#include "core/CoreParameters.h"
 #include "core/CoreTypes.h"
 
-#include <QJsonObject>
-#include <QList>
-#include <QString>
+#include "GuiParameters.h"
+
+#include <QGraphicsView>
+
+class QGraphicsScene;
 
 namespace tc {
-namespace core {
+namespace gui {
 
-	class TC_CORE_API Dialog {
+    class ConnectorItem;
+
+	class TC_GUI_API GraphicsView : public QGraphicsView {
 	public:
-		explicit Dialog(const QString & name);
+        explicit GraphicsView(QGraphicsScene * graphicsScene);
 
-		QString getName() const;
-
-		QJsonObject save() const;
-
-		static DialogPtr load(const QJsonObject & json);
-
-		void addNode(const INodePtr & node);
-		void removeNode(const INodePtr & node);
-
-		QList<INodePtr> getNodes() const;
-
-		void addConnection(const ConnectionPtr & connection);
-		void removeConnection(const ConnectionPtr & connection);
-
-		QList<ConnectionPtr> getConnections() const;
-
-	private:
-		QString _name;
-		QList<INodePtr> _nodes;
-		QList<ConnectionPtr> _connections;
+        void startDrawConnection(QPointF startPoint);
+        void stopDrawConnection();
+		
+    private:
+        QPointF _startPoint;
+        bool _drawConnection = false;
+		
+		void paintEvent(QPaintEvent * event) override;
 	};
 
-} /* namespace core */
+} /* namespace gui */
 } /* namespace tc */
