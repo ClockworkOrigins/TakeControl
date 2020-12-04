@@ -61,7 +61,10 @@ void INode::write(QJsonObject & json) const {
         propertyArray << propertyJson;
 	}
 
-    json["properties"] = propertyArray;
+    if (!propertyArray.isEmpty()) {
+        json["properties"] = propertyArray;
+    }
+	
     json["id"] = _id;
 }
 

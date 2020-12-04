@@ -29,6 +29,7 @@ QString RedSkiesAscensionDemoPlugin::getName() const {
 QStringList RedSkiesAscensionDemoPlugin::getSupportedNodes() const {
 	return {
 		"And",
+		"Exit Conversation"
 		"Or",
 		"Output"
 	};

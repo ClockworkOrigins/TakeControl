@@ -21,6 +21,7 @@
 #include "IGamePlugin.h"
 
 #include "nodes/AndNode.h"
+#include "nodes/ExitConversationNode.h"
 #include "nodes/OrNode.h"
 #include "nodes/OutputNode.h"
 
@@ -47,6 +48,10 @@ INodePtr NodeFactory::create(const QString & type) const {
 
 	if (type == "And") {
 		nodePtr = std::make_shared<AndNode>();
+	}
+
+	if (type == "Exit Conversation") {
+		nodePtr = std::make_shared<ExitConversationNode>();
 	}
 
 	if (type == "Or") {
