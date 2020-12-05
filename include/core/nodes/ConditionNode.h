@@ -24,7 +24,7 @@
 namespace tc {
 namespace core {
 
-	class ConditionNode : public INode {
+	class TC_CORE_API  ConditionNode : public INode {
 	public:
 		ConditionNode();
 		

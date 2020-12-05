@@ -62,7 +62,10 @@ void ConditionNode::write(QJsonObject & json) const {
 		condition->write(c);
 		conditionsArray.append(c);
 	}
-	json["conditions"] = conditionsArray;
+
+	if (!conditionsArray.isEmpty()) {
+		json["conditions"] = conditionsArray;
+	}
 }
 
 void ConditionNode::addCondition(const IConditionPtr & condition) {

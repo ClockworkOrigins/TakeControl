@@ -25,7 +25,7 @@ class QJsonObject;
 namespace tc {
 namespace core {
 
-	class AndNode : public ConditionNode {
+	class TC_CORE_API  AndNode : public ConditionNode {
 	public:
 		AndNode();
 
