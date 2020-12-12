@@ -31,7 +31,8 @@ QStringList RedSkiesAscensionDemoPlugin::getSupportedNodes() const {
 		"And",
 		"Exit Conversation"
 		"Or",
-		"Output"
+		"Output",
+		"Text"
 	};
 }
 

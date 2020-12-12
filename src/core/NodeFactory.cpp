@@ -24,6 +24,7 @@
 #include "nodes/ExitConversationNode.h"
 #include "nodes/OrNode.h"
 #include "nodes/OutputNode.h"
+#include "nodes/TextNode.h"
 
 #include <QJsonObject>
 
@@ -60,6 +61,10 @@ INodePtr NodeFactory::create(const QString & type) const {
 
 	if (type == "Output") {
 		nodePtr = std::make_shared<OutputNode>();
+	}
+
+	if (type == "Text") {
+		nodePtr = std::make_shared<TextNode>();
 	}
 
 	// if no built-in node matches, try plugin nodes
