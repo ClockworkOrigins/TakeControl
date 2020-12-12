@@ -23,6 +23,9 @@
 namespace tc {
 namespace core {
 
+	/**
+	 * \brief dialog output, character says text
+	 */
 	class TC_CORE_API OutputNode : public INode {
 	public:
 		OutputNode();
