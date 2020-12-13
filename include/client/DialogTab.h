@@ -85,6 +85,8 @@ namespace client {
 		void openDialog(const QModelIndex & idx);
 		void openDialog(const QString & name);
 		void openDialog(const core::DialogPtr & dialog);
+
+		void removeConnectionIfNecessary(const core::INodePtr & startNode, int startNodeOutput);
 	};
 
 } /* namespace client */

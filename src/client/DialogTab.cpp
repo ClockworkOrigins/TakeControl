@@ -21,11 +21,13 @@
 #include "commands/AddConnectionCommand.h"
 #include "commands/AddDialogCommand.h"
 #include "commands/AddNodeCommand.h"
+#include "commands/RemoveConnectionCommand.h"
 
 #include "core/Connection.h"
 #include "core/Dialog.h"
 #include "core/DialogPool.h"
 #include "core/IGamePlugin.h"
+#include "core/INode.h"
 
 #include "gui/ConnectionItem.h"
 #include "gui/GraphicsScene.h"
@@ -129,12 +131,18 @@ void DialogTab::removedDialog(const DialogPtr & dialog) {
 }
 
 void DialogTab::addConnection(const INodePtr & startNode, int startNodeOutput, const INodePtr & endNode) {
+	UndoStack::instance()->beginMacro(QApplication::tr("AddConnection"));
+	
+	removeConnectionIfNecessary(startNode, startNodeOutput);
+	
 	auto * cmd = new AddConnectionCommand(_currentDialog, startNode, startNodeOutput, endNode);
 
 	connect(cmd, &AddConnectionCommand::addedConnection, this, &DialogTab::addedConnection);
 	connect(cmd, &AddConnectionCommand::removedConnection, this, &DialogTab::removedConnection);
 	
 	UndoStack::instance()->push(cmd);
+
+	UndoStack::instance()->endMacro();
 }
 
 void DialogTab::addedConnection(const ConnectionPtr & connection) {
@@ -281,7 +289,28 @@ void DialogTab::openDialog(const DialogPtr & dialog) {
 		addedConnection(connection);
 	}
 
-	// TODO: add connections
-
 	// TODO: restore layout
+}
+
+void DialogTab::removeConnectionIfNecessary(const INodePtr & startNode, int startNodeOutput) {
+	if (!startNode) return;
+
+	if (!_currentDialog) return;
+
+	if (startNode->getOutputCount() == -1) return; // nodes with -1 outputs can have unlimited connections
+
+	for (const auto & connection : _currentDialog->getConnections()) {
+		if (connection->getStartNode() != startNode) continue;
+		
+		if (connection->getStartNodeOutput() != startNodeOutput) continue;
+
+		auto * cmd = new RemoveConnectionCommand(_currentDialog, connection);
+
+		connect(cmd, &RemoveConnectionCommand::addedConnection, this, &DialogTab::addedConnection);
+		connect(cmd, &RemoveConnectionCommand::removedConnection, this, &DialogTab::removedConnection);
+
+		UndoStack::instance()->push(cmd);
+
+		break;
+	}
 }

@@ -67,5 +67,13 @@
         <source>ChangeText</source>
         <translation>Change Text</translation>
     </message>
+    <message>
+        <source>AddConnection</source>
+        <translation>Add Connection</translation>
+    </message>
+    <message>
+        <source>RemoveConnection</source>
+        <translation>Remove Connection</translation>
+    </message>
 </context>
 </TS>

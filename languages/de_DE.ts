@@ -67,5 +67,13 @@
         <source>ChangeText</source>
         <translation>Text ändern</translation>
     </message>
+    <message>
+        <source>AddConnection</source>
+        <translation>Verbindung hinzufügen</translation>
+    </message>
+    <message>
+        <source>RemoveConnection</source>
+        <translation>Verbindung löschen</translation>
+    </message>
 </context>
 </TS>
