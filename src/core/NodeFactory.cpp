@@ -21,6 +21,7 @@
 #include "IGamePlugin.h"
 
 #include "nodes/AndNode.h"
+#include "nodes/BranchingNode.h"
 #include "nodes/ExitConversationNode.h"
 #include "nodes/OrNode.h"
 #include "nodes/OutputNode.h"
@@ -49,6 +50,10 @@ INodePtr NodeFactory::create(const QString & type) const {
 
 	if (type == "And") {
 		nodePtr = std::make_shared<AndNode>();
+	}
+
+	if (type == "Branching") {
+		nodePtr = std::make_shared<BranchingNode>();
 	}
 
 	if (type == "Exit Conversation") {

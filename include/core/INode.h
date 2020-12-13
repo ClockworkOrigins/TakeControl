@@ -51,6 +51,7 @@ namespace core {
 		/**
 		 * \brief specifies how many outputs this node accepts
 		 * default is 1 which means this node can be connected to just on other node
+		 * for infinite outputs use -1
 		 */
 		virtual qint32 getOutputCount() const;
 

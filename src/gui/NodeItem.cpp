@@ -73,7 +73,11 @@ void NodeItem::configure(const INodePtr & node) {
     _inputConnectorItem->setParentItem(this);
     _inputConnectorItem->setPos(xPos, yPos);
 
-    const auto outputCount = node->getOutputCount();
+    auto outputCount = node->getOutputCount();
+
+	if (outputCount == -1) {
+        outputCount = 1;
+	}
 	
 	for (int i = 0; i < outputCount; i++) {
         auto * outputConnector = new ConnectorItem(ConnectorItem::Type::Output, _node, i);
