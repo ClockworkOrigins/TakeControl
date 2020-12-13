@@ -62,12 +62,14 @@ void ConnectionItem::paint(QPainter * painter, const QStyleOptionGraphicsItem *,
 
     const auto startPoint = mapFromScene(_startConnectorItem->scenePos()) + _startConnectorItem->boundingRect().center();
     const auto endPoint = mapFromScene(_endConnectorItem->scenePos()) + _endConnectorItem->boundingRect().center();
-	
+
     QPainterPath painterPath;
     painterPath.moveTo(startPoint);
     painterPath.cubicTo(startPoint, startPoint + QPointF(BEZIER_OFFSET, 0), startPoint + (endPoint - startPoint) / 2);
     painterPath.cubicTo(startPoint + (endPoint - startPoint) / 2, endPoint - QPointF(BEZIER_OFFSET, 0), endPoint);
     painter->drawPath(painterPath);
+
+    _painterPath = painterPath;
 }
 
 void ConnectionItem::hoverEnterEvent(QGraphicsSceneHoverEvent *) {
@@ -82,4 +84,8 @@ void ConnectionItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 
 bool ConnectionItem::isHovered() const {
     return _hovered;
+}
+
+QPainterPath ConnectionItem::shape() const {
+    return _painterPath;
 }

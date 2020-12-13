@@ -38,6 +38,7 @@ namespace gui {
     protected:
         ConnectorItem * _startConnectorItem;
         ConnectorItem * _endConnectorItem;
+        QPainterPath _painterPath;
 
         bool _hovered = false;
 		
@@ -47,6 +48,8 @@ namespace gui {
 		void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
         bool isHovered() const;
+
+		QPainterPath shape() const override;
 	};
 
 } /* namespace gui */
