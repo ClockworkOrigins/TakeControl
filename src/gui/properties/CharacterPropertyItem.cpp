@@ -52,9 +52,11 @@ CharacterPropertyItem::CharacterPropertyItem() : PropertyItem() {
 void CharacterPropertyItem::configure(const IPropertyPtr & prop) {
     _property = std::dynamic_pointer_cast<CharacterProperty>(prop);
 
-    _comboBox->setCurrentText(_property->getValue());
+    const auto text = _property->getValue();
+	
+    _comboBox->setCurrentText(text);
 
-    connect(_comboBox, QOverload<const QString &>::of(&QComboBox::currentIndexChanged), _property.get(), &CharacterProperty::setValue);
+    connect(_comboBox, QOverload<const QString &>::of(&QComboBox::currentTextChanged), _property.get(), &CharacterProperty::setValue);
     connect(_property.get(), &CharacterProperty::valueChanged, _comboBox, [this]() {
         _comboBox->setCurrentText(_property->getValue());
     });
