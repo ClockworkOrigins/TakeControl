@@ -24,7 +24,10 @@
 
 #include "core/INode.h"
 
+#include <QApplication>
 #include <QFontMetrics>
+#include <QGraphicsSceneContextMenuEvent>
+#include <QMenu>
 #include <QPainter>
 
 using namespace tc::core;
@@ -172,4 +175,17 @@ void NodeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 
 bool NodeItem::isHovered() const {
     return _hovered;
+}
+
+void NodeItem::contextMenuEvent(QGraphicsSceneContextMenuEvent * event) {
+    QMenu menu;
+    auto * deleteAction = menu.addAction(QApplication::tr("Delete"));
+    deleteAction->setShortcut(QKeySequence::Delete);
+
+
+    connect(deleteAction, &QAction::triggered, this, &NodeItem::deleteClicked);
+
+    menu.exec(event->screenPos());
+
+    event->accept();
 }

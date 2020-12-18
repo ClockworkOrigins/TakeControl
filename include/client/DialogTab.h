@@ -86,6 +86,7 @@ namespace client {
 		void openDialog(const QString & name);
 		void openDialog(const core::DialogPtr & dialog);
 
+		void removeConnections(const core::INodePtr & node);
 		void removeConnectionIfNecessary(const core::INodePtr & startNode, int startNodeOutput);
 	};
 

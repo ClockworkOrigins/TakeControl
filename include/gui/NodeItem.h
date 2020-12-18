@@ -32,7 +32,8 @@ namespace gui {
 
     class ConnectorItem;
 
-	class TC_GUI_API NodeItem : public QGraphicsItem {
+	class TC_GUI_API NodeItem : public QObject, public QGraphicsItem {
+        Q_OBJECT
         Q_INTERFACES(QGraphicsItem)
 		
 	public:
@@ -42,6 +43,9 @@ namespace gui {
 
         ConnectorItem * getInputConnector() const;
         ConnectorItem * getOutputConnector(int output) const;
+
+    signals:
+        void deleteClicked();
 
     protected:
         QFont _textFont;
@@ -61,6 +65,8 @@ namespace gui {
 		void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
         bool isHovered() const;
+
+        void contextMenuEvent(QGraphicsSceneContextMenuEvent * event) override;
 	};
 
 } /* namespace gui */

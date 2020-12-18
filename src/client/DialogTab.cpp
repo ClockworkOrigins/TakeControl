@@ -22,6 +22,7 @@
 #include "commands/AddDialogCommand.h"
 #include "commands/AddNodeCommand.h"
 #include "commands/RemoveConnectionCommand.h"
+#include "commands/RemoveNodeCommand.h"
 
 #include "core/Connection.h"
 #include "core/Dialog.h"
@@ -97,6 +98,21 @@ void DialogTab::addNode(const INodePtr & node) {
 	_graphicScene->addItem(nodeItem);
 
 	_nodeItems.insert(node, nodeItem);
+
+	connect(nodeItem, &NodeItem::deleteClicked, this, [this, node]() {
+		UndoStack::instance()->beginMacro(QApplication::tr("RemoveNode"));
+
+		removeConnections(node);
+		
+		auto * cmd = new RemoveNodeCommand(_currentDialog, node);
+
+		connect(cmd, &RemoveNodeCommand::addedNode, this, &DialogTab::addNode);
+		connect(cmd, &RemoveNodeCommand::removedNode, this, &DialogTab::removeNode);
+
+		UndoStack::instance()->push(cmd);
+
+		UndoStack::instance()->endMacro();
+	});
 }
 
 void DialogTab::removeNode(const INodePtr & node) {
@@ -299,6 +315,24 @@ void DialogTab::openDialog(const DialogPtr & dialog) {
 	}
 
 	// TODO: restore layout
+}
+
+void DialogTab::removeConnections(const INodePtr & node) {
+	if (!node) return;
+
+	if (!_currentDialog) return;
+
+	const auto connections = _currentDialog->getConnections();
+	for (const auto & connection : connections) {
+		if (connection->getStartNode() != node && connection->getEndNode() != node) continue;
+
+		auto * cmd = new RemoveConnectionCommand(_currentDialog, connection);
+
+		connect(cmd, &RemoveConnectionCommand::addedConnection, this, &DialogTab::addedConnection);
+		connect(cmd, &RemoveConnectionCommand::removedConnection, this, &DialogTab::removedConnection);
+
+		UndoStack::instance()->push(cmd);
+	}
 }
 
 void DialogTab::removeConnectionIfNecessary(const INodePtr & startNode, int startNodeOutput) {
