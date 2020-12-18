@@ -151,6 +151,15 @@ void DialogTab::addedConnection(const ConnectionPtr & connection) {
 	_connectionItems.insert(connection, item);
 
 	_graphicScene->addItem(item);
+
+	connect(item, &ConnectionItem::deleteClicked, this, [this, connection]() {
+		auto * cmd = new RemoveConnectionCommand(_currentDialog, connection);
+
+		connect(cmd, &RemoveConnectionCommand::addedConnection, this, &DialogTab::addedConnection);
+		connect(cmd, &RemoveConnectionCommand::removedConnection, this, &DialogTab::removedConnection);
+
+		UndoStack::instance()->push(cmd);
+	});
 }
 
 void DialogTab::removedConnection(const ConnectionPtr & connection) {

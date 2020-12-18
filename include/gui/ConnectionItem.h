@@ -31,9 +31,15 @@ namespace gui {
     class ConnectorItem;
     class NodeItem;
 
-	class TC_GUI_API ConnectionItem : public QGraphicsItem {
+	class TC_GUI_API ConnectionItem : public QObject, public QGraphicsItem {
+		Q_OBJECT
+		Q_INTERFACES(QGraphicsItem)
+		
 	public:
         ConnectionItem(NodeItem * startNodeItem, int startNodeOutput, NodeItem * endNodeItem);
+
+	signals:
+        void deleteClicked();
 
     protected:
         ConnectorItem * _startConnectorItem;
@@ -50,6 +56,8 @@ namespace gui {
         bool isHovered() const;
 
 		QPainterPath shape() const override;
+
+		void contextMenuEvent(QGraphicsSceneContextMenuEvent * event) override;
 	};
 
 } /* namespace gui */

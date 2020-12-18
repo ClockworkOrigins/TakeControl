@@ -21,6 +21,10 @@
 #include "ConnectorItem.h"
 #include "NodeItem.h"
 
+#include <QApplication>
+#include <QGraphicsSceneContextMenuEvent>
+#include <QKeyEvent>
+#include <QMenu>
 #include <QPainter>
 
 using namespace tc::core;
@@ -88,4 +92,17 @@ bool ConnectionItem::isHovered() const {
 
 QPainterPath ConnectionItem::shape() const {
     return _painterPath;
+}
+
+void ConnectionItem::contextMenuEvent(QGraphicsSceneContextMenuEvent * event) {
+    QMenu menu;
+    auto * deleteAction = menu.addAction(QApplication::tr("Delete"));
+    deleteAction->setShortcut(QKeySequence::Delete);
+	
+
+    connect(deleteAction, &QAction::triggered, this, &ConnectionItem::deleteClicked);
+	
+    menu.exec(event->screenPos());
+
+    event->accept();
 }

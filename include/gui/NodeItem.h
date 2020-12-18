@@ -33,6 +33,8 @@ namespace gui {
     class ConnectorItem;
 
 	class TC_GUI_API NodeItem : public QGraphicsItem {
+        Q_INTERFACES(QGraphicsItem)
+		
 	public:
         NodeItem();
 		

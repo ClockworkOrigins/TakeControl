@@ -29,6 +29,8 @@ namespace tc {
 namespace gui {
 
 	class TC_GUI_API ConnectorItem : public QGraphicsItem {
+        Q_INTERFACES(QGraphicsItem)
+		
 	public:
 		enum class Type {
 			Input,

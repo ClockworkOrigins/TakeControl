@@ -75,5 +75,9 @@
         <source>RemoveConnection</source>
         <translation>Remove Connection</translation>
     </message>
+    <message>
+        <source>Delete</source>
+        <translation>Delete</translation>
+    </message>
 </context>
 </TS>

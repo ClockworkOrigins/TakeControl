@@ -75,5 +75,9 @@
         <source>RemoveConnection</source>
         <translation>Verbindung löschen</translation>
     </message>
+    <message>
+        <source>Delete</source>
+        <translation>Entfernen</translation>
+    </message>
 </context>
 </TS>
