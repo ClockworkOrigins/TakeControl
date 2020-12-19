@@ -33,7 +33,7 @@ QStringList RedSkiesAscensionDemoPlugin::getSupportedNodes() const {
 		"Exit Conversation",
 		"Or",
 		"Output",
-		"Text"
+		"Translateable Text"
 	};
 }
 
@@ -55,6 +55,13 @@ IPropertyPtr RedSkiesAscensionDemoPlugin::createProperty(const QString &) const 
 
 PropertyItem * RedSkiesAscensionDemoPlugin::createPropertyItem(const QString &) const {
     return nullptr;
+}
+
+QStringList RedSkiesAscensionDemoPlugin::getSupportedLanguages() const {
+	return {
+		"English",
+		"German"
+	};
 }
 
 Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")

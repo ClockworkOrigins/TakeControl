@@ -20,6 +20,7 @@
 
 #include "properties/CharacterPropertyItem.h"
 #include "properties/TextPropertyItem.h"
+#include "properties/TranslateableTextPropertyItem.h"
 
 #include "core/IGamePlugin.h"
 #include "core/IProperty.h"
@@ -40,6 +41,10 @@ PropertyItem * PropertyItemFactory::create(const IPropertyPtr & prop) const {
 
 	if (type == "Text") {
 		propertyItem = new TextPropertyItem();
+	}
+
+	if (type == "Translateable Text") {
+		propertyItem = new TranslateableTextPropertyItem();
 	}
 
 	// if no built-in node matches, try plugin nodes

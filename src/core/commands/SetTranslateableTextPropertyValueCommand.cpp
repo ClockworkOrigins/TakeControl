@@ -16,39 +16,24 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "commands/SetTranslateableTextPropertyValueCommand.h"
 
-#include "core/CoreTypes.h"
+#include "properties/TranslateableTextProperty.h"
 
-#include <QWidget>
+#include <QApplication>
 
-class QListView;
-class QStandardItemModel;
+using namespace tc::core;
 
-namespace tc {
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
+SetTranslateableTextPropertyValueCommand::SetTranslateableTextPropertyValueCommand(TranslateableTextProperty * prop, const QString & value) : QUndoCommand(QApplication::tr("ChangeText")), _property(prop), _redoValue(value) {
+    _undoValue = _property->getValue();
+}
 
-	class CharacterTab : public QWidget {
-		Q_OBJECT
-		
-	public:
-		explicit CharacterTab(QWidget * par);
+void SetTranslateableTextPropertyValueCommand::redo() {
+    _property->_value = _redoValue;
+    emit _property->valueChanged();
+}
 
-	private slots:
-		void updateCharacters();
-	
-		void addCharacter();
-
-		void addedCharacter(const core::CharacterPtr & character);
-		void removedCharacter(const core::CharacterPtr & character);
-
-	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
-	};
-
-} /* namespace client */
-} /* namespace tc */
+void SetTranslateableTextPropertyValueCommand::undo() {
+    _property->_value = _undoValue;
+    emit _property->valueChanged();
+}

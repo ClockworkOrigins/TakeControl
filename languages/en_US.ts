@@ -79,5 +79,13 @@
         <source>Delete</source>
         <translation>Delete</translation>
     </message>
+    <message>
+        <source>Texts</source>
+        <translation>Texts</translation>
+    </message>
+    <message>
+        <source>AddText</source>
+        <translation>Add Text</translation>
+    </message>
 </context>
 </TS>

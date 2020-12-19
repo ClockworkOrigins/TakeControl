@@ -20,35 +20,23 @@
 
 #include "core/CoreTypes.h"
 
-#include <QWidget>
-
-class QListView;
-class QStandardItemModel;
+#include <QUndoCommand>
 
 namespace tc {
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
+namespace core {
 
-	class CharacterTab : public QWidget {
-		Q_OBJECT
-		
+	class SetTranslateableTextPropertyValueCommand : public QUndoCommand {
 	public:
-		explicit CharacterTab(QWidget * par);
-
-	private slots:
-		void updateCharacters();
-	
-		void addCharacter();
-
-		void addedCharacter(const core::CharacterPtr & character);
-		void removedCharacter(const core::CharacterPtr & character);
+		SetTranslateableTextPropertyValueCommand(TranslateableTextProperty * prop, const QString & value);
 
 	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
+		TranslateableTextProperty * _property;
+		QString _undoValue;
+		QString _redoValue;
+
+		void undo() override;
+		void redo() override;
 	};
 
-} /* namespace client */
+} /* namespace core */
 } /* namespace tc */

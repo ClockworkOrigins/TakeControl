@@ -37,6 +37,7 @@ namespace redskiesascensiondemo {
 		gui::NodeItem * createNodeItem(const QString & nodeType) const override;
 		core::IPropertyPtr createProperty(const QString & propertyType) const override;
 		gui::PropertyItem * createPropertyItem(const QString & propertyType) const override;
+		QStringList getSupportedLanguages() const override;
 	};
 
 } /* namespace redskiesascensiondemo */

@@ -18,37 +18,22 @@
 
 #pragma once
 
-#include "core/CoreTypes.h"
-
-#include <QWidget>
-
-class QListView;
-class QStandardItemModel;
+#include "core/INode.h"
 
 namespace tc {
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
+namespace core {
 
-	class CharacterTab : public QWidget {
-		Q_OBJECT
-		
+	/**
+	 * \brief that node is used to display text, e.g. for dialog choice selection
+	 * the text depends on the language in use
+	 */
+	class TC_CORE_API TranslateableTextNode : public INode {
 	public:
-		explicit CharacterTab(QWidget * par);
-
-	private slots:
-		void updateCharacters();
-	
-		void addCharacter();
-
-		void addedCharacter(const core::CharacterPtr & character);
-		void removedCharacter(const core::CharacterPtr & character);
+		TranslateableTextNode();
 
 	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
+		QString getType() const override;
 	};
 
-} /* namespace client */
+} /* namespace core */
 } /* namespace tc */

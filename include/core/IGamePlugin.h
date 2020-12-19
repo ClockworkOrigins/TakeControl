@@ -69,6 +69,12 @@ namespace core {
 		 * \brief tries to create a PropertyItem specialization for the given property type
 		 */
 		virtual gui::PropertyItem * createPropertyItem(const QString & propertyType) const = 0;
+
+		/**
+		 * \brief return the supported languages as QString.
+		 * used e.g. for translateable texts
+		 */
+		virtual QStringList getSupportedLanguages() const = 0;
 	};
 
 } /* namespace core */

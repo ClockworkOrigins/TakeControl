@@ -20,6 +20,7 @@
 
 #include "Character.h"
 #include "Dialog.h"
+#include "TranslateableText.h"
 
 #include <QFileInfo>
 #include <QJsonArray>
@@ -48,7 +49,7 @@ bool Project::supports(const QString & path) {
 	return json.contains("Type") && json.contains("Name");
 }
 
-void Project::save(const QList<CharacterPtr> & characters, const QList<DialogPtr> & dialogs) const {
+void Project::save(const QList<CharacterPtr> & characters, const QList<DialogPtr> & dialogs, const QList<TranslateableTextPtr> & texts) const {
 	QFile f(QString("%1/%2.json").arg(_path).arg(_name));
 
 	if (!f.open(QIODevice::WriteOnly)) return;
@@ -75,13 +76,22 @@ void Project::save(const QList<CharacterPtr> & characters, const QList<DialogPtr
 
 	json["Dialogs"] = dialogArray;
 
+	QJsonArray textArray;
+
+	for (const auto & t : texts) {
+		const auto textJson = t->save();
+		textArray.append(textJson);
+	}
+
+	json["Texts"] = textArray;
+
 	const QJsonDocument doc(json);
 	const auto data = doc.toJson();
 	
 	f.write(data);
 }
 
-void Project::load(const QString & path, QList<CharacterPtr> & characters, QList<DialogPtr> & dialogs) {
+void Project::load(const QString & path, QList<CharacterPtr> & characters, QList<DialogPtr> & dialogs, QList<TranslateableTextPtr> & texts) {
 	const QFileInfo fi(path);
 
 	_path = fi.absolutePath();
@@ -117,6 +127,16 @@ void Project::load(const QString & path, QList<CharacterPtr> & characters, QList
 		if (!d) continue;
 
 		dialogs.append(d);
+	}
+
+	QJsonArray textArray = json["Texts"].toArray();
+
+	for (const auto textJson : textArray) {
+		auto t = TranslateableText::load(textJson.toObject());
+
+		if (!t) continue;
+
+		texts << t;
 	}
 }
 

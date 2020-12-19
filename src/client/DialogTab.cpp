@@ -210,7 +210,7 @@ void DialogTab::initGui() {
 
 		connect(pb, &QPushButton::released, this, &DialogTab::addDialog);
 
-		hl->addLayout(vl);
+		hl->addLayout(vl, 1);
 	}
 
 	{
@@ -245,7 +245,7 @@ void DialogTab::initGui() {
 
 		vl->addWidget(_graphicView, 1);
 
-		hl->addLayout(vl);
+		hl->addLayout(vl, 4);
 	}
 
 	setLayout(hl);

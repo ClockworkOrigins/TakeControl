@@ -37,7 +37,7 @@ void Config::init() {
 }
 
 void Config::updateLanguage(const QString & language) {
-	QTranslator * translator = new QTranslator(qApp);
+	auto * translator = new QTranslator(qApp);
 	if (language == "Deutsch") {
 		QLocale::setDefault(QLocale("de_DE"));
 		translator->load(qApp->applicationDirPath() + "/de_DE");

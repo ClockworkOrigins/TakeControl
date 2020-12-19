@@ -1,0 +1,13 @@
+{
+    "Key": "Key2",
+	"Texts": [
+        {
+            "Language": "German",
+            "Text": "Foo"
+        },
+        {
+            "Language": "English",
+            "Text": "Bar"
+        }
+    ]
+}

@@ -37,7 +37,7 @@ TEST(OutputNode, ctor) {
 	
 	ASSERT_EQ(2, properties.count());
 	ASSERT_EQ("Character", properties[0]->getType());
-	ASSERT_EQ("Text", properties[1]->getType());
+	ASSERT_EQ("Translateable Text", properties[1]->getType());
 
 	const auto type = outputNode->getType();
 
@@ -80,6 +80,6 @@ TEST(OutputNode, load) {
 
 	ASSERT_EQ(2, properties.count());
 	ASSERT_EQ("Character", properties[0]->getType());
-	ASSERT_EQ("Text", properties[1]->getType());
+	ASSERT_EQ("Translateable Text", properties[1]->getType());
 	ASSERT_EQ(1, outputNode.getID());
 }

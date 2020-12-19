@@ -52,5 +52,11 @@ namespace core {
     class TextProperty;
     typedef std::shared_ptr<TextProperty> TextPropertyPtr;
 
+    class TranslateableText;
+    typedef std::shared_ptr<TranslateableText> TranslateableTextPtr;
+
+    class TranslateableTextProperty;
+    typedef std::shared_ptr<TranslateableTextProperty> TranslateableTextPropertyPtr;
+
 } /* namespace core */
 } /* namespace tc */

@@ -18,37 +18,30 @@
 
 #pragma once
 
-#include "core/CoreTypes.h"
-
-#include <QWidget>
-
-class QListView;
-class QStandardItemModel;
+#include "core/IProperty.h"
 
 namespace tc {
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
+namespace core {
 
-	class CharacterTab : public QWidget {
-		Q_OBJECT
+	class TC_CORE_API TranslateableTextProperty : public IProperty {
+        friend class SetTranslateableTextPropertyValueCommand;
 		
 	public:
-		explicit CharacterTab(QWidget * par);
+        TranslateableTextProperty();
 
-	private slots:
-		void updateCharacters();
-	
-		void addCharacter();
-
-		void addedCharacter(const core::CharacterPtr & character);
-		void removedCharacter(const core::CharacterPtr & character);
+        void setValue(const QString & value);
+        QString getValue() const;
 
 	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
+        QString _value;
+		
+		void read(const QJsonObject &json) override;
+		void write(QJsonObject & json) const override;
+
+		QString getType() const override;
+
+        static QString getDefaultValue();
 	};
 
-} /* namespace client */
+} /* namespace core */
 } /* namespace tc */

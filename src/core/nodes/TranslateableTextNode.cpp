@@ -16,39 +16,16 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#pragma once
+#include "nodes/TranslateableTextNode.h"
 
-#include "core/CoreTypes.h"
+#include "PropertyFactory.h"
 
-#include <QWidget>
+using namespace tc::core;
 
-class QListView;
-class QStandardItemModel;
+TranslateableTextNode::TranslateableTextNode() : INode() {
+	_properties << PropertyFactory::instance()->create("Translateable Text");
+}
 
-namespace tc {
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
-
-	class CharacterTab : public QWidget {
-		Q_OBJECT
-		
-	public:
-		explicit CharacterTab(QWidget * par);
-
-	private slots:
-		void updateCharacters();
-	
-		void addCharacter();
-
-		void addedCharacter(const core::CharacterPtr & character);
-		void removedCharacter(const core::CharacterPtr & character);
-
-	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
-	};
-
-} /* namespace client */
-} /* namespace tc */
+QString TranslateableTextNode::getType() const {
+    return "Translateable Text";
+}

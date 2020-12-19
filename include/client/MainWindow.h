@@ -18,15 +18,11 @@
 
 #pragma once
 
-#include <memory>
+#include "core/CoreTypes.h"
 
 #include <QMainWindow>
 
 namespace tc {
-namespace core {
-	class Project;
-	typedef std::shared_ptr<Project> ProjectPtr;
-} /* namespace core */
 namespace plugins {
 	class PluginLoader;
 }
@@ -34,6 +30,7 @@ namespace client {
 
 	class CharacterTab;
 	class DialogTab;
+	class TranslateableTextTab;
 
 	class MainWindow : public QMainWindow {
 		Q_OBJECT
@@ -55,6 +52,7 @@ namespace client {
 
 		CharacterTab * _characterTab;
 		DialogTab * _dialogTab;
+		TranslateableTextTab * _translateableTextTab;
 
 		void createFileMenu();
 		void createEditMenu();

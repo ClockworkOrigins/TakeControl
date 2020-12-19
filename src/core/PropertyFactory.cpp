@@ -22,6 +22,7 @@
 
 #include "properties/CharacterProperty.h"
 #include "properties/TextProperty.h"
+#include "properties/TranslateableTextProperty.h"
 
 using namespace tc::core;
 
@@ -34,6 +35,10 @@ IPropertyPtr PropertyFactory::create(const QString & type) const {
 
 	if (type == "Text") {
 		propertyPtr = std::make_shared<TextProperty>();
+	}
+
+	if (type == "Translateable Text") {
+		propertyPtr = std::make_shared<TranslateableTextProperty>();
 	}
 
 	// if no built-in node matches, try plugin nodes

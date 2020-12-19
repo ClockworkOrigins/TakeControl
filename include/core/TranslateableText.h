@@ -18,37 +18,38 @@
 
 #pragma once
 
+#include "core/CoreParameters.h"
 #include "core/CoreTypes.h"
 
-#include <QWidget>
-
-class QListView;
-class QStandardItemModel;
+#include <QJsonObject>
+#include <QMap>
+#include <QString>
 
 namespace tc {
-namespace client {
-namespace commands {
-	class AddCharacterCommand;
-} /* namespace commands */
+namespace core {
 
-	class CharacterTab : public QWidget {
+	class TC_CORE_API TranslateableText : public QObject {
 		Q_OBJECT
 		
 	public:
-		explicit CharacterTab(QWidget * par);
+		explicit TranslateableText(const QString & key);
 
-	private slots:
-		void updateCharacters();
-	
-		void addCharacter();
+		QString getKey() const;
+		QMap<QString, QString> getTranslations() const;
+		QString getTranslation(const QString & language) const;
+		void updateTranslation(const QString & language, const QString & text);
 
-		void addedCharacter(const core::CharacterPtr & character);
-		void removedCharacter(const core::CharacterPtr & character);
+		QJsonObject save() const;
+
+		static TranslateableTextPtr load(const QJsonObject & json);
+
+	signals:
+		void translationChanged(const QString & language, const QString & text);
 
 	private:
-		QListView * _characterList;
-		QStandardItemModel * _characterModel;
+		QString _key;
+		QMap<QString, QString> _texts;
 	};
 
-} /* namespace client */
+} /* namespace core */
 } /* namespace tc */

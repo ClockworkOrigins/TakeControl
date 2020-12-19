@@ -22,6 +22,7 @@
 #include "DialogTab.h"
 #include "NewProjectDialog.h"
 #include "TakeControlConfig.h"
+#include "TranslateableTextTab.h"
 
 #include "core/CharacterPool.h"
 #include "core/ConditionFactory.h"
@@ -29,6 +30,7 @@
 #include "core/IGamePlugin.h"
 #include "core/NodeFactory.h"
 #include "core/Project.h"
+#include "core/TranslateableTextPool.h"
 
 #include "gui/NodeItemFactory.h"
 #include "gui/PropertyItemFactory.h"
@@ -75,6 +77,7 @@ void MainWindow::createNewProject() {
 
 	CharacterPool::instance()->setCharacters({});
 	DialogPool::instance()->setDialogs({});
+	TranslateableTextPool::instance()->setTranslateableTexts({});
 
 	updatePlugin();
 	
@@ -86,8 +89,9 @@ void MainWindow::saveProject() {
 
 	const auto characterList = CharacterPool::instance()->getCharacters();
 	const auto dialogList = DialogPool::instance()->getDialogs();
+	const auto textList = TranslateableTextPool::instance()->getTranslateableTexts();
 	
-	_project->save(characterList, dialogList);
+	_project->save(characterList, dialogList, textList);
 
 	UndoStack::instance()->setClean();
 }
@@ -144,10 +148,12 @@ void MainWindow::createEditMenu() {
 void MainWindow::createTabs() {
 	_characterTab = new CharacterTab(this);
 	_dialogTab = new DialogTab(this);
+	_translateableTextTab = new TranslateableTextTab(this);
 	
 	auto * tabWidget = new QTabWidget(this);
 	tabWidget->addTab(_characterTab, QApplication::tr("Characters"));
 	tabWidget->addTab(_dialogTab, QApplication::tr("Dialogs"));
+	tabWidget->addTab(_translateableTextTab, QApplication::tr("Texts"));
 
 	setCentralWidget(tabWidget);
 }
@@ -167,11 +173,13 @@ void MainWindow::loadProject(const QString & path) {
 
 	QList<CharacterPtr> characters;
 	QList<DialogPtr> dialogs;
+	QList<TranslateableTextPtr> texts;
 	
-	_project->load(path, characters, dialogs);
+	_project->load(path, characters, dialogs, texts);
 
 	CharacterPool::instance()->setCharacters(characters);
 	DialogPool::instance()->setDialogs(dialogs);
+	TranslateableTextPool::instance()->setTranslateableTexts(texts);
 
 	updatePlugin();
 
@@ -200,4 +208,10 @@ void MainWindow::updatePlugin() {
 	NodeItemFactory::instance()->setActivePlugin(usedPlugin);
 	PropertyItemFactory::instance()->setActivePlugin(usedPlugin);
 	_dialogTab->setActivePlugin(usedPlugin);
+	_translateableTextTab->setActivePlugin(usedPlugin);
+
+	const auto languages = usedPlugin->getSupportedLanguages();
+	if (!languages.isEmpty()) {
+		TranslateableTextPool::instance()->setDefaultLanguage(languages[0]);
+	}
 }

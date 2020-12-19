@@ -26,6 +26,7 @@
 #include "nodes/OrNode.h"
 #include "nodes/OutputNode.h"
 #include "nodes/TextNode.h"
+#include "nodes/TranslateableTextNode.h"
 
 #include <QJsonObject>
 
@@ -70,6 +71,10 @@ INodePtr NodeFactory::create(const QString & type) const {
 
 	if (type == "Text") {
 		nodePtr = std::make_shared<TextNode>();
+	}
+
+	if (type == "Translateable Text") {
+		nodePtr = std::make_shared<TranslateableTextNode>();
 	}
 
 	// if no built-in node matches, try plugin nodes

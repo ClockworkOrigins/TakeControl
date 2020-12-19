@@ -16,17 +16,24 @@
  */
 // Copyright 2020 Clockwork Origins
 
-#include "nodes/OutputNode.h"
+#include "commands/ChangeTranslateableTextValueCommand.h"
 
-#include "PropertyFactory.h"
+#include "core/TranslateableText.h"
 
+#include <QApplication>
+
+using namespace tc::client;
+using namespace tc::client::commands;
 using namespace tc::core;
 
-OutputNode::OutputNode() : INode() {
-	_properties << PropertyFactory::instance()->create("Character");
-	_properties << PropertyFactory::instance()->create("Translateable Text");
+ChangeTranslateableTextValueCommand::ChangeTranslateableTextValueCommand(const TranslateableTextPtr & tt, const QString & language, const QString & text) : QUndoCommand(QApplication::tr("ChangeText")), _translateableText(tt), _language(language), _redoText(text) {
+    _undoText = tt->getTranslation(language);
 }
 
-QString OutputNode::getType() const {
-    return "Output";
+void ChangeTranslateableTextValueCommand::redo() {
+    _translateableText->updateTranslation(_language, _redoText);
+}
+
+void ChangeTranslateableTextValueCommand::undo() {
+    _translateableText->updateTranslation(_language, _undoText);
 }

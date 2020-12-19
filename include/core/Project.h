@@ -35,8 +35,8 @@ namespace core {
 
 		static bool supports(const QString & path);
 		
-		void save(const QList<CharacterPtr> & characters, const QList<DialogPtr> & dialogs) const;
-		void load(const QString & path, QList<CharacterPtr> & characters, QList<DialogPtr> & dialogs);
+		void save(const QList<CharacterPtr> & characters, const QList<DialogPtr> & dialogs, const QList<TranslateableTextPtr> & texts) const;
+		void load(const QString & path, QList<CharacterPtr> & characters, QList<DialogPtr> & dialogs, QList<TranslateableTextPtr> & texts);
 
 		QString getName() const;
 		QString getType() const;
