@@ -75,6 +75,12 @@ namespace core {
 		 * used e.g. for translateable texts
 		 */
 		virtual QStringList getSupportedLanguages() const = 0;
+
+		/**
+		 * \brief try to export the given project
+		 * return true on success, false on failure
+		 */
+		virtual bool exportProject(const ProjectPtr & project) const = 0;
 	};
 
 } /* namespace core */

@@ -87,5 +87,9 @@
         <source>AddText</source>
         <translation>Text hinzufügen</translation>
     </message>
+    <message>
+        <source>Export</source>
+        <translation>Exportieren</translation>
+    </message>
 </context>
 </TS>

@@ -45,6 +45,7 @@ namespace client {
 		void createNewProject();
 		void saveProject();
 		void loadProject();
+		void exportProject();
 
 	private:
 		plugins::PluginLoader * _pluginLoader;

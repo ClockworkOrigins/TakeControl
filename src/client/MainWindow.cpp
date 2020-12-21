@@ -107,6 +107,17 @@ void MainWindow::loadProject() {
 	loadProject(dialog.selectedFiles()[0]);
 }
 
+void MainWindow::exportProject() {
+	if (!_project) return;
+
+	const auto * usedPlugin = _pluginLoader->getGamePlugin(_project->getType());
+	
+	if (!usedPlugin) return;
+
+	const auto exportSuccessful = usedPlugin->exportProject(_project);
+	Q_UNUSED(exportSuccessful) // TODO: add some error handling
+}
+
 void MainWindow::createFileMenu() {
 	auto * fileMenu = new QMenu(QApplication::tr("File"), this);
 
@@ -125,6 +136,15 @@ void MainWindow::createFileMenu() {
 		saveProject->setEnabled(true);
 	});
 	saveProject->setEnabled(false);
+
+	fileMenu->addSeparator();
+
+	auto * exportProject = fileMenu->addAction(QApplication::tr("Export"));
+	connect(exportProject, &QAction::triggered, this, &MainWindow::exportProject);
+	connect(this, &MainWindow::projectLoaded, [exportProject]() {
+		exportProject->setEnabled(true);
+	});
+	exportProject->setEnabled(false);
 
 	menuBar()->addMenu(fileMenu);
 }
