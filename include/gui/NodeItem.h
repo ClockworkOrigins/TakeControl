@@ -46,6 +46,7 @@ namespace gui {
 
     signals:
         void deleteClicked();
+        void positionChanged(const QPointF & position);
 
     protected:
         QFont _textFont;

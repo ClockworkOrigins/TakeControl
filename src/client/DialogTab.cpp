@@ -97,6 +97,8 @@ void DialogTab::addNode(const INodePtr & node) {
 	auto * nodeItem = NodeItemFactory::instance()->create(node);
 	_graphicScene->addItem(nodeItem);
 
+	nodeItem->setPos(node->getPosition());
+
 	_nodeItems.insert(node, nodeItem);
 
 	connect(nodeItem, &NodeItem::deleteClicked, this, [this, node]() {
@@ -113,6 +115,8 @@ void DialogTab::addNode(const INodePtr & node) {
 
 		UndoStack::instance()->endMacro();
 	});
+
+	connect(nodeItem, &NodeItem::positionChanged, node.get(), &INode::setPosition);
 }
 
 void DialogTab::removeNode(const INodePtr & node) {

@@ -1,4 +1,6 @@
 {
     "id": 2,
-    "type": "Branching"
+    "type": "Branching",
+    "x": 0,
+    "y": 0
 }

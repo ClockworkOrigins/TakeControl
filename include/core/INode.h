@@ -21,24 +21,28 @@
 #include "core/CoreParameters.h"
 #include "core/CoreTypes.h"
 
+#include <QPointF>
+
 class QJsonObject;
 
 namespace tc {
 namespace core {
 
-	class TC_CORE_API INode {
+	class TC_CORE_API INode : public QObject {
+		Q_OBJECT
+		
 	public:
 		virtual ~INode() {}
 
 		/**
 		 * \brief restores INode from json
-		 * default implementation restores all properties and the ID
+		 * default implementation restores all properties, position and the ID
 		 */
 		virtual void read(const QJsonObject &json);
 
 		/**
 		 * \brief saves INode to json
-		 * default implementation saves the type of the node retrieved via getType(), all properties and the ID
+		 * default implementation saves the type of the node retrieved via getType(), all properties, position and the ID
 		 */
 		virtual void write(QJsonObject & json) const;
 
@@ -83,11 +87,24 @@ namespace core {
 		 */
 		int getID() const;
 
+		/**
+		 * \brief sets the position of the node in the view
+		 * used for saving/restoring only
+		 */
+		void setPosition(const QPointF & pos);
+
+		/**
+		 * \brief returns the position of the node in the view
+		 * used for saving/restoring only
+		 */
+		QPointF getPosition() const;
+
 	protected:
 		QList<IPropertyPtr> _properties;
 
 	private:
-		int _id = 0;
+		int _identifier = 0;
+		QPointF _position;
 	};
 
 } /* namespace core */

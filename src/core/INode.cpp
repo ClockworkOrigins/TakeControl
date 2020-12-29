@@ -46,7 +46,14 @@ void INode::read(const QJsonObject & json) {
         _properties << prop;
 	}
 
-    _id = json["id"].toInt();
+    _identifier = json["id"].toInt();
+
+	if (json.contains("x") && json.contains("y")) {
+        const auto x = json["x"].toDouble();
+        const auto y = json["y"].toDouble();
+
+        _position = QPointF(x, y);
+	}
 }
 
 void INode::write(QJsonObject & json) const {
@@ -65,7 +72,10 @@ void INode::write(QJsonObject & json) const {
         json["properties"] = propertyArray;
     }
 	
-    json["id"] = _id;
+    json["id"] = _identifier;
+
+    json["x"] = _position.x();
+    json["y"] = _position.y();
 }
 
 qint32 INode::getInputCount() const {
@@ -85,9 +95,17 @@ QList<IPropertyPtr> INode::getProperties() const {
 }
 
 void INode::setID(int id) {
-    _id = id;
+    _identifier = id;
 }
 
 int INode::getID() const {
-    return _id;
+    return _identifier;
+}
+
+void INode::setPosition(const QPointF & pos) {
+    _position = pos;
+}
+
+QPointF INode::getPosition() const {
+    return _position;
 }

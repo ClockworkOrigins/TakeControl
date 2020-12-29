@@ -18,6 +18,8 @@
 
 #include "NodeItem.h"
 
+#include <iostream>
+
 #include "ConnectorItem.h"
 #include "PropertyItem.h"
 #include "PropertyItemFactory.h"
@@ -36,7 +38,7 @@ using namespace tc::gui;
 constexpr qreal START_HEIGHT = -50.0;
 
 NodeItem::NodeItem() : QGraphicsItem() {
-    setFlags(ItemIsMovable | ItemIsSelectable);
+    setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
     setAcceptHoverEvents(true);
 	
     _textFont.setPointSize(16);
@@ -156,9 +158,14 @@ void NodeItem::paint(QPainter * painter, const QStyleOptionGraphicsItem *, QWidg
 }
 
 QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant & value) {
+    std::cout << change << std::endl;
     if (change == ItemSelectedHasChanged) {
         update();
     }
+
+	if (change == ItemPositionHasChanged) {
+        emit positionChanged(pos());
+	}
 	
     return value;
 }

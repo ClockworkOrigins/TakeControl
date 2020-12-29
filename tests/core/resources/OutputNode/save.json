@@ -10,5 +10,7 @@
             "value": ""
         }
     ],
-    "type": "Output"
+    "type": "Output",
+    "x": 0,
+    "y": 0
 }

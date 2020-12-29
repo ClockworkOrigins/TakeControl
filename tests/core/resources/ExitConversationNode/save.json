@@ -1,4 +1,6 @@
 {
     "id": 2,
-    "type": "Exit Conversation"
+    "type": "Exit Conversation",
+    "x": 0,
+    "y": 0
 }
