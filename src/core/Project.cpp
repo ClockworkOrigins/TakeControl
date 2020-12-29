@@ -49,7 +49,7 @@ bool Project::supports(const QString & path) {
 	return json.contains("Type") && json.contains("Name");
 }
 
-void Project::save(const QList<CharacterPtr> & characters, const QList<DialogPtr> & dialogs, const QList<TranslateableTextPtr> & texts) const {
+void Project::save() const {
 	QFile f(QString("%1/%2.json").arg(_path).arg(_name));
 
 	if (!f.open(QIODevice::WriteOnly)) return;
@@ -60,7 +60,7 @@ void Project::save(const QList<CharacterPtr> & characters, const QList<DialogPtr
 
 	QJsonArray characterArray;
 
-	for (const auto & c : characters) {
+	for (const auto & c : _characters) {
 		const auto characterJson = c->save();
 		characterArray.append(characterJson);
 	}
@@ -69,7 +69,7 @@ void Project::save(const QList<CharacterPtr> & characters, const QList<DialogPtr
 	
 	QJsonArray dialogArray;
 
-	for (const auto & d : dialogs) {
+	for (const auto & d : _dialogs) {
 		const auto dialogJson = d->save();
 		dialogArray.append(dialogJson);
 	}
@@ -78,7 +78,7 @@ void Project::save(const QList<CharacterPtr> & characters, const QList<DialogPtr
 
 	QJsonArray textArray;
 
-	for (const auto & t : texts) {
+	for (const auto & t : _texts) {
 		const auto textJson = t->save();
 		textArray.append(textJson);
 	}
@@ -91,7 +91,7 @@ void Project::save(const QList<CharacterPtr> & characters, const QList<DialogPtr
 	f.write(data);
 }
 
-void Project::load(const QString & path, QList<CharacterPtr> & characters, QList<DialogPtr> & dialogs, QList<TranslateableTextPtr> & texts) {
+void Project::load(const QString & path) {
 	const QFileInfo fi(path);
 
 	_path = fi.absolutePath();
@@ -116,7 +116,7 @@ void Project::load(const QString & path, QList<CharacterPtr> & characters, QList
 
 		if (!c) continue;
 
-		characters.append(c);
+		_characters.append(c);
 	}
 
 	QJsonArray dialogArray = json["Dialogs"].toArray();
@@ -126,7 +126,7 @@ void Project::load(const QString & path, QList<CharacterPtr> & characters, QList
 
 		if (!d) continue;
 
-		dialogs.append(d);
+		_dialogs.append(d);
 	}
 
 	QJsonArray textArray = json["Texts"].toArray();
@@ -136,7 +136,7 @@ void Project::load(const QString & path, QList<CharacterPtr> & characters, QList
 
 		if (!t) continue;
 
-		texts << t;
+		_texts << t;
 	}
 }
 
@@ -146,4 +146,28 @@ QString Project::getName() const {
 
 QString Project::getType() const {
 	return _type;
+}
+
+void Project::setCharacters(const QList<CharacterPtr> & characters) {
+	_characters = characters;
+}
+
+void Project::setDialogs(const QList<DialogPtr> & dialogs) {
+	_dialogs = dialogs;
+}
+
+void Project::setTexts(const QList<TranslateableTextPtr> & texts) {
+	_texts = texts;
+}
+
+QList<CharacterPtr> Project::getCharacters() const {
+	return _characters;
+}
+
+QList<DialogPtr> Project::getDialogs() const {
+	return _dialogs;
+}
+
+QList<TranslateableTextPtr> Project::getTexts() const {
+	return _texts;
 }

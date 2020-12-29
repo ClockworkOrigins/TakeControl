@@ -44,7 +44,8 @@ const IGamePlugin * PluginLoader::getGamePlugin(const QString & type) const {
 }
 
 void PluginLoader::loadGamePlugins() {
-	const QDir pluginsDir = QDir(qApp->applicationDirPath() + "/plugins/game");
+	const auto appDir = qApp->applicationDirPath();
+	const QDir pluginsDir = QDir(appDir + "/plugins/game");
 	for (const QString & fileName : pluginsDir.entryList(QDir::Files)) {
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 		QObject * plugin = loader.instance();

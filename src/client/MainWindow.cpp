@@ -98,8 +98,12 @@ void MainWindow::saveProject() {
 	const auto characterList = CharacterPool::instance()->getCharacters();
 	const auto dialogList = DialogPool::instance()->getDialogs();
 	const auto textList = TranslateableTextPool::instance()->getTranslateableTexts();
+
+	_project->setCharacters(characterList);
+	_project->setDialogs(dialogList);
+	_project->setTexts(textList);
 	
-	_project->save(characterList, dialogList, textList);
+	_project->save();
 
 	UndoStack::instance()->setClean();
 }
@@ -203,11 +207,11 @@ void MainWindow::loadProject(const QString & path) {
 	QList<DialogPtr> dialogs;
 	QList<TranslateableTextPtr> texts;
 	
-	_project->load(path, characters, dialogs, texts);
+	_project->load(path);
 
-	CharacterPool::instance()->setCharacters(characters);
-	DialogPool::instance()->setDialogs(dialogs);
-	TranslateableTextPool::instance()->setTranslateableTexts(texts);
+	CharacterPool::instance()->setCharacters(_project->getCharacters());
+	DialogPool::instance()->setDialogs(_project->getDialogs());
+	TranslateableTextPool::instance()->setTranslateableTexts(_project->getTexts());
 
 	updatePlugin();
 
