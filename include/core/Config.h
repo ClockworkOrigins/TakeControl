@@ -20,6 +20,7 @@
 
 #include "core/CoreParameters.h"
 
+class QSettings;
 class QString;
 
 namespace tc {
@@ -27,7 +28,10 @@ namespace core {
 
 	class TC_CORE_API Config {
 	public:
+        static QSettings * IniParser;
+		
 		static void init();
+        static void finish();
 
 		static void updateLanguage(const QString & language);
 	};

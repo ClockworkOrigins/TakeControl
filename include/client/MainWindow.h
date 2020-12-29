@@ -37,6 +37,7 @@ namespace client {
 		
 	public:
 		MainWindow();
+		~MainWindow();
 
 	signals:
 		void projectLoaded();
@@ -53,7 +54,7 @@ namespace client {
 
 		CharacterTab * _characterTab;
 		DialogTab * _dialogTab;
-		TranslateableTextTab * _translateableTextTab;
+		TranslateableTextTab * _translateableTextTab = nullptr;
 
 		void createFileMenu();
 		void createEditMenu();
@@ -66,6 +67,9 @@ namespace client {
 		void adjustTitle();
 
 		void updatePlugin();
+
+		void saveSettings();
+		void restoreSettings();
 	};
 
 } /* namespace client */

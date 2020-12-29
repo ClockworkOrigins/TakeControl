@@ -25,6 +25,7 @@
 #include "TranslateableTextTab.h"
 
 #include "core/CharacterPool.h"
+#include "core/Config.h"
 #include "core/ConditionFactory.h"
 #include "core/DialogPool.h"
 #include "core/IGamePlugin.h"
@@ -42,6 +43,7 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QMenuBar>
+#include <QSettings>
 
 using namespace tc::client;
 using namespace tc::core;
@@ -58,6 +60,12 @@ MainWindow::MainWindow() : _pluginLoader(new PluginLoader()), _characterTab(null
 	createTabs();
 
 	initConnections();
+
+	restoreSettings();
+}
+
+MainWindow::~MainWindow() {
+	saveSettings();
 }
 
 void MainWindow::createNewProject() {
@@ -234,4 +242,24 @@ void MainWindow::updatePlugin() {
 	if (!languages.isEmpty()) {
 		TranslateableTextPool::instance()->setDefaultLanguage(languages[0]);
 	}
+}
+
+void MainWindow::saveSettings() {
+	Config::IniParser->beginGroup("WINDOWGEOMETRY");
+		Config::IniParser->setValue("MainWindowGeometry", saveGeometry());
+		Config::IniParser->setValue("MainWindowState", saveState());
+	Config::IniParser->endGroup();
+}
+
+void MainWindow::restoreSettings() {
+	Config::IniParser->beginGroup("WINDOWGEOMETRY");
+		QByteArray arr = Config::IniParser->value("MainWindowGeometry", QByteArray()).toByteArray();
+		if (!restoreGeometry(arr)) {
+			Config::IniParser->remove("MainWindowGeometry");
+		}
+		arr = Config::IniParser->value("MainWindowState", QByteArray()).toByteArray();
+		if (!restoreGeometry(arr)) {
+			Config::IniParser->remove("MainWindowState");
+		}
+	Config::IniParser->endGroup();
 }

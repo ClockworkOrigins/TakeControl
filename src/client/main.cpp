@@ -40,6 +40,8 @@ int main(int argc, char ** argv) {
 
 		ret = QApplication::exec();
 	}
+
+	Config::finish();
 	
 	return ret;
 }
