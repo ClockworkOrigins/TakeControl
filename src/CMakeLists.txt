@@ -1,5 +1,6 @@
 ADD_SUBDIRECTORY(client)
 ADD_SUBDIRECTORY(core)
+ADD_SUBDIRECTORY(gothic2plugin)
 ADD_SUBDIRECTORY(gui)
 ADD_SUBDIRECTORY(plugins)
 ADD_SUBDIRECTORY(redskiesascensiondemoplugin)

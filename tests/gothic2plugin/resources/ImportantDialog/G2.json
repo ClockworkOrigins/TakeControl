@@ -1,0 +1,217 @@
+{
+    "Characters": [
+        {
+            "Name": "Hero"
+        },
+        {
+            "Name": "Xardas"
+        }
+    ],
+    "Dialogs": [
+        {
+            "Connections": [
+                {
+                    "endNode": 1,
+                    "startNode": 0
+                },
+                {
+                    "endNode": 2,
+                    "startNode": 1
+                },
+                {
+                    "endNode": 3,
+                    "startNode": 2
+                },
+                {
+                    "endNode": 4,
+                    "startNode": 3
+                },
+                {
+                    "endNode": 5,
+                    "startNode": 4
+                }
+            ],
+            "Name": "Hello",
+            "Nodes": [
+                {
+                    "id": 0,
+                    "properties": [
+                        {
+                            "type": "Character",
+                            "value": "Xardas"
+                        },
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Addon_Xardas_Hello_14_00"
+                        }
+                    ],
+                    "type": "Output",
+                    "x": -1073,
+                    "y": -184
+                },
+                {
+                    "id": 1,
+                    "properties": [
+                        {
+                            "type": "Character",
+                            "value": "Hero"
+                        },
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Addon_Xardas_Hello_15_01"
+                        }
+                    ],
+                    "type": "Output",
+                    "x": -770,
+                    "y": -185
+                },
+                {
+                    "id": 2,
+                    "properties": [
+                        {
+                            "type": "Character",
+                            "value": "Xardas"
+                        },
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Addon_Xardas_Hello_14_02"
+                        }
+                    ],
+                    "type": "Output",
+                    "x": -490,
+                    "y": -188
+                },
+                {
+                    "id": 3,
+                    "properties": [
+                        {
+                            "type": "Character",
+                            "value": "Xardas"
+                        },
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Addon_Xardas_Hello_14_03"
+                        }
+                    ],
+                    "type": "Output",
+                    "x": -224,
+                    "y": -172
+                },
+                {
+                    "id": 4,
+                    "properties": [
+                        {
+                            "type": "Character",
+                            "value": "Xardas"
+                        },
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Addon_Xardas_Hello_14_04"
+                        }
+                    ],
+                    "type": "Output",
+                    "x": 64,
+                    "y": -177
+                },
+                {
+                    "id": 5,
+                    "properties": [
+                        {
+                            "type": "Character",
+                            "value": "Xardas"
+                        },
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Addon_Xardas_Hello_14_05"
+                        }
+                    ],
+                    "type": "Output",
+                    "x": -152,
+                    "y": 238
+                }
+            ]
+        }
+    ],
+    "Name": "G2",
+    "Texts": [
+        {
+            "Key": "DIA_Addon_Xardas_Hello_14_00",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "Da bist du ja wieder! (schmunzelt) Ich hätte nicht gedacht, daß wir uns nochmal wiedersehen."
+                },
+                {
+                    "Language": "German",
+                    "Text": "Da bist du ja wieder! (schmunzelt) Ich hätte nicht gedacht, daß wir uns nochmal wiedersehen."
+                }
+            ]
+        },
+        {
+            "Key": "DIA_Addon_Xardas_Hello_15_01",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "Ich fühle mich, als hätte ich drei Wochen unter Steinen gelegen."
+                },
+                {
+                    "Language": "German",
+                    "Text": "Ich fühle mich, als hätte ich drei Wochen unter Steinen gelegen."
+                }
+            ]
+        },
+        {
+            "Key": "DIA_Addon_Xardas_Hello_14_02",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "So war es auch. Nur die Magie deiner Rüstung hat dich am Leben gehalten "
+                },
+                {
+                    "Language": "German",
+                    "Text": "So war es auch. Nur die Magie deiner Rüstung hat dich am Leben gehalten "
+                }
+            ]
+        },
+        {
+            "Key": "DIA_Addon_Xardas_Hello_14_03",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "Ich hatte schon befürchtet, dich nicht mehr aus den Trümmern des Tempels befreien zu können."
+                },
+                {
+                    "Language": "German",
+                    "Text": "Ich hatte schon befürchtet, dich nicht mehr aus den Trümmern des Tempels befreien zu können."
+                }
+            ]
+        },
+        {
+            "Key": "DIA_Addon_Xardas_Hello_14_04",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "Aber genug davon. Jetzt bist du ja hier."
+                },
+                {
+                    "Language": "German",
+                    "Text": "Aber genug davon. Jetzt bist du ja hier."
+                }
+            ]
+        },
+        {
+            "Key": "DIA_Addon_Xardas_Hello_14_05",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "Es gibt eine NEUE Bedrohung, um die wir uns kümmern müssen."
+                },
+                {
+                    "Language": "German",
+                    "Text": "Es gibt eine NEUE Bedrohung, um die wir uns kümmern müssen."
+                }
+            ]
+        }
+    ],
+    "Type": "Gothic 2"
+}
