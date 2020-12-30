@@ -97,64 +97,60 @@ QString Gothic2Plugin::convert(const DialogPtr & dialog, const QList<CharacterPt
 	const auto nodes = dialog->getNodes();
 
 	QString dialogName;
-	QString dialogOwnerName;
 	
-	QString converted = convertDialogHeader(dialog, characters, texts, nodes, connections, dialogName, dialogOwnerName);
+	QString converted = convertDialogHeader(dialog, characters, texts, nodes, connections, dialogName);
 	converted += "\n";
-	converted += convertDialogConditions(dialog, characters, texts, dialogName, dialogOwnerName);
+	converted += convertDialogConditions(dialog, characters, texts, dialogName);
 	converted += "\n";
-	converted += convertDialogBody(dialog, characters, texts, nodes, connections, dialogName, dialogOwnerName);
+	converted += convertDialogBody(dialog, characters, texts, nodes, connections, dialogName);
 
 	return converted;
 }
 
-QString Gothic2Plugin::convertDialogHeader(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts, const QList<INodePtr> & nodes, const QList<ConnectionPtr> & connections, QString & dialogName, QString & dialogOwnerName) const {
+QString Gothic2Plugin::convertDialogHeader(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts, const QList<INodePtr> & nodes, const QList<ConnectionPtr> & connections, QString & dialogName) const {
 	bool permanent = false;
 	bool important = false;
 
 	QString dialogOwner;
 	QString descriptionText;
 
-	getDialogConfiguration(dialog, characters, texts, nodes, connections, dialogOwner, dialogOwnerName, dialogName, permanent, important, descriptionText);
+	getDialogConfiguration(dialog, characters, texts, nodes, connections, dialogOwner, dialogName, permanent, important, descriptionText);
 
 	if (!descriptionText.isEmpty()) {
 		descriptionText = QString("\tdescription\t= \"%1\";\n").arg(descriptionText);
 	}
 	
 	// instance:
-	// %1: dialogOwnerName
-	// %2: dialogName
-	// %3: dialogOwner
-	// %4: permanent
-	// %5: important
-	// %6: descriptionText
-	QString converted = QString("INSTANCE DIA_%1_%2 (C_INFO) {\n"
-								"\tnpc\t\t\t= %3;\n"
+	// %1: dialogName
+	// %2: dialogOwner
+	// %3: permanent
+	// %4: important
+	// %5: descriptionText
+	QString converted = QString("INSTANCE %1 (C_INFO) {\n"
+								"\tnpc\t\t\t= %2;\n"
 								"\tnr\t\t\t= 1;\n"
-								"\tcondition\t= DIA_%1_%2_Condition;\n"
-								"\tinformation\t= DIA_%1_%2_Info;\n"
-								"\tpermanent\t= %4;\n"
-								"\timportant\t= %5;\n"
-								"%6"
-								"};\n").arg(dialogOwnerName).arg(dialogName).arg(dialogOwner).arg(permanent ? "TRUE" : "FALSE").arg(important ? "TRUE" : "FALSE").arg(descriptionText);
+								"\tcondition\t= %1_Condition;\n"
+								"\tinformation\t= %1_Info;\n"
+								"\tpermanent\t= %3;\n"
+								"\timportant\t= %4;\n"
+								"%5"
+								"};\n").arg(dialogName).arg(dialogOwner).arg(permanent ? "TRUE" : "FALSE").arg(important ? "TRUE" : "FALSE").arg(descriptionText);
 
 	return converted;
 }
 
-QString Gothic2Plugin::convertDialogConditions(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts, const QString & dialogName, const QString & dialogOwnerName) const {
-	// instance:
-	// %1: dialogOwnerName
-	QString converted = QString("FUNC INT DIA_%1_%2_Condition() {\n"
+QString Gothic2Plugin::convertDialogConditions(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts, const QString & dialogName) const {
+	// %1: dialogName
+	QString converted = QString("FUNC INT %1_Condition() {\n"
 								"\treturn TRUE;\n"
-								"};\n").arg(dialogOwnerName).arg(dialogName);
+								"};\n").arg(dialogName);
 
 	return converted;
 }
 
-QString Gothic2Plugin::convertDialogBody(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts, const QList<INodePtr> & nodes, const QList<ConnectionPtr> & connections, const QString & dialogName, const QString & dialogOwnerName) const {
-	// instance:
-	// %1: dialogOwnerName
-	QString converted = QString("FUNC VOID DIA_%1_%2_Info() {\n").arg(dialogOwnerName).arg(dialogName);
+QString Gothic2Plugin::convertDialogBody(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts, const QList<INodePtr> & nodes, const QList<ConnectionPtr> & connections, const QString & dialogName) const {
+	// %1: dialogName
+	QString converted = QString("FUNC VOID %1_Info() {\n").arg(dialogName);
 
 	auto currentNode = getStartNode(nodes, connections);
 
@@ -182,6 +178,8 @@ QString Gothic2Plugin::convertDialogBody(const DialogPtr & dialog, const QList<C
 			// %3: text key
 			// %4: text
 			converted += QString("\tAI_Output (%1, %2, \"%3\"); //%4\n").arg(charProp->getValue() == "Hero" ? "other" : "self").arg(charProp->getValue() == "Hero" ? "self" : "other").arg(textProp->getValue()).arg(text);
+		} else if (currentNode->getType() == "Exit Conversation") {
+			converted += QString("\tAI_StopProcessInfos (self);\n");
 		}
 
 		checkedNodes++;
@@ -194,7 +192,7 @@ QString Gothic2Plugin::convertDialogBody(const DialogPtr & dialog, const QList<C
 	return converted;
 }
 
-void Gothic2Plugin::getDialogConfiguration(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts, const QList<INodePtr> & nodes, const QList<ConnectionPtr> & connections, QString & dialogOwner, QString & dialogOwnerName, QString & dialogName, bool & permanent, bool & important, QString & description) const {
+void Gothic2Plugin::getDialogConfiguration(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts, const QList<INodePtr> & nodes, const QList<ConnectionPtr> & connections, QString & dialogOwner, QString & dialogName, bool & permanent, bool & important, QString & description) const {
 	auto currentNode = getStartNode(nodes, connections);
 	
 	dialogName = dialog->getName();
@@ -218,10 +216,6 @@ void Gothic2Plugin::getDialogConfiguration(const DialogPtr & dialog, const QList
 	const auto itOwner = std::find_if(characters.begin(), characters.end(), [dialogOwner](const CharacterPtr & c) {
 		return c->getName() == dialogOwner; // TODO: change when character has identifier AND name
 	});
-
-	if (itOwner != characters.end()) {
-		dialogOwnerName = (*itOwner)->getName();
-	}
 
 	while (checkedNodes < nodes.count() && currentNode) {
 		if (currentNode->getType() == "Text") {

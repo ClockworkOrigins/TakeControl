@@ -1,0 +1,157 @@
+{
+    "Characters": [
+        {
+            "Name": "Hero"
+        },
+        {
+            "Name": "Xardas"
+        }
+    ],
+    "Dialogs": [
+        {
+            "Connections": [
+                {
+                    "endNode": 1,
+                    "startNode": 0
+                },
+                {
+                    "endNode": 2,
+                    "startNode": 1
+                },
+                {
+                    "endNode": 3,
+                    "startNode": 2
+                },
+                {
+                    "endNode": 4,
+                    "startNode": 3
+                }
+            ],
+            "Name": "DIA_Xardas_FirstEXIT",
+            "Nodes": [
+                {
+                    "id": 0,
+                    "properties": [
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Xardas_FirstEXIT"
+                        }
+                    ],
+                    "type": "Translateable Text",
+                    "x": -923,
+                    "y": -300
+                },
+                {
+                    "id": 1,
+                    "properties": [
+                        {
+                            "type": "Character",
+                            "value": "Hero"
+                        },
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Xardas_FirstEXIT_15_00"
+                        }
+                    ],
+                    "type": "Output",
+                    "x": -617,
+                    "y": -317
+                },
+                {
+                    "id": 2,
+                    "properties": [
+                        {
+                            "type": "Character",
+                            "value": "Xardas"
+                        },
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Xardas_FirstEXIT_14_01"
+                        }
+                    ],
+                    "type": "Output",
+                    "x": -317,
+                    "y": -316
+                },
+                {
+                    "id": 3,
+                    "properties": [
+                        {
+                            "type": "Character",
+                            "value": "Xardas"
+                        },
+                        {
+                            "type": "Translateable Text",
+                            "value": "DIA_Xardas_FirstEXIT_14_02"
+                        }
+                    ],
+                    "type": "Output",
+                    "x": -58,
+                    "y": -323
+                },
+                {
+                    "id": 4,
+                    "type": "Exit Conversation",
+                    "x": 225,
+                    "y": -181
+                }
+            ]
+        }
+    ],
+    "Name": "G2",
+    "Texts": [
+        {
+            "Key": "DIA_Xardas_FirstEXIT",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "Ich werde so schnell wie möglich aufbrechen! (ENDE)"
+                },
+                {
+                    "Language": "German",
+                    "Text": "Ich werde so schnell wie möglich aufbrechen! (ENDE)"
+                }
+            ]
+        },
+        {
+            "Key": "DIA_Xardas_FirstEXIT_15_00",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "Ich werde so schnell wie möglich aufbrechen!"
+                },
+                {
+                    "Language": "German",
+                    "Text": "Ich werde so schnell wie möglich aufbrechen!"
+                }
+            ]
+        },
+        {
+            "Key": "DIA_Xardas_FirstEXIT_14_01",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "Gut! Und eines noch: Verrate niemandem, dass du mit mir gesprochen hast. Vor allem keinem Magier."
+                },
+                {
+                    "Language": "German",
+                    "Text": "Gut! Und eines noch: Verrate niemandem, dass du mit mir gesprochen hast. Vor allem keinem Magier."
+                }
+            ]
+        },
+        {
+            "Key": "DIA_Xardas_FirstEXIT_14_02",
+            "Texts": [
+                {
+                    "Language": "English",
+                    "Text": "Seit ich ins Exil gegangen bin, hält mich der Kreis des Feuers für tot, und das ist auch gut so."
+                },
+                {
+                    "Language": "German",
+                    "Text": "Seit ich ins Exil gegangen bin, hält mich der Kreis des Feuers für tot, und das ist auch gut so."
+                }
+            ]
+        }
+    ],
+    "Type": "Gothic 2"
+}

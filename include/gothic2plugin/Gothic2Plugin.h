@@ -46,10 +46,10 @@ namespace gothic2plugin {
 
 		QString convert(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts) const;
 
-		QString convertDialogHeader(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts, const QList<core::INodePtr> & nodes, const QList<core::ConnectionPtr> & connections, QString & dialogName, QString & dialogOwnerName) const;
-		QString convertDialogConditions(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts, const QString & dialogName, const QString & dialogOwnerName) const;
-		QString convertDialogBody(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts, const QList<core::INodePtr> & nodes, const QList<core::ConnectionPtr> & connections, const QString & dialogName, const QString & dialogOwnerName) const;
-		void getDialogConfiguration(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts, const QList<core::INodePtr> & nodes, const QList<core::ConnectionPtr> & connections, QString & dialogOwner, QString & dialogOwnerName, QString & dialogName, bool & permanent, bool & important, QString & description) const;
+		QString convertDialogHeader(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts, const QList<core::INodePtr> & nodes, const QList<core::ConnectionPtr> & connections, QString & dialogName) const;
+		QString convertDialogConditions(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts, const QString & dialogName) const;
+		QString convertDialogBody(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts, const QList<core::INodePtr> & nodes, const QList<core::ConnectionPtr> & connections, const QString & dialogName) const;
+		void getDialogConfiguration(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts, const QList<core::INodePtr> & nodes, const QList<core::ConnectionPtr> & connections, QString & dialogOwner, QString & dialogName, bool & permanent, bool & important, QString & description) const;
 
 		core::INodePtr getStartNode(const QList<core::INodePtr> & nodes, const QList<core::ConnectionPtr> & connections) const;
 		core::INodePtr getNextNode(const QList<core::ConnectionPtr> & connections, core::INodePtr & currentNode) const;

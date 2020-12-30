@@ -80,3 +80,16 @@ TEST_F(Gothic2PluginTest, importantDialog) {
 
 	ASSERT_EQ(_referenceDialogString, convertedDialog);
 }
+
+TEST_F(Gothic2PluginTest, endDialog) {
+	const PluginLoader loader;
+
+	init("EndDialog");
+
+	const auto dialogs = _project->getDialogs();
+	ASSERT_FALSE(dialogs.isEmpty());
+
+	const auto convertedDialog = convert(dialogs[0]);
+
+	ASSERT_EQ(_referenceDialogString, convertedDialog);
+}
