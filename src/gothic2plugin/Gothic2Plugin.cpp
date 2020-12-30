@@ -29,6 +29,9 @@
 #include "core/properties/TextProperty.h"
 #include "core/properties/TranslateableTextProperty.h"
 
+#include <QFileDialog>
+#include <QFile>
+
 using namespace tc::core;
 using namespace tc::gui;
 using namespace tc::plugins::gothic2plugin;
@@ -76,7 +79,10 @@ QStringList Gothic2Plugin::getSupportedLanguages() const {
 }
 
 bool Gothic2Plugin::exportProject(const ProjectPtr & project) const {
-	// TODO: get output path
+	const auto path = QFileDialog::getExistingDirectory(nullptr, "Select Gothic 2 folder");
+
+	if (path.isEmpty()) return false;
+	
 	const auto dialogs = project->getDialogs();
 	const auto characters = project->getCharacters();
 	const auto texts = project->getTexts();
@@ -87,9 +93,19 @@ bool Gothic2Plugin::exportProject(const ProjectPtr & project) const {
 		converted += convert(dialog, characters, texts);
 	}
 
-	// TODO: write to file
+	const auto dialogPath = QString("%1/_work/data/Scripts/Content/Story/Dialoge").arg(path);
+	auto b = QDir(dialogPath).mkpath(dialogPath);
+
+	if (!b) return false;
 	
-	return false; // TODO: implement somewhen in the future
+	QFile f(QString("%1/DIA_TakeControl.d").arg(dialogPath));
+	b = f.open(QIODevice::WriteOnly);
+
+	if (!b) return false;
+
+	f.write(converted.toLatin1());
+	
+	return true;
 }
 
 QString Gothic2Plugin::convert(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts) const {
