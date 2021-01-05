@@ -36,6 +36,7 @@
 #include "gui/NodeItem.h"
 #include "gui/NodeItemFactory.h"
 
+#include "utils/EditableListViewModel.h"
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -198,9 +199,9 @@ void DialogTab::initGui() {
 		auto * vl = new QVBoxLayout();
 
 		_dialogList = new QListView(this);
-		_dialogList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+		_dialogList->setEditTriggers(QAbstractItemView::DoubleClicked);
 
-		_dialogModel = new QStandardItemModel(this);
+		_dialogModel = new EditableListViewModel(this);
 
 		_sortModel = new QSortFilterProxyModel(this);
 		_sortModel->setSourceModel(_dialogModel);
@@ -256,11 +257,13 @@ void DialogTab::initGui() {
 }
 
 void DialogTab::initConnections() {
-	connect(_dialogList, &QListView::doubleClicked, this, QOverload<const QModelIndex &>::of(&DialogTab::openDialog));
+	connect(_dialogList, &QListView::clicked, this, QOverload<const QModelIndex &>::of(&DialogTab::openDialog));
 
 	connect(DialogPool::instance(), &DialogPool::dialogsChanged, this, &DialogTab::updateDialogs);
 	connect(DialogPool::instance(), &DialogPool::dialogAdded, this, &DialogTab::addedDialog);
 	connect(DialogPool::instance(), &DialogPool::dialogRemoved, this, &DialogTab::removedDialog);
+	connect(_dialogModel, &EditableListViewModel::changedIdentifier, DialogPool::instance(), &DialogPool::changeIdentifier);
+	connect(_dialogModel, &EditableListViewModel::changedIdentifier, DialogPool::instance(), &DialogPool::changedIdentifier);
 
 	connect(_graphicScene, &GraphicsScene::addConnection, this, &DialogTab::addConnection);
 }

@@ -26,7 +26,6 @@
 class QListView;
 class QMenu;
 class QSortFilterProxyModel;
-class QStandardItemModel;
 class QToolButton;
 
 namespace tc {
@@ -36,6 +35,9 @@ namespace gui {
 	class GraphicsView;
 	class NodeItem;
 } /* namespace gui */
+namespace utils {
+	class EditableListViewModel;
+} /* namespace utils */
 namespace client {
 
 	class DialogTab final : public QWidget {
@@ -63,7 +65,7 @@ namespace client {
 
 	private:
 		QListView * _dialogList = nullptr;
-		QStandardItemModel * _dialogModel = nullptr;
+		utils::EditableListViewModel * _dialogModel = nullptr;
 		QSortFilterProxyModel * _sortModel = nullptr;
 
 		core::DialogPtr _currentDialog;

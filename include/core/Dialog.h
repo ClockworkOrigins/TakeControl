@@ -34,6 +34,7 @@ namespace core {
 	public:
 		explicit Dialog(const QString & name);
 
+		void setName(const QString & name);
 		QString getName() const;
 
 		QJsonObject save() const;

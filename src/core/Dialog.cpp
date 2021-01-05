@@ -28,6 +28,10 @@ using namespace tc::core;
 
 Dialog::Dialog(const QString & name) : _name(name) {}
 
+void Dialog::setName(const QString & name) {
+	_name = name;
+}
+
 QString Dialog::getName() const {
 	return _name;
 }

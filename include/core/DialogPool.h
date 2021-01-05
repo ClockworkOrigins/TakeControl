@@ -47,6 +47,10 @@ namespace core {
 		void dialogsChanged();
 		void dialogAdded(const DialogPtr & dialog);
 		void dialogRemoved(const DialogPtr & dialog);
+		void changedIdentifier(const QString & before, const QString & after);
+
+	public slots:
+		void changeIdentifier(const QString & before, const QString & after);
 
 	private:
 		QList<DialogPtr> _dialogs;

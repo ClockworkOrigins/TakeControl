@@ -18,6 +18,8 @@
 
 #include "DialogPool.h"
 
+#include "Dialog.h"
+
 using namespace tc::core;
 
 void DialogPool::setDialogs(const QList<DialogPtr> & dialogs) {
@@ -40,4 +42,16 @@ void DialogPool::removeDialog(const DialogPtr & dialog) {
     _dialogs.removeAll(dialog);
 
     emit dialogRemoved(dialog);
+}
+
+void DialogPool::changeIdentifier(const QString & before, const QString & after) {
+    const auto it = std::find_if(_dialogs.begin(), _dialogs.end(), [before](const DialogPtr & d) {
+        return d->getName() == before;
+    });
+
+    Q_ASSERT(it != _dialogs.end());
+
+    if (it == _dialogs.end()) return;
+
+    (*it)->setName(after);
 }
