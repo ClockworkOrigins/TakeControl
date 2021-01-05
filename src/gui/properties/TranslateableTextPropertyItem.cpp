@@ -88,33 +88,13 @@ void TranslateableTextPropertyItem::configure(const IPropertyPtr & prop) {
 
     connect(_comboBox, QOverload<const QString &>::of(&QComboBox::currentTextChanged), _property.get(), &TranslateableTextProperty::setValue);
     connect(_comboBox, QOverload<const QString &>::of(&QComboBox::currentTextChanged), this, [this]() {
-        const auto texts = TranslateableTextPool::instance()->getTranslateableTexts();
-        const auto it = std::find_if(texts.begin(), texts.end(), [this](const TranslateableTextPtr & translateableText) {
-            return translateableText->getKey() == _property->getValue();
-        });
-
-        const auto defaultLanguage = TranslateableTextPool::instance()->getDefaultLanguage();
-
-        disconnect(_currentConnection);
-
-        if (it == texts.end()) {
-            _label->setText(QString());
-            return;
-        }
-
-        auto tt = *it;
-    	
-        _label->setText(tt->getTranslation(defaultLanguage));
-
-    	_currentConnection = connect(tt.get(), &TranslateableText::translationChanged, this, [this, defaultLanguage](const QString & l, const QString & t) {
-            if (l != defaultLanguage) return;
-
-            _label->setText(t);
-    	});
+        updatePreview();
     });
     connect(_property.get(), &TranslateableTextProperty::valueChanged, _comboBox, [this]() {
         _comboBox->setCurrentText(_property->getValue());
 	});
+
+    updatePreview();
 }
 
 QRectF TranslateableTextPropertyItem::boundingRect() const {
@@ -148,4 +128,30 @@ void TranslateableTextPropertyItem::updateCompleter(const QStringList & options)
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
 
     _comboBox->setCompleter(completer);
+}
+
+void TranslateableTextPropertyItem::updatePreview() {
+    const auto texts = TranslateableTextPool::instance()->getTranslateableTexts();
+    const auto it = std::find_if(texts.begin(), texts.end(), [this](const TranslateableTextPtr & translateableText) {
+        return translateableText->getKey() == _property->getValue();
+	});
+
+    const auto defaultLanguage = TranslateableTextPool::instance()->getDefaultLanguage();
+
+    disconnect(_currentConnection);
+
+    if (it == texts.end()) {
+        _label->setText(QString());
+        return;
+    }
+
+    const auto tt = *it;
+
+    _label->setText(tt->getTranslation(defaultLanguage));
+
+    _currentConnection = connect(tt.get(), &TranslateableText::translationChanged, this, [this, defaultLanguage](const QString & l, const QString & t) {
+        if (l != defaultLanguage) return;
+
+        _label->setText(t);
+	});
 }

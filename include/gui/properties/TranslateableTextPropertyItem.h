@@ -53,6 +53,7 @@ namespace gui {
 
         void updateTranslateableTexts();
         void updateCompleter(const QStringList & options);
+        void updatePreview();
 	};
 
 } /* namespace gui */
