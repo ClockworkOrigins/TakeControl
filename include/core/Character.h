@@ -33,6 +33,7 @@ namespace core {
 	public:
 		explicit Character(const QString & name);
 
+		void setName(const QString & name);
 		QString getName() const;
 
 		QJsonObject save() const;

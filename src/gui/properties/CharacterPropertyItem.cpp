@@ -28,6 +28,8 @@
 #include <QGraphicsProxyWidget>
 #include <QPainter>
 
+#include "core/TranslateableTextPool.h"
+
 using namespace tc::core;
 using namespace tc::gui;
 
@@ -45,6 +47,15 @@ CharacterPropertyItem::CharacterPropertyItem() : PropertyItem() {
     connect(CharacterPool::instance(), &CharacterPool::charactersChanged, this, &CharacterPropertyItem::updateCharacters);
     connect(CharacterPool::instance(), &CharacterPool::characterAdded, this, &CharacterPropertyItem::updateCharacters);
     connect(CharacterPool::instance(), &CharacterPool::characterRemoved, this, &CharacterPropertyItem::updateCharacters);
+    connect(CharacterPool::instance(), &CharacterPool::changedIdentifier, this, [this](const QString & before, const QString & after) {
+        if (_property->getValue() != before) return;
+
+        _property->_value = after;
+
+        QSignalBlocker sb(_comboBox);
+
+        _comboBox->setCurrentText(after);
+        });
 
     updateCharacters();
 }

@@ -47,6 +47,10 @@ namespace core {
 		void charactersChanged();
 		void characterAdded(const CharacterPtr & character);
 		void characterRemoved(const CharacterPtr & character);
+		void changedIdentifier(const QString & before, const QString & after);
+
+	public slots:
+		void changeIdentifier(const QString & before, const QString & after);
 
 	private:
 		QList<CharacterPtr> _characters;

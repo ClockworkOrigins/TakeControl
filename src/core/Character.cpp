@@ -22,6 +22,10 @@ using namespace tc::core;
 
 Character::Character(const QString & name) : _name(name) {}
 
+void Character::setName(const QString & name) {
+	_name = name;
+}
+
 QString Character::getName() const {
 	return _name;
 }

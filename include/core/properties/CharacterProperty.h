@@ -23,10 +23,14 @@
 class QJsonObject;
 
 namespace tc {
+namespace gui {
+    class CharacterPropertyItem;
+} /* namespace gui */
 namespace core {
 
 	class TC_CORE_API CharacterProperty : public IProperty {
         friend class SetCharacterPropertyValueCommand;
+        friend class gui::CharacterPropertyItem;
 		
 	public:
         CharacterProperty();

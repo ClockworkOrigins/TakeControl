@@ -30,6 +30,9 @@ bool EditableListViewModel::setData(const QModelIndex & index, const QVariant & 
         auto * cmd = new ChangeIdentifierCommand(data(index).toString(), value.toString());
 
         connect(cmd, &ChangeIdentifierCommand::changedIdentifier, this, &EditableListViewModel::changedIdentifier);
+        connect(cmd, &ChangeIdentifierCommand::changedIdentifier, this, [this, index](const QString &, const QString & after) {
+            setData(index, after, Qt::DisplayRole);
+        });
 		
         UndoStack::instance()->push(cmd);
 	}

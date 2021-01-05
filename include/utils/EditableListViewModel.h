@@ -29,12 +29,14 @@ namespace utils {
 		Q_OBJECT
 
     public:
-        EditableListViewModel(QObject * par);
+        explicit EditableListViewModel(QObject * par);
 
 	signals:
         void changedIdentifier(const QString & before, const QString & after);
 		
 	private:
+        bool _inCommand;
+		
 		bool setData(const QModelIndex & index, const QVariant & value, int role) override;
 	};
 

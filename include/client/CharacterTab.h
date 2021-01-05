@@ -23,9 +23,11 @@
 #include <QWidget>
 
 class QListView;
-class QStandardItemModel;
 
 namespace tc {
+namespace utils {
+	class EditableListViewModel;
+} /* namespace utils */
 namespace client {
 namespace commands {
 	class AddCharacterCommand;
@@ -47,7 +49,7 @@ namespace commands {
 
 	private:
 		QListView * _characterList;
-		QStandardItemModel * _characterModel;
+		utils::EditableListViewModel * _characterModel;
 	};
 
 } /* namespace client */

@@ -23,6 +23,7 @@
 #include "core/Character.h"
 #include "core/CharacterPool.h"
 
+#include "utils/EditableListViewModel.h"
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -44,9 +45,9 @@ CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr
 		auto * vl = new QVBoxLayout();
 		
 		_characterList = new QListView(this);
-		_characterList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+		_characterList->setEditTriggers(QAbstractItemView::DoubleClicked);
 
-		_characterModel = new QStandardItemModel(this);
+		_characterModel = new EditableListViewModel(this);
 
 		auto * sortModel = new QSortFilterProxyModel(this);
 		sortModel->setSourceModel(_characterModel);
@@ -68,6 +69,8 @@ CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr
 	connect(CharacterPool::instance(), &CharacterPool::charactersChanged, this, &CharacterTab::updateCharacters);
 	connect(CharacterPool::instance(), &CharacterPool::characterAdded, this, &CharacterTab::addedCharacter);
 	connect(CharacterPool::instance(), &CharacterPool::characterRemoved, this, &CharacterTab::removedCharacter);
+	connect(_characterModel, &EditableListViewModel::changedIdentifier, CharacterPool::instance(), &CharacterPool::changeIdentifier);
+	connect(_characterModel, &EditableListViewModel::changedIdentifier, CharacterPool::instance(), &CharacterPool::changedIdentifier);
 }
 
 void CharacterTab::updateCharacters() {
