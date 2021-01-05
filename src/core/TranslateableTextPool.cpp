@@ -18,6 +18,8 @@
 
 #include "TranslateableTextPool.h"
 
+#include "TranslateableText.h"
+
 using namespace tc::core;
 
 void TranslateableTextPool::setTranslateableTexts(const QList<TranslateableTextPtr> & translateableTexts) {
@@ -36,6 +38,18 @@ void TranslateableTextPool::setDefaultLanguage(const QString & language) {
 
 QString TranslateableTextPool::getDefaultLanguage() const {
     return _language;
+}
+
+void TranslateableTextPool::changeIdentifier(const QString & before, const QString & after) {
+	const auto it = std::find_if(_translateableTexts.begin(), _translateableTexts.end(), [before](const TranslateableTextPtr & tt) {
+        return tt->getKey() == before;
+	});
+
+    Q_ASSERT(it != _translateableTexts.end());
+
+    if (it == _translateableTexts.end()) return;
+
+    (*it)->setKey(after);
 }
 
 void TranslateableTextPool::addTranslateableText(const TranslateableTextPtr & character) {

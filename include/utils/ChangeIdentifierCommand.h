@@ -14,43 +14,33 @@
     You should have received a copy of the GNU General Public License
     along with TakeControl.  If not, see <http://www.gnu.org/licenses/>.
  */
-// Copyright 2020 Clockwork Origins
+// Copyright 2021 Clockwork Origins
 
 #pragma once
 
-#include "core/CoreParameters.h"
-#include "core/CoreTypes.h"
+#include "utils/UtilsParameters.h"
 
-#include <QJsonObject>
-#include <QMap>
-#include <QString>
+#include <QUndoCommand>
 
 namespace tc {
-namespace core {
+namespace utils {
 
-	class TC_CORE_API TranslateableText : public QObject {
+	class TC_UTILS_API ChangeIdentifierCommand : public QObject, public QUndoCommand {
 		Q_OBJECT
-		
-	public:
-		explicit TranslateableText(const QString & key);
 
-		void setKey(const QString & key);
-		QString getKey() const;
-		QMap<QString, QString> getTranslations() const;
-		QString getTranslation(const QString & language) const;
-		void updateTranslation(const QString & language, const QString & text);
-
-		QJsonObject save() const;
-
-		static TranslateableTextPtr load(const QJsonObject & json);
+    public:
+        ChangeIdentifierCommand(const QString & before, const QString & after);
 
 	signals:
-		void translationChanged(const QString & language, const QString & text);
-
+        void changedIdentifier(const QString & before, const QString & after);
+		
 	private:
-		QString _key;
-		QMap<QString, QString> _texts;
+        QString _before;
+        QString _after;
+		
+        void undo() override;
+        void redo() override;
 	};
 
-} /* namespace core */
+} /* namespace utils */
 } /* namespace tc */

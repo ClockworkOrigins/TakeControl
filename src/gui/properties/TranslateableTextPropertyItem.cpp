@@ -66,6 +66,15 @@ TranslateableTextPropertyItem::TranslateableTextPropertyItem() : PropertyItem() 
     connect(TranslateableTextPool::instance(), &TranslateableTextPool::translateableTextsChanged, this, &TranslateableTextPropertyItem::updateTranslateableTexts);
     connect(TranslateableTextPool::instance(), &TranslateableTextPool::translateableTextAdded, this, &TranslateableTextPropertyItem::updateTranslateableTexts);
     connect(TranslateableTextPool::instance(), &TranslateableTextPool::translateableTextRemoved, this, &TranslateableTextPropertyItem::updateTranslateableTexts);
+    connect(TranslateableTextPool::instance(), &TranslateableTextPool::changedIdentifier, this, [this](const QString & before, const QString & after) {
+        if (_property->getValue() != before) return;
+
+        _property->_value = after;
+
+        QSignalBlocker sb(_comboBox);
+    	
+        _comboBox->setCurrentText(after);
+    });
 
     updateTranslateableTexts();
 }

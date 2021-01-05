@@ -48,6 +48,10 @@ namespace core {
 		void translateableTextsChanged();
 		void translateableTextAdded(const TranslateableTextPtr & translateableText);
 		void translateableTextRemoved(const TranslateableTextPtr & translateableText);
+		void changedIdentifier(const QString & before, const QString & after);
+
+	public slots:
+		void changeIdentifier(const QString & before, const QString & after);
 
 	private:
 		QString _language;

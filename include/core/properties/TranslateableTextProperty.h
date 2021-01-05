@@ -21,10 +21,14 @@
 #include "core/IProperty.h"
 
 namespace tc {
+namespace gui {
+    class TranslateableTextPropertyItem;
+}
 namespace core {
 
 	class TC_CORE_API TranslateableTextProperty : public IProperty {
         friend class SetTranslateableTextPropertyValueCommand;
+        friend class gui::TranslateableTextPropertyItem;
 		
 	public:
         TranslateableTextProperty();

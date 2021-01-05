@@ -91,5 +91,9 @@
         <source>Export</source>
         <translation>Export</translation>
     </message>
+    <message>
+        <source>ChangeIdentifier</source>
+        <translation>Change Identifier</translation>
+    </message>
 </context>
 </TS>

@@ -25,6 +25,7 @@
 #include "core/TranslateableText.h"
 #include "core/TranslateableTextPool.h"
 
+#include "utils/EditableListViewModel.h"
 #include "utils/UndoStack.h"
 
 #include <QApplication>
@@ -48,9 +49,9 @@ TranslateableTextTab::TranslateableTextTab(QWidget * par) : QWidget(par), _trans
 		auto * vl = new QVBoxLayout();
 		
 		_translateableTextList = new QListView(this);
-		_translateableTextList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+		_translateableTextList->setEditTriggers(QAbstractItemView::DoubleClicked);
 
-		_translateableTextModel = new QStandardItemModel(this);
+		_translateableTextModel = new EditableListViewModel(this);
 
 		_sortModel = new QSortFilterProxyModel(this);
 		_sortModel->setSourceModel(_translateableTextModel);
@@ -78,7 +79,9 @@ TranslateableTextTab::TranslateableTextTab(QWidget * par) : QWidget(par), _trans
 	connect(TranslateableTextPool::instance(), &TranslateableTextPool::translateableTextsChanged, this, &TranslateableTextTab::updateTranslateableTexts);
 	connect(TranslateableTextPool::instance(), &TranslateableTextPool::translateableTextAdded, this, &TranslateableTextTab::addedTranslateableText);
 	connect(TranslateableTextPool::instance(), &TranslateableTextPool::translateableTextRemoved, this, &TranslateableTextTab::removedTranslateableText);
-	connect(_translateableTextList, &QListView::doubleClicked, this, QOverload<const QModelIndex &>::of(&TranslateableTextTab::openText));
+	connect(_translateableTextList, &QListView::clicked, this, QOverload<const QModelIndex &>::of(&TranslateableTextTab::openText));
+	connect(_translateableTextModel, &EditableListViewModel::changedIdentifier, TranslateableTextPool::instance(), &TranslateableTextPool::changeIdentifier);
+	connect(_translateableTextModel, &EditableListViewModel::changedIdentifier, TranslateableTextPool::instance(), &TranslateableTextPool::changedIdentifier);
 }
 
 void TranslateableTextTab::setActivePlugin(const IGamePlugin * plugin) {

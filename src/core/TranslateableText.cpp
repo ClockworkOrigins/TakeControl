@@ -24,6 +24,10 @@ using namespace tc::core;
 
 TranslateableText::TranslateableText(const QString & key) : _key(key) {}
 
+void TranslateableText::setKey(const QString & key) {
+	_key = key;
+}
+
 QString TranslateableText::getKey() const {
 	return _key;
 }

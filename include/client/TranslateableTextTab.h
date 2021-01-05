@@ -26,10 +26,12 @@
 class QLineEdit;
 class QListView;
 class QSortFilterProxyModel;
-class QStandardItemModel;
 class QVBoxLayout;
 
 namespace tc {
+namespace utils {
+	class EditableListViewModel;
+} /* namespace utils */
 namespace client {
 namespace commands {
 	class AddTranslateableTextCommand;
@@ -53,7 +55,7 @@ namespace commands {
 
 	private:
 		QListView * _translateableTextList;
-		QStandardItemModel * _translateableTextModel;
+		utils::EditableListViewModel * _translateableTextModel;
 		QSortFilterProxyModel * _sortModel = nullptr;
 
 		const core::IGamePlugin * _activePlugin = nullptr;
