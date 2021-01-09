@@ -43,6 +43,7 @@ namespace gui {
         bool _drawConnection = false;
 		
 		void paintEvent(QPaintEvent * event) override;
+		void wheelEvent(QWheelEvent * event) override;
 	};
 
 } /* namespace gui */

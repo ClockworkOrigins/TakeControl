@@ -58,3 +58,21 @@ void GraphicsView::paintEvent(QPaintEvent * event) {
 
     scene()->update();
 }
+
+void GraphicsView::wheelEvent(QWheelEvent * event) {
+    QGraphicsView::wheelEvent(event);
+
+    const double angle = event->angleDelta().y();
+    const double factor = std::pow(1.0015, angle);
+
+    auto * graphicsScene = dynamic_cast<GraphicsScene *>(scene());
+    const auto mousePos = graphicsScene->getMousePosition();
+
+    scale(factor, factor);
+    centerOn(mousePos);
+
+    const QPointF deltaViewportPos = mapFromScene(mousePos) - QPointF(viewport()->width() / 2.0, viewport()->height() / 2.0);
+    const QPointF viewportCenter = mapFromScene(mousePos) - deltaViewportPos;
+
+    centerOn(mapToScene(viewportCenter.toPoint()));
+}
