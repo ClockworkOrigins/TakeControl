@@ -47,6 +47,7 @@ QStringList Gothic2Plugin::getSupportedNodes() const {
 		"Exit Conversation",
 		"Or",
 		"Output",
+		"Repeatable Dialog",
 		"Translateable Text"
 	};
 }
@@ -229,16 +230,14 @@ void Gothic2Plugin::getDialogConfiguration(const DialogPtr & dialog, const QList
 		break;
 	}
 
-	const auto itOwner = std::find_if(characters.begin(), characters.end(), [dialogOwner](const CharacterPtr & c) {
-		return c->getName() == dialogOwner; // TODO: change when character has identifier AND name
-	});
+	bool foundFirstOutput = false;
 
 	while (checkedNodes < nodes.count() && currentNode) {
-		if (currentNode->getType() == "Text") {
+		if (!foundFirstOutput && currentNode->getType() == "Text") {
 			description = std::dynamic_pointer_cast<TextProperty>(currentNode->getProperties()[0])->getValue();
 		}
 		
-		if (currentNode->getType() == "Translateable Text") {
+		if (!foundFirstOutput && currentNode->getType() == "Translateable Text") {
 			const auto key = std::dynamic_pointer_cast<TranslateableTextProperty>(currentNode->getProperties()[0])->getValue();
 
 			const auto it = std::find_if(texts.begin(), texts.end(), [key](const TranslateableTextPtr & tt) {
@@ -250,7 +249,7 @@ void Gothic2Plugin::getDialogConfiguration(const DialogPtr & dialog, const QList
 			}
 		}
 		
-		if (currentNode->getType() == "Output") {
+		if (currentNode->getType() == "Output" && !foundFirstOutput) {
 			const auto props = currentNode->getProperties();
 			Q_ASSERT(props.size() == 2);
 
@@ -260,8 +259,14 @@ void Gothic2Plugin::getDialogConfiguration(const DialogPtr & dialog, const QList
 			Q_ASSERT(charProp);
 			Q_ASSERT(textProp);
 			
-			break;
+			foundFirstOutput = true;
 		}
+
+		if (currentNode->getType() == "Repeatable Dialog") {
+			permanent = true;
+		}
+
+		if (permanent && foundFirstOutput) break;
 
 		checkedNodes++;
 

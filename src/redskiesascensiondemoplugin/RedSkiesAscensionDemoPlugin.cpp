@@ -33,6 +33,7 @@ QStringList RedSkiesAscensionDemoPlugin::getSupportedNodes() const {
 		"Exit Conversation",
 		"Or",
 		"Output",
+		"Repeatable Dialog",
 		"Translateable Text"
 	};
 }

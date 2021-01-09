@@ -25,6 +25,7 @@
 #include "nodes/ExitConversationNode.h"
 #include "nodes/OrNode.h"
 #include "nodes/OutputNode.h"
+#include "nodes/RepeatableDialogNode.h"
 #include "nodes/TextNode.h"
 #include "nodes/TranslateableTextNode.h"
 
@@ -67,6 +68,10 @@ INodePtr NodeFactory::create(const QString & type) const {
 
 	if (type == "Output") {
 		nodePtr = std::make_shared<OutputNode>();
+	}
+
+	if (type == "Repeatable Dialog") {
+		nodePtr = std::make_shared<RepeatableDialogNode>();
 	}
 
 	if (type == "Text") {

@@ -3,7 +3,7 @@ INSTANCE DIA_Xardas_FirstEXIT (C_INFO) {
 	nr			= 1;
 	condition	= DIA_Xardas_FirstEXIT_Condition;
 	information	= DIA_Xardas_FirstEXIT_Info;
-	permanent	= FALSE;
+	permanent	= TRUE;
 	important	= FALSE;
 	description	= "Ich werde so schnell wie möglich aufbrechen! (ENDE)";
 };
