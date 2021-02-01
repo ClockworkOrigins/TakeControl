@@ -31,17 +31,21 @@ namespace core {
 
 	class TC_CORE_API Character {
 	public:
-		explicit Character(const QString & name);
+		explicit Character(const QString & identifier, const IGamePlugin * plugin);
 
-		void setName(const QString & name);
-		QString getName() const;
+		void setIdentifier(const QString & identifier);
+		QString getIdentifier() const;
 
 		QJsonObject save() const;
 
-		static CharacterPtr load(const QJsonObject & json);
+		static CharacterPtr load(const QJsonObject & json, const IGamePlugin * plugin);
 
 	private:
-		QString _name;
+		QString _identifier;
+		QList<IPropertyPtr> _properties;
+
+		void loadProperties(const QJsonObject & json);
+		void fillProperties(const IGamePlugin * plugin);
 	};
 
 } /* namespace core */

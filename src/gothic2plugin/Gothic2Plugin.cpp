@@ -109,6 +109,12 @@ bool Gothic2Plugin::exportProject(const ProjectPtr & project) const {
 	return true;
 }
 
+QStringList Gothic2Plugin::getCharacterProperties() const {
+	return {
+		"Translateable Text"
+	};
+}
+
 QString Gothic2Plugin::convert(const DialogPtr & dialog, const QList<CharacterPtr> & characters, const QList<TranslateableTextPtr> & texts) const {
 	const auto connections = dialog->getConnections();
 	const auto nodes = dialog->getNodes();

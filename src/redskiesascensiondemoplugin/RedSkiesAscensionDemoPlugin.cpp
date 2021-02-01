@@ -69,4 +69,10 @@ bool RedSkiesAscensionDemoPlugin::exportProject(const ProjectPtr &) const {
 	return false; // TODO: implement somewhen in the future
 }
 
+QStringList RedSkiesAscensionDemoPlugin::getCharacterProperties() const {
+	return {
+		"Translateable Text"
+	};
+}
+
 Q_PLUGIN_METADATA(IID "tc.game.IGamePlugin")

@@ -18,6 +18,7 @@
 
 #include "Character.h"
 
+#include "IGamePlugin.h"
 #include "TakeControlConfig.h"
 
 #include "gtest/gtest.h"
@@ -26,14 +27,75 @@
 #include <QJsonDocument>
 
 using namespace tc::core;
+using namespace tc::gui;
 
-TEST(Character, ctor) {
-	const Character c("Test");
-	ASSERT_EQ("Test", c.getName());
+namespace {
+	class CharacterTestPlugin : public IGamePlugin {
+		QString getName() const {
+			return "CharacterTest";
+		}
+
+		QStringList getSupportedNodes() const {
+			return {};
+		}
+
+		IConditionPtr createCondition(const QString &, const QJsonObject &) const {
+			return nullptr;
+		}
+
+		INodePtr createNode(const QString &) const {
+			return nullptr;
+		}
+
+		NodeItem * createNodeItem(const QString &) const {
+			return nullptr;
+		}
+
+		IPropertyPtr createProperty(const QString &) const {
+			return nullptr;
+		}
+
+		PropertyItem * createPropertyItem(const QString &) const {
+			return nullptr;
+		}
+
+		QStringList getSupportedLanguages() const {
+			return {
+				"English",
+				"German"
+			};
+		}
+
+		bool exportProject(const ProjectPtr & project) const {
+			return true;
+		}
+
+		QStringList getCharacterProperties() const {
+			return {};
+		}
+	};
 }
 
-TEST(Character, save) {
-	const Character c("SaveTest");
+class CharacterTest : public ::testing::Test {
+protected:
+	void SetUp() override {
+		plugin = new CharacterTestPlugin();
+	}
+
+	void TearDown() override {
+		delete plugin;
+	}
+
+	CharacterTestPlugin * plugin = nullptr;
+};
+
+TEST_F(CharacterTest, ctor) {
+	const Character c("Test", plugin);
+	ASSERT_EQ("Test", c.getIdentifier());
+}
+
+TEST_F(CharacterTest, save) {
+	const Character c("SaveTest", plugin);
 	
 	const QJsonObject json = c.save();
 	const QJsonDocument jsonDoc(json);
@@ -47,7 +109,7 @@ TEST(Character, save) {
 	ASSERT_EQ(referenceData, jsonData);
 }
 
-TEST(Character, load) {
+TEST_F(CharacterTest, load) {
 	QFile referenceFile(TESTFOLDER + "/core/resources/Character/load.json");
 	ASSERT_TRUE(referenceFile.open(QIODevice::ReadOnly));
 
@@ -56,8 +118,8 @@ TEST(Character, load) {
 	const auto jsonDoc = QJsonDocument::fromJson(referenceData);
 	const auto json = jsonDoc.object();
 
-	const auto c = Character::load(json);
+	const auto c = Character::load(json, plugin);
 	ASSERT_TRUE(c);
 
-	ASSERT_EQ("LoadTest", c->getName());
+	ASSERT_EQ("LoadTest", c->getIdentifier());
 }

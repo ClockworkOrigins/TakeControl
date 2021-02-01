@@ -73,25 +73,29 @@ CharacterTab::CharacterTab(QWidget * par) : QWidget(par), _characterList(nullptr
 	connect(_characterModel, &EditableListViewModel::changedIdentifier, CharacterPool::instance(), &CharacterPool::changedIdentifier);
 }
 
+void CharacterTab::setActivePlugin(const IGamePlugin * plugin) {
+	_activePlugin = plugin;
+}
+
 void CharacterTab::updateCharacters() {
 	_characterModel->clear();
 	
 	for (const auto & c : CharacterPool::instance()->getCharacters()) {
-		_characterModel->appendRow(new QStandardItem(c->getName()));
+		_characterModel->appendRow(new QStandardItem(c->getIdentifier()));
 	}
 }
 
 void CharacterTab::addCharacter() {
-	auto * cmd = new AddCharacterCommand();	
+	auto * cmd = new AddCharacterCommand(_activePlugin);
 	UndoStack::instance()->push(cmd);
 }
 
 void CharacterTab::addedCharacter(const CharacterPtr & character) {
-	_characterModel->appendRow(new QStandardItem(character->getName()));
+	_characterModel->appendRow(new QStandardItem(character->getIdentifier()));
 }
 
 void CharacterTab::removedCharacter(const CharacterPtr & character) {
-	const auto itemList = _characterModel->findItems(character->getName());
+	const auto itemList = _characterModel->findItems(character->getIdentifier());
 
 	for (const auto & item : itemList) {
 		const auto idx = _characterModel->indexFromItem(item);

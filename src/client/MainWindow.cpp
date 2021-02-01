@@ -206,8 +206,11 @@ void MainWindow::loadProject(const QString & path) {
 	QList<CharacterPtr> characters;
 	QList<DialogPtr> dialogs;
 	QList<TranslateableTextPtr> texts;
-	
-	_project->load(path);
+
+	_project->load(path, [this](const QString & type) {
+		const auto * usedPlugin = _pluginLoader->getGamePlugin(type);
+		return usedPlugin;
+	});
 
 	CharacterPool::instance()->setCharacters(_project->getCharacters());
 	DialogPool::instance()->setDialogs(_project->getDialogs());

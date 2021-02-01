@@ -46,12 +46,12 @@ void CharacterPool::removeCharacter(const CharacterPtr & character) {
 
 void CharacterPool::changeIdentifier(const QString & before, const QString & after) {
     const auto it = std::find_if(_characters.begin(), _characters.end(), [before](const CharacterPtr & c) {
-        return c->getName() == before;
+        return c->getIdentifier() == before;
       });
 
     Q_ASSERT(it != _characters.end());
 
     if (it == _characters.end()) return;
 
-    (*it)->setName(after);
+    (*it)->setIdentifier(after);
 }

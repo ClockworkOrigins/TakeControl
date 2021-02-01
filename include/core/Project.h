@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include <functional>
 #include <memory>
 
 #include "core/CoreParameters.h"
@@ -33,10 +34,12 @@ namespace core {
 		Project() = default;
 		Project(const QString & path, const QString & name, const QString & type);
 
+		void setActivePlugin(const IGamePlugin * plugin);
+
 		static bool supports(const QString & path);
 		
 		void save() const;
-		void load(const QString & path);
+		void load(const QString & path, const std::function<const IGamePlugin *(const QString &)> & getPluginCallback);
 
 		QString getName() const;
 		QString getType() const;
@@ -53,6 +56,8 @@ namespace core {
 		QString _path;
 		QString _name;
 		QString _type;
+
+		const IGamePlugin * _plugin = nullptr;
 
 		QList<CharacterPtr> _characters;
 		QList<DialogPtr> _dialogs;

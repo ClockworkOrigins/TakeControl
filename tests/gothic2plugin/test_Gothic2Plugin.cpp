@@ -50,7 +50,7 @@ protected:
 
 	void init(const QString & testName) {
 		_project = std::make_shared<Project>();
-		_project->load(QString("%1/gothic2plugin/resources/%2/G2.json").arg(TESTFOLDER).arg(testName));
+		_project->load(QString("%1/gothic2plugin/resources/%2/G2.json").arg(TESTFOLDER).arg(testName), [this](const QString &) { return _plugin; });
 
 		QFile f(QString("%1/gothic2plugin/resources/%2/Dialog.d").arg(TESTFOLDER).arg(testName));
 

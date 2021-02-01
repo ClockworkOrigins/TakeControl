@@ -30,16 +30,16 @@ using namespace tc::client;
 using namespace tc::client::commands;
 using namespace tc::core;
 
-AddCharacterCommand::AddCharacterCommand() : QUndoCommand(QApplication::tr("AddCharacter")) {
+AddCharacterCommand::AddCharacterCommand(const IGamePlugin * plugin) : QUndoCommand(QApplication::tr("AddCharacter")) {
 	int number = 1;
 
 	const auto characters = CharacterPool::instance()->getCharacters();
 	
-	while (std::find_if(characters.begin(), characters.end(), [number](const std::shared_ptr<Character> & c) { return c->getName() == QString("New Character %1").arg(number); }) != characters.end()) {
+	while (std::find_if(characters.begin(), characters.end(), [number](const std::shared_ptr<Character> & c) { return c->getIdentifier() == QString("New Character %1").arg(number); }) != characters.end()) {
 		number++;
 	}
 	
-	_character = std::make_shared<Character>(QString("New Character %1").arg(number));
+	_character = std::make_shared<Character>(QString("New Character %1").arg(number), plugin);
 }
 
 void AddCharacterCommand::redo() {

@@ -20,19 +20,17 @@
 
 #include <memory>
 
+#include "core/CoreTypes.h"
+
 #include <QUndoCommand>
 
 namespace tc {
-namespace core {
-	class Character;
-	typedef std::shared_ptr<Character> CharacterPtr;
-} /* namespace core */
 namespace client {
 namespace commands {
 
 	class AddCharacterCommand : public QUndoCommand {
 	public:
-		AddCharacterCommand();
+		explicit AddCharacterCommand(const core::IGamePlugin * plugin);
 
 	private:
 		core::CharacterPtr _character;

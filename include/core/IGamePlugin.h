@@ -81,6 +81,11 @@ namespace core {
 		 * return true on success, false on failure
 		 */
 		virtual bool exportProject(const ProjectPtr & project) const = 0;
+
+		/**
+		 * \brief returns the identifier for all properties used for characters
+		 */
+		virtual QStringList getCharacterProperties() const = 0;
 	};
 
 } /* namespace core */

@@ -86,7 +86,7 @@ void CharacterPropertyItem::updateCharacters() {
 
     QStringList options;
     for (const auto & c : characters) {
-        options << c->getName();
+        options << c->getIdentifier();
     }
     options.sort();
 

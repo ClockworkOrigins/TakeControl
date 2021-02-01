@@ -39,6 +39,8 @@ namespace commands {
 	public:
 		explicit CharacterTab(QWidget * par);
 
+		void setActivePlugin(const core::IGamePlugin * plugin);
+
 	private slots:
 		void updateCharacters();
 	
@@ -50,6 +52,8 @@ namespace commands {
 	private:
 		QListView * _characterList;
 		utils::EditableListViewModel * _characterModel;
+
+		const core::IGamePlugin * _activePlugin = nullptr;
 	};
 
 } /* namespace client */

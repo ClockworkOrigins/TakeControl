@@ -43,6 +43,7 @@ namespace gothic2plugin {
 		gui::PropertyItem * createPropertyItem(const QString & propertyType) const override;
 		QStringList getSupportedLanguages() const override;
 		bool exportProject(const core::ProjectPtr & project) const override;
+		QStringList getCharacterProperties() const override;
 
 		QString convert(const core::DialogPtr & dialog, const QList<core::CharacterPtr> & characters, const QList<core::TranslateableTextPtr> & texts) const;
 

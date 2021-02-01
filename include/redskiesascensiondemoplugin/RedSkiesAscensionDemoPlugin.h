@@ -39,6 +39,8 @@ namespace redskiesascensiondemo {
 		gui::PropertyItem * createPropertyItem(const QString & propertyType) const override;
 		QStringList getSupportedLanguages() const override;
 		bool exportProject(const core::ProjectPtr & project) const override;
+
+		QStringList getCharacterProperties() const override;
 	};
 
 } /* namespace redskiesascensiondemo */

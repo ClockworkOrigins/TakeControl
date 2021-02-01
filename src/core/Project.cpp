@@ -31,6 +31,10 @@ using namespace tc::core;
 
 Project::Project(const QString & path, const QString & name, const QString & type) : _path(path), _name(name), _type(type) {}
 
+void Project::setActivePlugin(const IGamePlugin * plugin) {
+	_plugin = plugin;
+}
+
 bool Project::supports(const QString & path) {
 	if (!QFileInfo::exists(path)) return false;
 
@@ -91,7 +95,7 @@ void Project::save() const {
 	f.write(data);
 }
 
-void Project::load(const QString & path) {
+void Project::load(const QString & path, const std::function<const IGamePlugin * (const QString &)> & getPluginCallback) {
 	const QFileInfo fi(path);
 
 	_path = fi.absolutePath();
@@ -109,10 +113,13 @@ void Project::load(const QString & path) {
 	_name = json["Name"].toString();
 	_type = json["Type"].toString();
 
+	auto * plugin = getPluginCallback(_type);
+	setActivePlugin(plugin);
+
 	QJsonArray characterArray = json["Characters"].toArray();
 
 	for (const auto characterJson : characterArray) {
-		auto c = Character::load(characterJson.toObject());
+		auto c = Character::load(characterJson.toObject(), _plugin);
 
 		if (!c) continue;
 
